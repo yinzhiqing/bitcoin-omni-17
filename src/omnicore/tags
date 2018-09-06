@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE	test/version_tests.cpp	/^BOOST_AUTO_TEST_CASE(version_strin
 BTC_desired_original	dex.h	/^    int64_t BTC_desired_original;      \/\/ copied from the Offer during Accept's creation$/;"	m	line:126	class:CMPAccept	access:private
 BTC_desired_original	dex.h	/^    int64_t BTC_desired_original;$/;"	m	line:52	class:CMPOffer	access:private
 BalanceRecord	tally.h	/^    } BalanceRecord;$/;"	t	line:24	class:CMPTally	typeref:struct:CMPTally::__anon1	access:private
-BalanceToJSON	rpc.cpp	/^bool BalanceToJSON(const std::string& address, uint32_t property, UniValue& balance_obj, bool divisible)$/;"	f	line:134	signature:(const std::string& address, uint32_t property, UniValue& balance_obj, bool divisible)
+BalanceToJSON	rpc.cpp	/^bool BalanceToJSON(const std::string& address, uint32_t property, UniValue& balance_obj, bool divisible)$/;"	f	line:139	signature:(const std::string& address, uint32_t property, UniValue& balance_obj, bool divisible)
 BitcoinCoreVersion	version.cpp	/^const std::string BitcoinCoreVersion()$/;"	f	line:36	signature:()
 CANCEL	tx.h	/^        CANCEL = 3,$/;"	e	line:172	enum:CMPTransaction::ActionTypes
 CANCELLED	mdex.cpp	/^    CANCELLED,$/;"	e	line:73	enum:MatchReturnType	file:
@@ -761,8 +761,8 @@ DivideAndRoundUp	uint256_extensions.h	/^inline arith_uint256 DivideAndRoundUp(co
 Entry	dbspinfo.cpp	/^CMPSPInfo::Entry::Entry()$/;"	f	line:25	class:CMPSPInfo::Entry	signature:()
 Entry	dbspinfo.h	/^    struct Entry {$/;"	s	line:49	class:CMPSPInfo	access:public
 EvalCache	dbfees.cpp	/^void COmniFeeCache::EvalCache(const uint32_t &propertyId, int block)$/;"	f	line:193	class:COmniFeeCache	signature:(const uint32_t &propertyId, int block)
-ExodusAddress	omnicore.cpp	/^const CTxDestination ExodusAddress()$/;"	f	line:1986	signature:()
-ExodusCrowdsaleAddress	omnicore.cpp	/^const  CTxDestination  ExodusCrowdsaleAddress(int nBlock)$/;"	f	line:2009	signature:(int nBlock)
+ExodusAddress	omnicore.cpp	/^const CTxDestination ExodusAddress()$/;"	f	line:1994	signature:()
+ExodusCrowdsaleAddress	omnicore.cpp	/^const  CTxDestination  ExodusCrowdsaleAddress(int nBlock)$/;"	f	line:2017	signature:(int nBlock)
 FEATURE_BETTING	rules.h	/^const uint16_t FEATURE_BETTING = 3;$/;"	m	line:22	namespace:mastercore
 FEATURE_CLASS_C	rules.h	/^const uint16_t FEATURE_CLASS_C = 1;$/;"	m	line:18	namespace:mastercore
 FEATURE_DEXMATH	rules.h	/^const uint16_t FEATURE_DEXMATH = 5;$/;"	m	line:26	namespace:mastercore
@@ -831,7 +831,7 @@ GetLogPath	log.cpp	/^static boost::filesystem::path GetLogPath()$/;"	f	line:96	f
 GetMetaDExHash	consensushash.cpp	/^uint256 GetMetaDExHash(const uint32_t propertyId)$/;"	f	line:283	namespace:mastercore	signature:(const uint32_t propertyId)
 GetMissedIssuerBonus	sp.cpp	/^int64_t mastercore::GetMissedIssuerBonus(const CMPSPInfo::Entry& sp, const CMPCrowd& crowdsale)$/;"	f	line:161	class:mastercore	signature:(const CMPSPInfo::Entry& sp, const CMPCrowd& crowdsale)
 GetNextPropertyId	omnicore.cpp	/^uint32_t mastercore::GetNextPropertyId(bool maineco)$/;"	f	line:590	class:mastercore	signature:(bool maineco)
-GetOmMarker	omnicore.cpp	/^const std::vector<unsigned char> GetOmMarker()$/;"	f	line:2026	signature:()
+GetOmMarker	omnicore.cpp	/^const std::vector<unsigned char> GetOmMarker()$/;"	f	line:2034	signature:()
 GetOmniCoreAlertMessages	notifications.cpp	/^std::vector<std::string> GetOmniCoreAlertMessages()$/;"	f	line:136	namespace:mastercore	signature:()
 GetOmniCoreAlerts	notifications.cpp	/^std::vector<AlertData> GetOmniCoreAlerts()$/;"	f	line:128	namespace:mastercore	signature:()
 GetOutputType	script.cpp	/^bool GetOutputType(const CScript& scriptPubKey, txnouttype& whichTypeRet)$/;"	f	line:41	signature:(const CScript& scriptPubKey, txnouttype& whichTypeRet)
@@ -844,9 +844,9 @@ GetSenderByContribution	test/sender_bycontribution_tests.cpp	/^static bool GetSe
 GetTimestamp	log.cpp	/^static std::string GetTimestamp()$/;"	f	line:134	file:	signature:()
 GetTokenBalance	omnicore.cpp	/^int64_t GetTokenBalance(const std::string& address, uint32_t propertyId, TallyType ttype)$/;"	f	line:271	signature:(const std::string& address, uint32_t propertyId, TallyType ttype)
 GetTransactionByteOffset	walletfetchtxs.cpp	/^static unsigned int GetTransactionByteOffset(const uint256& txid)$/;"	f	line:41	namespace:mastercore	signature:(const uint256& txid)
-HandleDExPayments	omnicore.cpp	/^static bool HandleDExPayments(const CTransaction& tx, int nBlock, const std::string& strSender)$/;"	f	line:1301	file:	signature:(const CTransaction& tx, int nBlock, const std::string& strSender)
-HandleExodusPurchase	omnicore.cpp	/^static bool HandleExodusPurchase(const CTransaction& tx, int nBlock, const std::string& strSender, unsigned int nTime)$/;"	f	line:1331	file:	signature:(const CTransaction& tx, int nBlock, const std::string& strSender, unsigned int nTime)
-HashToAddress	parsing.cpp	/^std::string HashToAddress(unsigned char version, const uint160& hash)$/;"	f	line:85	signature:(unsigned char version, const uint160& hash)
+HandleDExPayments	omnicore.cpp	/^static bool HandleDExPayments(const CTransaction& tx, int nBlock, const std::string& strSender)$/;"	f	line:1309	file:	signature:(const CTransaction& tx, int nBlock, const std::string& strSender)
+HandleExodusPurchase	omnicore.cpp	/^static bool HandleExodusPurchase(const CTransaction& tx, int nBlock, const std::string& strSender, unsigned int nTime)$/;"	f	line:1339	file:	signature:(const CTransaction& tx, int nBlock, const std::string& strSender, unsigned int nTime)
+HashToAddress	parsing.cpp	/^std::string HashToAddress(unsigned char version, const uint160& hash)$/;"	f	line:86	signature:(unsigned char version, const uint160& hash)
 INVALID	tx.h	/^        INVALID = 0,$/;"	e	line:167	enum:CMPTransaction::ActionTypes
 InitDebugLogLevels	log.cpp	/^void InitDebugLogLevels()$/;"	f	line:182	signature:()
 InputsToView	createtx.cpp	/^void InputsToView(const std::vector<PrevTxsEntry>& prevTxs, CCoinsViewCache& view)$/;"	f	line:180	signature:(const std::vector<PrevTxsEntry>& prevTxs, CCoinsViewCache& view)
@@ -967,8 +967,8 @@ MetaDEx_debug_print	mdex.cpp	/^void mastercore::MetaDEx_debug_print(bool bShowPr
 MetaDEx_getStatus	mdex.cpp	/^int mastercore::MetaDEx_getStatus(const uint256& txid, uint32_t propertyIdForSale, int64_t amountForSale, int64_t totalSold)$/;"	f	line:780	class:mastercore	signature:(const uint256& txid, uint32_t propertyIdForSale, int64_t amountForSale, int64_t totalSold)
 MetaDEx_getStatusText	mdex.cpp	/^std::string mastercore::MetaDEx_getStatusText(int tradeStatus)$/;"	f	line:763	class:mastercore	signature:(int tradeStatus)
 MetaDEx_isOpen	mdex.cpp	/^bool mastercore::MetaDEx_isOpen(const uint256& txid, uint32_t propertyIdForSale)$/;"	f	line:743	class:mastercore	signature:(const uint256& txid, uint32_t propertyIdForSale)
-MetaDexObjectToJSON	rpc.cpp	/^void MetaDexObjectToJSON(const CMPMetaDEx& obj, UniValue& metadex_obj)$/;"	f	line:98	signature:(const CMPMetaDEx& obj, UniValue& metadex_obj)
-MetaDexObjectsToJSON	rpc.cpp	/^void MetaDexObjectsToJSON(std::vector<CMPMetaDEx>& vMetaDexObjs, UniValue& response)$/;"	f	line:119	signature:(std::vector<CMPMetaDEx>& vMetaDexObjs, UniValue& response)
+MetaDexObjectToJSON	rpc.cpp	/^void MetaDexObjectToJSON(const CMPMetaDEx& obj, UniValue& metadex_obj)$/;"	f	line:103	signature:(const CMPMetaDEx& obj, UniValue& metadex_obj)
+MetaDexObjectsToJSON	rpc.cpp	/^void MetaDexObjectsToJSON(std::vector<CMPMetaDEx>& vMetaDexObjs, UniValue& response)$/;"	f	line:124	signature:(std::vector<CMPMetaDEx>& vMetaDexObjs, UniValue& response)
 Modulo256	uint256_extensions.h	/^inline arith_uint256 Modulo256(const arith_uint256& a, const arith_uint256& n)$/;"	f	line:27	namespace:mastercore	signature:(const arith_uint256& a, const arith_uint256& n)
 MutableConsensusParams	rules.cpp	/^CConsensusParams& MutableConsensusParams()$/;"	f	line:323	namespace:mastercore	signature:()
 NEW	tx.h	/^        NEW = 1,$/;"	e	line:170	enum:CMPTransaction::ActionTypes
@@ -1104,7 +1104,7 @@ ParsePropertyId	rpcvalues.cpp	/^uint32_t ParsePropertyId(const UniValue& value)$
 ParsePropertyType	rpcvalues.cpp	/^uint16_t ParsePropertyType(const UniValue& value)$/;"	f	line:111	signature:(const UniValue& value)
 ParsePubKeyOrAddress	rpcvalues.cpp	/^CPubKey ParsePubKeyOrAddress(const UniValue& value)$/;"	f	line:192	signature:(const UniValue& value)
 ParseText	rpcvalues.cpp	/^std::string ParseText(const UniValue& value)$/;"	f	line:129	signature:(const UniValue& value)
-ParseTransaction	omnicore.cpp	/^int ParseTransaction(const CTransaction& tx, int nBlock, unsigned int idx, CMPTransaction& mptx, unsigned int nTime)$/;"	f	line:1288	signature:(const CTransaction& tx, int nBlock, unsigned int idx, CMPTransaction& mptx, unsigned int nTime)
+ParseTransaction	omnicore.cpp	/^int ParseTransaction(const CTransaction& tx, int nBlock, unsigned int idx, CMPTransaction& mptx, unsigned int nTime)$/;"	f	line:1296	signature:(const CTransaction& tx, int nBlock, unsigned int idx, CMPTransaction& mptx, unsigned int nTime)
 ParseTransaction	rpcvalues.cpp	/^CTransaction ParseTransaction(const UniValue& value)$/;"	f	line:174	signature:(const UniValue& value)
 PayToBareMultisig_1of2	test/utils_tx.cpp	/^CTxOut PayToBareMultisig_1of2()$/;"	f	line:64	signature:()
 PayToBareMultisig_1of3	test/utils_tx.cpp	/^CTxOut PayToBareMultisig_1of3()$/;"	f	line:88	signature:()
@@ -1120,30 +1120,30 @@ PendingCheck	pending.cpp	/^void PendingCheck()$/;"	f	line:84	namespace:mastercor
 PendingDelete	pending.cpp	/^void PendingDelete(const uint256& txid)$/;"	f	line:61	namespace:mastercore	signature:(const uint256& txid)
 PendingMap	pending.h	/^typedef std::map<uint256, CMPPending> PendingMap;$/;"	t	line:16	namespace:mastercore
 PersistInMemoryState	persistence.cpp	/^int PersistInMemoryState(const CBlockIndex* pBlockIndex)$/;"	f	line:525	signature:(const CBlockIndex* pBlockIndex)
-PopulateFailure	rpc.cpp	/^void PopulateFailure(int error)$/;"	f	line:68	signature:(int error)
-PrepareObfuscatedHashes	parsing.cpp	/^void PrepareObfuscatedHashes(const std::string& strSeed, int hashCount, std::string(&vstrHashes)[1+MAX_SHA256_OBFUSCATION_TIMES])$/;"	f	line:113	signature:(const std::string& strSeed, int hashCount, std::string(&vstrHashes)[1+MAX_SHA256_OBFUSCATION_TIMES])
+PopulateFailure	rpc.cpp	/^void PopulateFailure(int error)$/;"	f	line:73	signature:(int error)
+PrepareObfuscatedHashes	parsing.cpp	/^void PrepareObfuscatedHashes(const std::string& strSeed, int hashCount, std::string(&vstrHashes)[1+MAX_SHA256_OBFUSCATION_TIMES])$/;"	f	line:112	signature:(const std::string& strSeed, int hashCount, std::string(&vstrHashes)[1+MAX_SHA256_OBFUSCATION_TIMES])
 PrevTxsEntry	createtx.cpp	/^PrevTxsEntry::PrevTxsEntry(const uint256& txid, uint32_t nOut, int64_t nValue, const CScript& scriptPubKey)$/;"	f	line:21	class:PrevTxsEntry	signature:(const uint256& txid, uint32_t nOut, int64_t nValue, const CScript& scriptPubKey)
 PrevTxsEntry	createtx.h	/^struct PrevTxsEntry$/;"	s	line:22
 PrevTxsEntry::PrevTxsEntry	createtx.cpp	/^PrevTxsEntry::PrevTxsEntry(const uint256& txid, uint32_t nOut, int64_t nValue, const CScript& scriptPubKey)$/;"	f	line:21	class:PrevTxsEntry	signature:(const uint256& txid, uint32_t nOut, int64_t nValue, const CScript& scriptPubKey)
 PrevTxsEntry::outPoint	createtx.h	/^    COutPoint outPoint;$/;"	m	line:27	struct:PrevTxsEntry	access:public
 PrevTxsEntry::txOut	createtx.h	/^    CTxOut txOut;$/;"	m	line:28	struct:PrevTxsEntry	access:public
 PrintFreezeState	omnicore.cpp	/^void mastercore::PrintFreezeState()$/;"	f	line:345	class:mastercore	signature:()
-ProgressReporter	omnicore.cpp	/^    ProgressReporter(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)$/;"	f	line:1398	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)
-ProgressReporter	omnicore.cpp	/^class ProgressReporter$/;"	c	line:1360	file:
-ProgressReporter::ProgressReporter	omnicore.cpp	/^    ProgressReporter(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)$/;"	f	line:1398	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)
-ProgressReporter::estimateRemainingTime	omnicore.cpp	/^    int64_t estimateRemainingTime(double progress) const$/;"	f	line:1368	class:ProgressReporter	file:	access:private	signature:(double progress) const
-ProgressReporter::m_pblockFirst	omnicore.cpp	/^    const CBlockIndex* m_pblockFirst;$/;"	m	line:1363	class:ProgressReporter	file:	access:private
-ProgressReporter::m_pblockLast	omnicore.cpp	/^    const CBlockIndex* m_pblockLast;$/;"	m	line:1364	class:ProgressReporter	file:	access:private
-ProgressReporter::m_timeStart	omnicore.cpp	/^    const int64_t m_timeStart;$/;"	m	line:1365	class:ProgressReporter	file:	access:private
-ProgressReporter::remainingTimeAsString	omnicore.cpp	/^    std::string remainingTimeAsString(int64_t remainingTime) const$/;"	f	line:1381	class:ProgressReporter	file:	access:private	signature:(int64_t remainingTime) const
-ProgressReporter::update	omnicore.cpp	/^    void update(const CBlockIndex* pblockNow) const$/;"	f	line:1404	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockNow) const
-PropertyToJSON	rpc.cpp	/^void PropertyToJSON(const CMPSPInfo::Entry& sProperty, UniValue& property_obj)$/;"	f	line:88	signature:(const CMPSPInfo::Entry& sProperty, UniValue& property_obj)
+ProgressReporter	omnicore.cpp	/^    ProgressReporter(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)$/;"	f	line:1406	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)
+ProgressReporter	omnicore.cpp	/^class ProgressReporter$/;"	c	line:1368	file:
+ProgressReporter::ProgressReporter	omnicore.cpp	/^    ProgressReporter(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)$/;"	f	line:1406	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockFirst, const CBlockIndex* pblockLast)
+ProgressReporter::estimateRemainingTime	omnicore.cpp	/^    int64_t estimateRemainingTime(double progress) const$/;"	f	line:1376	class:ProgressReporter	file:	access:private	signature:(double progress) const
+ProgressReporter::m_pblockFirst	omnicore.cpp	/^    const CBlockIndex* m_pblockFirst;$/;"	m	line:1371	class:ProgressReporter	file:	access:private
+ProgressReporter::m_pblockLast	omnicore.cpp	/^    const CBlockIndex* m_pblockLast;$/;"	m	line:1372	class:ProgressReporter	file:	access:private
+ProgressReporter::m_timeStart	omnicore.cpp	/^    const int64_t m_timeStart;$/;"	m	line:1373	class:ProgressReporter	file:	access:private
+ProgressReporter::remainingTimeAsString	omnicore.cpp	/^    std::string remainingTimeAsString(int64_t remainingTime) const$/;"	f	line:1389	class:ProgressReporter	file:	access:private	signature:(int64_t remainingTime) const
+ProgressReporter::update	omnicore.cpp	/^    void update(const CBlockIndex* pblockNow) const$/;"	f	line:1412	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockNow) const
+PropertyToJSON	rpc.cpp	/^void PropertyToJSON(const CMPSPInfo::Entry& sProperty, UniValue& property_obj)$/;"	f	line:93	signature:(const CMPSPInfo::Entry& sProperty, UniValue& property_obj)
 PruneCache	dbfees.cpp	/^void COmniFeeCache::PruneCache(const uint32_t &propertyId, int block)$/;"	f	line:244	class:COmniFeeCache	signature:(const uint32_t &propertyId, int block)
 RPC_H	rpc.h	15;"	d	line:15
 RecordFeeDistribution	dbfees.cpp	/^void COmniFeeHistory::RecordFeeDistribution(const uint32_t &propertyId, int block, int64_t total, std::set<feeHistoryItem> feeRecipients)$/;"	f	line:498	class:COmniFeeHistory	signature:(const uint32_t &propertyId, int block, int64_t total, std::set<feeHistoryItem> feeRecipients)
 RecordTransaction	dbtransaction.cpp	/^void COmniTransactionDB::RecordTransaction(const uint256& txid, uint32_t posInBlock, int processingResult)$/;"	f	line:61	class:COmniTransactionDB	signature:(const uint256& txid, uint32_t posInBlock, int processingResult)
 RegTest	utilsbitcoin.cpp	/^bool RegTest()$/;"	f	line:63	namespace:mastercore	signature:()
-RegisterOmniDataRetrievalRPCCommands	rpc.cpp	/^void RegisterOmniDataRetrievalRPCCommands(CRPCTable &tableRPC)$/;"	f	line:2493	signature:(CRPCTable &tableRPC)
+RegisterOmniDataRetrievalRPCCommands	rpc.cpp	/^void RegisterOmniDataRetrievalRPCCommands(CRPCTable &tableRPC)$/;"	f	line:2533	signature:(CRPCTable &tableRPC)
 RegisterOmniPayloadCreationRPCCommands	rpcpayload.cpp	/^void RegisterOmniPayloadCreationRPCCommands(CRPCTable &tableRPC)$/;"	f	line:706	signature:(CRPCTable &tableRPC)
 RegisterOmniRawTransactionRPCCommands	rpcrawtx.cpp	/^void RegisterOmniRawTransactionRPCCommands(CRPCTable &tableRPC)$/;"	f	line:329	signature:(CRPCTable &tableRPC)
 RegisterOmniTransactionCreationRPCCommands	rpctx.cpp	/^void RegisterOmniTransactionCreationRPCCommands(CRPCTable &tableRPC)$/;"	f	line:1574	signature:(CRPCTable &tableRPC)
@@ -1165,7 +1165,7 @@ RequireSaneReferenceAmount	rpcrequirements.cpp	/^void RequireSaneReferenceAmount
 RequireTokenIssuer	rpcrequirements.cpp	/^void RequireTokenIssuer(const std::string& address, uint32_t propertyId)$/;"	f	line:98	signature:(const std::string& address, uint32_t propertyId)
 ResetConsensusParams	rules.cpp	/^void ResetConsensusParams()$/;"	f	line:333	namespace:mastercore	signature:()
 RestoreInMemoryState	persistence.cpp	/^int RestoreInMemoryState(const std::string& filename, int what, bool verifyHash)$/;"	f	line:546	signature:(const std::string& filename, int what, bool verifyHash)
-RewindDBsAndState	omnicore.cpp	/^void RewindDBsAndState(int nHeight, int nBlockPrev = 0, bool fInitialParse = false)$/;"	f	line:1543	signature:(int nHeight, int nBlockPrev = 0, bool fInitialParse = false)
+RewindDBsAndState	omnicore.cpp	/^void RewindDBsAndState(int nHeight, int nBlockPrev = 0, bool fInitialParse = false)$/;"	f	line:1551	signature:(int nHeight, int nBlockPrev = 0, bool fInitialParse = false)
 RollBackCache	dbfees.cpp	/^void COmniFeeCache::RollBackCache(int block)$/;"	f	line:164	class:COmniFeeCache	signature:(int block)
 RollBackHistory	dbfees.cpp	/^void COmniFeeHistory::RollBackHistory(int block)$/;"	f	line:384	class:COmniFeeHistory	signature:(int block)
 SCRIPTHASH_BLOCK	rules.h	/^    int SCRIPTHASH_BLOCK;$/;"	m	line:97	class:mastercore::CConsensusParams	access:public
@@ -1191,9 +1191,9 @@ ShouldConsensusHashBlock	consensushash.cpp	/^bool ShouldConsensusHashBlock(int b
 ShrinkDebugLog	log.cpp	/^void ShrinkDebugLog()$/;"	f	line:267	signature:()
 SkipBlock	seedblocks.cpp	/^bool SkipBlock(int nBlock)$/;"	f	line:5519	signature:(int nBlock)
 StrToInt64	parse_string.cpp	/^int64_t StrToInt64(const std::string& str, bool divisible)$/;"	f	line:12	namespace:mastercore	signature:(const std::string& str, bool divisible)
-SwapByteOrder16	parsing.cpp	/^void SwapByteOrder16(uint16_t& us)$/;"	f	line:44	signature:(uint16_t& us)
-SwapByteOrder32	parsing.cpp	/^void SwapByteOrder32(uint32_t& ui)$/;"	f	line:55	signature:(uint32_t& ui)
-SwapByteOrder64	parsing.cpp	/^void SwapByteOrder64(uint64_t& ull)$/;"	f	line:68	signature:(uint64_t& ull)
+SwapByteOrder16	parsing.cpp	/^void SwapByteOrder16(uint16_t& us)$/;"	f	line:45	signature:(uint16_t& us)
+SwapByteOrder32	parsing.cpp	/^void SwapByteOrder32(uint32_t& ui)$/;"	f	line:56	signature:(uint32_t& ui)
+SwapByteOrder64	parsing.cpp	/^void SwapByteOrder64(uint64_t& ull)$/;"	f	line:69	signature:(uint64_t& ull)
 TALLY_TYPE_COUNT	tally.h	/^    TALLY_TYPE_COUNT$/;"	e	line:14	enum:TallyType
 TEST_ECO_PROPERTY_1	omnicore.h	31;"	d	line:31
 TRADEALLPAIRS_FEATURE_BLOCK	rules.h	/^    int TRADEALLPAIRS_FEATURE_BLOCK;$/;"	m	line:131	class:mastercore::CConsensusParams	access:public
@@ -1236,7 +1236,7 @@ UPDATE	tx.h	/^        UPDATE = 2,$/;"	e	line:171	enum:CMPTransaction::ActionType
 UnitTest	utilsbitcoin.cpp	/^bool UnitTest()$/;"	f	line:68	namespace:mastercore	signature:()
 UnlockCoins	wallettxbuilder.cpp	/^static void UnlockCoins($/;"	f	line:163	file:	signature:( CWallet* pwallet, const std::vector<COutPoint>& vToUnlock)
 UpdateDistributionThresholds	dbfees.cpp	/^void COmniFeeCache::UpdateDistributionThresholds(uint32_t propertyId)$/;"	f	line:55	class:COmniFeeCache	signature:(uint32_t propertyId)
-UseEncodingClassC	omnicore.cpp	/^bool mastercore::UseEncodingClassC(size_t nDataSize)$/;"	f	line:1859	class:mastercore	signature:(size_t nDataSize)
+UseEncodingClassC	omnicore.cpp	/^bool mastercore::UseEncodingClassC(size_t nDataSize)$/;"	f	line:1867	class:mastercore	signature:(size_t nDataSize)
 VerifyCheckpoint	rules.cpp	/^bool VerifyCheckpoint(int block, const uint256& blockHash)$/;"	f	line:642	namespace:mastercore	signature:(int block, const uint256& blockHash)
 WalletCacheUpdate	walletcache.cpp	/^int WalletCacheUpdate()$/;"	f	line:41	namespace:mastercore	signature:()
 WalletTxBuilder	wallettxbuilder.cpp	/^int WalletTxBuilder($/;"	f	line:41	signature:( const std::string& senderAddress, const std::string& receiverAddress, const std::string& redemptionAddress, int64_t referenceAmount, const std::vector<unsigned char>& payload, uint256& retTxid, std::string& retRawTx, bool commit)
@@ -1293,9 +1293,9 @@ category	dbspinfo.h	/^        std::string category;$/;"	m	line:54	struct:CMPSPIn
 category	tx.h	/^    char category[SP_STRING_FIELD_LEN];$/;"	m	line:67	class:CMPTransaction	access:private
 check_mb	rpcmbstring.cpp	/^bool check_mb(const char* s, size_t n)$/;"	f	line:59	namespace:mastercore::mbstring	signature:(const char* s, size_t n)
 check_mb	test/mbstring_tests.cpp	/^bool check_mb(const std::string& s)$/;"	f	line:18	namespace:mastercore::mbstring	signature:(const std::string& s)
-clear_all_state	omnicore.cpp	/^void clear_all_state()$/;"	f	line:1515	signature:()
+clear_all_state	omnicore.cpp	/^void clear_all_state()$/;"	f	line:1523	signature:()
 close_early	dbspinfo.h	/^        bool close_early;$/;"	m	line:68	struct:CMPSPInfo::Entry	access:public
-commands	rpc.cpp	/^static const CRPCCommand commands[] =$/;"	v	line:2432	file:
+commands	rpc.cpp	/^static const CRPCCommand commands[] =$/;"	v	line:2472	file:
 commands	rpcpayload.cpp	/^static const CRPCCommand commands[] =$/;"	v	line:681	file:
 commands	rpcrawtx.cpp	/^static const CRPCCommand commands[] =$/;"	v	line:317	file:
 commands	rpctx.cpp	/^static const CRPCCommand commands[] =$/;"	v	line:1535	file:
@@ -1309,7 +1309,7 @@ createTxOut	test/sender_bycontribution_tests.cpp	/^static CTxOut createTxOut(int
 createTxOut	test/sender_firstin_tests.cpp	/^static CTxOut createTxOut(int64_t amount, const std::string& dest)$/;"	f	line:72	file:	signature:(int64_t amount, const std::string& dest)
 creation_block	dbspinfo.h	/^        uint256 creation_block;$/;"	m	line:76	struct:CMPSPInfo::Entry	access:public
 cs_number	test/lock_tests.cpp	/^    CCriticalSection cs_number;$/;"	m	line:17	namespace:locker	file:
-cs_pending	pending.cpp	/^CCriticalSection cs_pending;$/;"	m	line:21	namespace:mastercore	file:
+cs_pending	pending.cpp	/^CCriticalSection cs_pending;$/;"	m	line:20	namespace:mastercore	file:
 cs_tx_cache	omnicore.cpp	/^CCriticalSection mastercore::cs_tx_cache;$/;"	m	line:800	class:mastercore	file:
 currentOmniAlerts	notifications.cpp	/^std::vector<AlertData> currentOmniAlerts;$/;"	m	line:23	namespace:mastercore	file:
 data	dbspinfo.h	/^        std::string data;$/;"	m	line:58	struct:CMPSPInfo::Entry	access:public
@@ -1338,7 +1338,7 @@ eraseExpiredAccepts	dex.cpp	/^unsigned int eraseExpiredAccepts(int blockNow)$/;"
 eraseExpiredCrowdsale	sp.cpp	/^unsigned int mastercore::eraseExpiredCrowdsale(const CBlockIndex* pBlockIndex)$/;"	f	line:368	class:mastercore	signature:(const CBlockIndex* pBlockIndex)
 eraseMaxedCrowdsale	sp.cpp	/^void mastercore::eraseMaxedCrowdsale(const std::string& address, int64_t blockTime, int block)$/;"	f	line:334	class:mastercore	signature:(const std::string& address, int64_t blockTime, int block)
 error_str	errors.h	/^inline std::string error_str(int ec) {$/;"	f	line:37	signature:(int ec)
-estimateRemainingTime	omnicore.cpp	/^    int64_t estimateRemainingTime(double progress) const$/;"	f	line:1368	class:ProgressReporter	file:	access:private	signature:(double progress) const
+estimateRemainingTime	omnicore.cpp	/^    int64_t estimateRemainingTime(double progress) const$/;"	f	line:1376	class:ProgressReporter	file:	access:private	signature:(double progress) const
 exists	dbstolist.cpp	/^bool CMPSTOList::exists(std::string address)$/;"	f	line:212	class:CMPSTOList	signature:(std::string address)
 exists	dbtxlist.cpp	/^bool CMPTxList::exists(const uint256 &txid)$/;"	f	line:373	class:CMPTxList	signature:(const uint256 &txid)
 exodusBonusPerWeek	rules.h	/^    double exodusBonusPerWeek;$/;"	m	line:76	class:mastercore::CConsensusParams	access:public
@@ -1450,7 +1450,7 @@ getTypeString	tx.h	/^    std::string getTypeString() const { return strTransacti
 getUserCreated	sp.h	/^    int64_t getUserCreated() const { return u_created; }$/;"	f	line:58	class:CMPCrowd	access:public	signature:() const
 getValidMPTX	dbtxlist.cpp	/^bool CMPTxList::getValidMPTX(const uint256& txid, int* block, unsigned int* type, uint64_t* nAmended)$/;"	f	line:406	class:CMPTxList	signature:(const uint256& txid, int* block, unsigned int* type, uint64_t* nAmended)
 getVersion	tx.h	/^    unsigned short getVersion() const { return version; }$/;"	f	line:185	class:CMPTransaction	access:public	signature:() const
-getWalletAddresses	rpc.cpp	/^static std::set<std::string> getWalletAddresses(bool fIncludeWatchOnly)$/;"	f	line:896	file:	signature:(bool fIncludeWatchOnly)
+getWalletAddresses	rpc.cpp	/^static std::set<std::string> getWalletAddresses(bool fIncludeWatchOnly)$/;"	f	line:913	file:	signature:(bool fIncludeWatchOnly)
 getWatermark	dbspinfo.cpp	/^bool CMPSPInfo::getWatermark(uint256& watermark) const$/;"	f	line:406	class:CMPSPInfo	signature:(uint256& watermark) const
 get_Indexes	mdex.cpp	/^md_Set* mastercore::get_Indexes(md_PricesMap* p, rational_t price)$/;"	f	line:57	class:mastercore	signature:(md_PricesMap* p, rational_t price)
 get_Prices	mdex.cpp	/^md_PricesMap* mastercore::get_Prices(uint32_t prop)$/;"	f	line:48	class:mastercore	signature:(uint32_t prop)
@@ -1507,7 +1507,7 @@ interpret_TransactionType	tx.cpp	/^bool CMPTransaction::interpret_TransactionTyp
 interpret_UnfreezeTokens	tx.cpp	/^bool CMPTransaction::interpret_UnfreezeTokens()$/;"	f	line:744	class:CMPTransaction	signature:()
 inversePrice	mdex.cpp	/^rational_t CMPMetaDEx::inversePrice() const$/;"	f	line:398	class:CMPMetaDEx	signature:() const
 isAddressFrozen	omnicore.cpp	/^bool mastercore::isAddressFrozen(const std::string& address, uint32_t propertyId)$/;"	f	line:417	class:mastercore	signature:(const std::string& address, uint32_t propertyId)
-isBigEndian	parsing.cpp	/^static bool isBigEndian()$/;"	f	line:30	file:	signature:()
+isBigEndian	parsing.cpp	/^static bool isBigEndian()$/;"	f	line:31	file:	signature:()
 isCrowdsaleActive	sp.cpp	/^bool mastercore::isCrowdsaleActive(uint32_t propertyId)$/;"	f	line:140	class:mastercore	signature:(uint32_t propertyId)
 isCrowdsalePurchase	sp.cpp	/^bool mastercore::isCrowdsalePurchase(const uint256& txid, const std::string& address, int64_t* propertyId, int64_t* userTokens, int64_t* issuerTokens)$/;"	f	line:291	class:mastercore	signature:(const uint256& txid, const std::string& address, int64_t* propertyId, int64_t* userTokens, int64_t* issuerTokens)
 isDivisible	dbspinfo.cpp	/^bool CMPSPInfo::Entry::isDivisible() const$/;"	f	line:31	class:CMPSPInfo::Entry	signature:() const
@@ -1551,9 +1551,9 @@ logicMath_SendToOwners	tx.cpp	/^int CMPTransaction::logicMath_SendToOwners()$/;"
 logicMath_SimpleSend	tx.cpp	/^int CMPTransaction::logicMath_SimpleSend()$/;"	f	line:1030	class:CMPTransaction	signature:()
 logicMath_TradeOffer	tx.cpp	/^int CMPTransaction::logicMath_TradeOffer()$/;"	f	line:1261	class:CMPTransaction	signature:()
 logicMath_UnfreezeTokens	tx.cpp	/^int CMPTransaction::logicMath_UnfreezeTokens()$/;"	f	line:2279	class:CMPTransaction	signature:()
-m_pblockFirst	omnicore.cpp	/^    const CBlockIndex* m_pblockFirst;$/;"	m	line:1363	class:ProgressReporter	file:	access:private
-m_pblockLast	omnicore.cpp	/^    const CBlockIndex* m_pblockLast;$/;"	m	line:1364	class:ProgressReporter	file:	access:private
-m_timeStart	omnicore.cpp	/^    const int64_t m_timeStart;$/;"	m	line:1365	class:ProgressReporter	file:	access:private
+m_pblockFirst	omnicore.cpp	/^    const CBlockIndex* m_pblockFirst;$/;"	m	line:1371	class:ProgressReporter	file:	access:private
+m_pblockLast	omnicore.cpp	/^    const CBlockIndex* m_pblockLast;$/;"	m	line:1372	class:ProgressReporter	file:	access:private
+m_timeStart	omnicore.cpp	/^    const int64_t m_timeStart;$/;"	m	line:1373	class:ProgressReporter	file:	access:private
 mainConsensusParams	rules.cpp	/^static CMainConsensusParams mainConsensusParams;$/;"	m	line:286	namespace:mastercore	file:
 manual	dbspinfo.h	/^        bool manual;$/;"	m	line:79	struct:CMPSPInfo::Entry	access:public
 mastercore	activation.cpp	/^namespace mastercore$/;"	n	line:24	file:
@@ -1575,7 +1575,7 @@ mastercore	notifications.h	/^namespace mastercore$/;"	n	line:14
 mastercore	omnicore.h	/^namespace mastercore$/;"	n	line:167
 mastercore	parse_string.cpp	/^namespace mastercore$/;"	n	line:10	file:
 mastercore	parse_string.h	/^namespace mastercore$/;"	n	line:7
-mastercore	pending.cpp	/^namespace mastercore$/;"	n	line:18	file:
+mastercore	pending.cpp	/^namespace mastercore$/;"	n	line:17	file:
 mastercore	pending.h	/^namespace mastercore$/;"	n	line:13
 mastercore	rpcmbstring.cpp	/^namespace mastercore$/;"	n	line:13	file:
 mastercore	rpcmbstring.h	/^namespace mastercore$/;"	n	line:7
@@ -1775,14 +1775,14 @@ mastercore::TransactionRestriction::allowWildcard	rules.h	/^    bool allowWildca
 mastercore::TransactionRestriction::txType	rules.h	/^    uint16_t txType;$/;"	m	line:48	struct:mastercore::TransactionRestriction	access:public
 mastercore::TransactionRestriction::txVersion	rules.h	/^    uint16_t txVersion;$/;"	m	line:50	struct:mastercore::TransactionRestriction	access:public
 mastercore::UnitTest	utilsbitcoin.cpp	/^bool UnitTest()$/;"	f	line:68	namespace:mastercore	signature:()
-mastercore::UseEncodingClassC	omnicore.cpp	/^bool mastercore::UseEncodingClassC(size_t nDataSize)$/;"	f	line:1859	class:mastercore	signature:(size_t nDataSize)
+mastercore::UseEncodingClassC	omnicore.cpp	/^bool mastercore::UseEncodingClassC(size_t nDataSize)$/;"	f	line:1867	class:mastercore	signature:(size_t nDataSize)
 mastercore::VerifyCheckpoint	rules.cpp	/^bool VerifyCheckpoint(int block, const uint256& blockHash)$/;"	f	line:642	namespace:mastercore	signature:(int block, const uint256& blockHash)
 mastercore::WalletCacheUpdate	walletcache.cpp	/^int WalletCacheUpdate()$/;"	f	line:41	namespace:mastercore	signature:()
 mastercore::_my_sps	omnicore.cpp	/^CMPSPInfo* mastercore::_my_sps;$/;"	m	line:133	class:mastercore	file:
 mastercore::calculateDExPurchase	dex.cpp	/^int64_t calculateDExPurchase(const int64_t amountOffered, const int64_t amountDesired, const int64_t amountPaid)$/;"	f	line:424	namespace:mastercore	signature:(const int64_t amountOffered, const int64_t amountDesired, const int64_t amountPaid)
 mastercore::calculateDesiredBTC	dex.cpp	/^int64_t calculateDesiredBTC(const int64_t amountOffered, const int64_t amountDesired, const int64_t amountAvailable)$/;"	f	line:121	namespace:mastercore	signature:(const int64_t amountOffered, const int64_t amountDesired, const int64_t amountAvailable)
 mastercore::calculateFundraiser	sp.cpp	/^void mastercore::calculateFundraiser(bool inflateAmount, int64_t amtTransfer, uint8_t bonusPerc,$/;"	f	line:201	class:mastercore	signature:(bool inflateAmount, int64_t amtTransfer, uint8_t bonusPerc, int64_t fundraiserSecs, int64_t currentSecs, int64_t numProps, uint8_t issuerPerc, int64_t totalTokens, std::pair<int64_t, int64_t>& tokens, bool& close_crowdsale)
-mastercore::cs_pending	pending.cpp	/^CCriticalSection cs_pending;$/;"	m	line:21	namespace:mastercore	file:
+mastercore::cs_pending	pending.cpp	/^CCriticalSection cs_pending;$/;"	m	line:20	namespace:mastercore	file:
 mastercore::cs_tx_cache	omnicore.cpp	/^CCriticalSection mastercore::cs_tx_cache;$/;"	m	line:800	class:mastercore	file:
 mastercore::currentOmniAlerts	notifications.cpp	/^std::vector<AlertData> currentOmniAlerts;$/;"	m	line:23	namespace:mastercore	file:
 mastercore::disableFreezing	omnicore.cpp	/^void mastercore::disableFreezing(uint32_t propertyId)$/;"	f	line:364	class:mastercore	signature:(uint32_t propertyId)
@@ -1826,7 +1826,7 @@ mastercore::mp_tally_map	omnicore.cpp	/^std::unordered_map<std::string, CMPTally
 mastercore::my_accepts	omnicore.cpp	/^AcceptMap mastercore::my_accepts;$/;"	m	line:150	class:mastercore	file:
 mastercore::my_crowds	omnicore.cpp	/^CrowdMap mastercore::my_crowds;$/;"	m	line:152	class:mastercore	file:
 mastercore::my_offers	omnicore.cpp	/^OfferMap mastercore::my_offers;$/;"	m	line:148	class:mastercore	file:
-mastercore::my_pending	pending.cpp	/^PendingMap my_pending;$/;"	m	line:24	namespace:mastercore	file:
+mastercore::my_pending	pending.cpp	/^PendingMap my_pending;$/;"	m	line:23	namespace:mastercore	file:
 mastercore::p_OmniTXDB	omnicore.cpp	/^COmniTransactionDB* mastercore::p_OmniTXDB;$/;"	m	line:141	class:mastercore	file:
 mastercore::p_feecache	omnicore.cpp	/^COmniFeeCache* mastercore::p_feecache;$/;"	m	line:143	class:mastercore	file:
 mastercore::p_feehistory	omnicore.cpp	/^COmniFeeHistory* mastercore::p_feehistory;$/;"	m	line:145	class:mastercore	file:
@@ -1849,13 +1849,13 @@ mastercore::viewDummy	omnicore.cpp	/^CCoinsView mastercore::viewDummy;$/;"	m	lin
 mastercore::viewDummy	omnicore.cpp	/^CCoinsViewCache mastercore::view(&viewDummy);$/;"	m	line:797	class:mastercore	file:
 mastercore::walletBalancesCache	walletcache.cpp	/^static std::map<std::string, CMPTally> walletBalancesCache;$/;"	m	line:34	namespace:mastercore	file:
 mastercoreInitialized	omnicore.cpp	/^static int mastercoreInitialized = 0;$/;"	v	line:125	file:
-mastercore_handler_block_begin	omnicore.cpp	/^int mastercore_handler_block_begin(int nBlockPrev, CBlockIndex * pBlockIndex)$/;"	f	line:1870	signature:(int nBlockPrev, CBlockIndex * pBlockIndex)
-mastercore_handler_block_end	omnicore.cpp	/^int mastercore_handler_block_end(int nBlockNow, CBlockIndex * pBlockIndex,$/;"	f	line:1890	signature:(int nBlockNow, CBlockIndex * pBlockIndex, unsigned int countMP)
-mastercore_handler_disc_begin	omnicore.cpp	/^int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex)$/;"	f	line:1959	signature:(int nBlockNow, CBlockIndex const * pBlockIndex)
-mastercore_handler_disc_end	omnicore.cpp	/^int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex)$/;"	f	line:1968	signature:(int nBlockNow, CBlockIndex const * pBlockIndex)
-mastercore_handler_tx	omnicore.cpp	/^bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx, const CBlockIndex* pBlockIndex)$/;"	f	line:1789	signature:(const CTransaction& tx, int nBlock, unsigned int idx, const CBlockIndex* pBlockIndex)
-mastercore_init	omnicore.cpp	/^int mastercore_init()$/;"	f	line:1587	signature:()
-mastercore_shutdown	omnicore.cpp	/^int mastercore_shutdown()$/;"	f	line:1741	signature:()
+mastercore_handler_block_begin	omnicore.cpp	/^int mastercore_handler_block_begin(int nBlockPrev, CBlockIndex * pBlockIndex)$/;"	f	line:1878	signature:(int nBlockPrev, CBlockIndex * pBlockIndex)
+mastercore_handler_block_end	omnicore.cpp	/^int mastercore_handler_block_end(int nBlockNow, CBlockIndex * pBlockIndex,$/;"	f	line:1898	signature:(int nBlockNow, CBlockIndex * pBlockIndex, unsigned int countMP)
+mastercore_handler_disc_begin	omnicore.cpp	/^int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex)$/;"	f	line:1967	signature:(int nBlockNow, CBlockIndex const * pBlockIndex)
+mastercore_handler_disc_end	omnicore.cpp	/^int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex)$/;"	f	line:1976	signature:(int nBlockNow, CBlockIndex const * pBlockIndex)
+mastercore_handler_tx	omnicore.cpp	/^bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx, const CBlockIndex* pBlockIndex)$/;"	f	line:1797	signature:(const CTransaction& tx, int nBlock, unsigned int idx, const CBlockIndex* pBlockIndex)
+mastercore_init	omnicore.cpp	/^int mastercore_init()$/;"	f	line:1595	signature:()
+mastercore_shutdown	omnicore.cpp	/^int mastercore_shutdown()$/;"	f	line:1749	signature:()
 max_tokens	dbspinfo.h	/^        bool max_tokens;$/;"	m	line:69	struct:CMPSPInfo::Entry	access:public
 mbstring	rpcmbstring.cpp	/^namespace mbstring$/;"	n	line:15	namespace:mastercore	file:
 mbstring	test/mbstring_tests.cpp	/^namespace mbstring {$/;"	n	line:11	namespace:mastercore	file:
@@ -1905,14 +1905,14 @@ msc_debug_verbose2	log.cpp	/^bool msc_debug_verbose2           = 0;$/;"	v	line:3
 msc_debug_verbose3	log.cpp	/^bool msc_debug_verbose3           = 0;$/;"	v	line:34
 msc_debug_vin	log.cpp	/^bool msc_debug_vin                = 0;$/;"	v	line:35
 msc_debug_walletcache	log.cpp	/^bool msc_debug_walletcache        = 0;$/;"	v	line:59
-msc_initial_scan	omnicore.cpp	/^static int msc_initial_scan(int nFirstBlock)$/;"	f	line:1446	file:	signature:(int nFirstBlock)
-mscrpc	rpc.cpp	/^UniValue mscrpc(const UniValue& params, bool fHelp)$/;"	f	line:580	signature:(const UniValue& params, bool fHelp)
+msc_initial_scan	omnicore.cpp	/^static int msc_initial_scan(int nFirstBlock)$/;"	f	line:1454	file:	signature:(int nFirstBlock)
+mscrpc	rpc.cpp	/^UniValue mscrpc(const JSONRPCRequest& request)$/;"	f	line:593	signature:(const JSONRPCRequest& request)
 mutexDebugLog	log.cpp	/^static boost::mutex* mutexDebugLog = NULL;$/;"	v	line:87	file:
 my_accepts	omnicore.cpp	/^AcceptMap mastercore::my_accepts;$/;"	m	line:150	class:mastercore	file:
 my_crowds	omnicore.cpp	/^CrowdMap mastercore::my_crowds;$/;"	m	line:152	class:mastercore	file:
 my_it	tally.h	/^    TokenMap::iterator my_it;$/;"	m	line:31	class:CMPTally	access:private
 my_offers	omnicore.cpp	/^OfferMap mastercore::my_offers;$/;"	m	line:148	class:mastercore	file:
-my_pending	pending.cpp	/^PendingMap my_pending;$/;"	m	line:24	namespace:mastercore	file:
+my_pending	pending.cpp	/^PendingMap my_pending;$/;"	m	line:23	namespace:mastercore	file:
 n	test/lock_tests.cpp	/^    int n = 0;$/;"	m	line:12	namespace:number	file:
 nAllRounds	test/sender_bycontribution_tests.cpp	/^static const unsigned nAllRounds = 2;$/;"	v	line:38	file:
 nCacheHits	omnicore.cpp	/^static unsigned int nCacheHits = 0;$/;"	v	line:802	file:
@@ -1965,38 +1965,38 @@ omni_createrawtx_reference	rpcrawtx.cpp	/^UniValue omni_createrawtx_reference(co
 omni_decodetransaction	rpcrawtx.cpp	/^UniValue omni_decodetransaction(const UniValue& params, bool fHelp)$/;"	f	line:30	signature:(const UniValue& params, bool fHelp)
 omni_funded_send	rpctx.cpp	/^UniValue omni_funded_send(const UniValue& params, bool fHelp)$/;"	f	line:38	signature:(const UniValue& params, bool fHelp)
 omni_funded_sendall	rpctx.cpp	/^UniValue omni_funded_sendall(const UniValue& params, bool fHelp)$/;"	f	line:87	signature:(const UniValue& params, bool fHelp)
-omni_getactivations	rpc.cpp	/^UniValue omni_getactivations(const UniValue& params, bool fHelp)$/;"	f	line:2143	signature:(const UniValue& params, bool fHelp)
-omni_getactivecrowdsales	rpc.cpp	/^UniValue omni_getactivecrowdsales(const UniValue& params, bool fHelp)$/;"	f	line:1371	signature:(const UniValue& params, bool fHelp)
-omni_getactivedexsells	rpc.cpp	/^UniValue omni_getactivedexsells(const UniValue& params, bool fHelp)$/;"	f	line:1721	signature:(const UniValue& params, bool fHelp)
-omni_getallbalancesforaddress	rpc.cpp	/^UniValue omni_getallbalancesforaddress(const UniValue& params, bool fHelp)$/;"	f	line:836	signature:(const UniValue& params, bool fHelp)
-omni_getallbalancesforid	rpc.cpp	/^UniValue omni_getallbalancesforid(const UniValue& params, bool fHelp)$/;"	f	line:778	signature:(const UniValue& params, bool fHelp)
-omni_getbalance	rpc.cpp	/^UniValue omni_getbalance(const UniValue& params, bool fHelp)$/;"	f	line:747	signature:(const UniValue& params, bool fHelp)
-omni_getbalanceshash	rpc.cpp	/^UniValue omni_getbalanceshash(const UniValue& params, bool fHelp)$/;"	f	line:2391	signature:(const UniValue& params, bool fHelp)
-omni_getcrowdsale	rpc.cpp	/^UniValue omni_getcrowdsale(const UniValue& params, bool fHelp)$/;"	f	line:1223	signature:(const UniValue& params, bool fHelp)
-omni_getcurrentconsensushash	rpc.cpp	/^UniValue omni_getcurrentconsensushash(const UniValue& params, bool fHelp)$/;"	f	line:2312	signature:(const UniValue& params, bool fHelp)
-omni_getfeecache	rpc.cpp	/^UniValue omni_getfeecache(const UniValue& params, bool fHelp)$/;"	f	line:417	signature:(const UniValue& params, bool fHelp)
-omni_getfeedistribution	rpc.cpp	/^UniValue omni_getfeedistribution(const UniValue& params, bool fHelp)$/;"	f	line:155	signature:(const UniValue& params, bool fHelp)
-omni_getfeedistributions	rpc.cpp	/^UniValue omni_getfeedistributions(const UniValue& params, bool fHelp)$/;"	f	line:221	signature:(const UniValue& params, bool fHelp)
-omni_getfeeshare	rpc.cpp	/^UniValue omni_getfeeshare(const UniValue& params, bool fHelp)$/;"	f	line:346	signature:(const UniValue& params, bool fHelp)
-omni_getfeetrigger	rpc.cpp	/^UniValue omni_getfeetrigger(const UniValue& params, bool fHelp)$/;"	f	line:296	signature:(const UniValue& params, bool fHelp)
-omni_getgrants	rpc.cpp	/^UniValue omni_getgrants(const UniValue& params, bool fHelp)$/;"	f	line:1439	signature:(const UniValue& params, bool fHelp)
-omni_getinfo	rpc.cpp	/^UniValue omni_getinfo(const UniValue& params, bool fHelp)$/;"	f	line:2059	signature:(const UniValue& params, bool fHelp)
-omni_getmetadexhash	rpc.cpp	/^UniValue omni_getmetadexhash(const UniValue& params, bool fHelp)$/;"	f	line:2347	signature:(const UniValue& params, bool fHelp)
-omni_getorderbook	rpc.cpp	/^UniValue omni_getorderbook(const UniValue& params, bool fHelp)$/;"	f	line:1521	signature:(const UniValue& params, bool fHelp)
-omni_getpayload	rpc.cpp	/^UniValue omni_getpayload(const UniValue& params, bool fHelp)$/;"	f	line:511	signature:(const UniValue& params, bool fHelp)
-omni_getproperty	rpc.cpp	/^UniValue omni_getproperty(const UniValue& params, bool fHelp)$/;"	f	line:1108	signature:(const UniValue& params, bool fHelp)
-omni_getseedblocks	rpc.cpp	/^UniValue omni_getseedblocks(const UniValue& params, bool fHelp)$/;"	f	line:471	signature:(const UniValue& params, bool fHelp)
-omni_getsto	rpc.cpp	/^UniValue omni_getsto(const UniValue& params, bool fHelp)$/;"	f	line:2207	signature:(const UniValue& params, bool fHelp)
-omni_gettrade	rpc.cpp	/^UniValue omni_gettrade(const UniValue& params, bool fHelp)$/;"	f	line:2256	signature:(const UniValue& params, bool fHelp)
-omni_gettradehistoryforaddress	rpc.cpp	/^UniValue omni_gettradehistoryforaddress(const UniValue& params, bool fHelp)$/;"	f	line:1590	signature:(const UniValue& params, bool fHelp)
-omni_gettradehistoryforpair	rpc.cpp	/^UniValue omni_gettradehistoryforpair(const UniValue& params, bool fHelp)$/;"	f	line:1674	signature:(const UniValue& params, bool fHelp)
-omni_gettransaction	rpc.cpp	/^UniValue omni_gettransaction(const UniValue& params, bool fHelp)$/;"	f	line:1896	signature:(const UniValue& params, bool fHelp)
-omni_getwalletaddressbalances	rpc.cpp	/^UniValue omni_getwalletaddressbalances(const UniValue& params, bool fHelp)$/;"	f	line:1023	signature:(const UniValue& params, bool fHelp)
-omni_getwalletbalances	rpc.cpp	/^UniValue omni_getwalletbalances(const UniValue& params, bool fHelp)$/;"	f	line:916	signature:(const UniValue& params, bool fHelp)
-omni_listblocktransactions	rpc.cpp	/^UniValue omni_listblocktransactions(const UniValue& params, bool fHelp)$/;"	f	line:1844	signature:(const UniValue& params, bool fHelp)
-omni_listpendingtransactions	rpc.cpp	/^UniValue omni_listpendingtransactions(const UniValue& params, bool fHelp)$/;"	f	line:2008	signature:(const UniValue& params, bool fHelp)
-omni_listproperties	rpc.cpp	/^UniValue omni_listproperties(const UniValue& params, bool fHelp)$/;"	f	line:1168	signature:(const UniValue& params, bool fHelp)
-omni_listtransactions	rpc.cpp	/^UniValue omni_listtransactions(const UniValue& params, bool fHelp)$/;"	f	line:1934	signature:(const UniValue& params, bool fHelp)
+omni_getactivations	rpc.cpp	/^UniValue omni_getactivations(const JSONRPCRequest& request)$/;"	f	line:2177	signature:(const JSONRPCRequest& request)
+omni_getactivecrowdsales	rpc.cpp	/^UniValue omni_getactivecrowdsales(const JSONRPCRequest& request)$/;"	f	line:1394	signature:(const JSONRPCRequest& request)
+omni_getactivedexsells	rpc.cpp	/^UniValue omni_getactivedexsells(const JSONRPCRequest& request)$/;"	f	line:1749	signature:(const JSONRPCRequest& request)
+omni_getallbalancesforaddress	rpc.cpp	/^UniValue omni_getallbalancesforaddress(const JSONRPCRequest& request)$/;"	f	line:852	signature:(const JSONRPCRequest& request)
+omni_getallbalancesforid	rpc.cpp	/^UniValue omni_getallbalancesforid(const JSONRPCRequest& request)$/;"	f	line:793	signature:(const JSONRPCRequest& request)
+omni_getbalance	rpc.cpp	/^UniValue omni_getbalance(const JSONRPCRequest& request)$/;"	f	line:761	signature:(const JSONRPCRequest& request)
+omni_getbalanceshash	rpc.cpp	/^UniValue omni_getbalanceshash(const JSONRPCRequest& request)$/;"	f	line:2430	signature:(const JSONRPCRequest& request)
+omni_getcrowdsale	rpc.cpp	/^UniValue omni_getcrowdsale(const JSONRPCRequest& request)$/;"	f	line:1245	signature:(const JSONRPCRequest& request)
+omni_getcurrentconsensushash	rpc.cpp	/^UniValue omni_getcurrentconsensushash(const JSONRPCRequest& request)$/;"	f	line:2349	signature:(const JSONRPCRequest& request)
+omni_getfeecache	rpc.cpp	/^UniValue omni_getfeecache(const JSONRPCRequest& request)$/;"	f	line:426	signature:(const JSONRPCRequest& request)
+omni_getfeedistribution	rpc.cpp	/^UniValue omni_getfeedistribution(const JSONRPCRequest& request)$/;"	f	line:160	signature:(const JSONRPCRequest& request)
+omni_getfeedistributions	rpc.cpp	/^UniValue omni_getfeedistributions(const JSONRPCRequest& request)$/;"	f	line:227	signature:(const JSONRPCRequest& request)
+omni_getfeeshare	rpc.cpp	/^UniValue omni_getfeeshare(const JSONRPCRequest& request)$/;"	f	line:354	signature:(const JSONRPCRequest& request)
+omni_getfeetrigger	rpc.cpp	/^UniValue omni_getfeetrigger(const JSONRPCRequest& request)$/;"	f	line:303	signature:(const JSONRPCRequest& request)
+omni_getgrants	rpc.cpp	/^UniValue omni_getgrants(const JSONRPCRequest& request)$/;"	f	line:1463	signature:(const JSONRPCRequest& request)
+omni_getinfo	rpc.cpp	/^UniValue omni_getinfo(const JSONRPCRequest& request)$/;"	f	line:2092	signature:(const JSONRPCRequest& request)
+omni_getmetadexhash	rpc.cpp	/^UniValue omni_getmetadexhash(const JSONRPCRequest& request)$/;"	f	line:2385	signature:(const JSONRPCRequest& request)
+omni_getorderbook	rpc.cpp	/^UniValue omni_getorderbook(const JSONRPCRequest& request)$/;"	f	line:1546	signature:(const JSONRPCRequest& request)
+omni_getpayload	rpc.cpp	/^UniValue omni_getpayload(const JSONRPCRequest& request)$/;"	f	line:522	signature:(const JSONRPCRequest& request)
+omni_getproperty	rpc.cpp	/^UniValue omni_getproperty(const JSONRPCRequest& request)$/;"	f	line:1128	signature:(const JSONRPCRequest& request)
+omni_getseedblocks	rpc.cpp	/^UniValue omni_getseedblocks(const JSONRPCRequest& request) $/;"	f	line:481	signature:(const JSONRPCRequest& request)
+omni_getsto	rpc.cpp	/^UniValue omni_getsto(const JSONRPCRequest& request)$/;"	f	line:2242	signature:(const JSONRPCRequest& request)
+omni_gettrade	rpc.cpp	/^UniValue omni_gettrade(const JSONRPCRequest& request)$/;"	f	line:2292	signature:(const JSONRPCRequest& request)
+omni_gettradehistoryforaddress	rpc.cpp	/^UniValue omni_gettradehistoryforaddress(const JSONRPCRequest& request)$/;"	f	line:1616	signature:(const JSONRPCRequest& request)
+omni_gettradehistoryforpair	rpc.cpp	/^UniValue omni_gettradehistoryforpair(const JSONRPCRequest& request)$/;"	f	line:1701	signature:(const JSONRPCRequest& request)
+omni_gettransaction	rpc.cpp	/^UniValue omni_gettransaction(const JSONRPCRequest& request)$/;"	f	line:1926	signature:(const JSONRPCRequest& request)
+omni_getwalletaddressbalances	rpc.cpp	/^UniValue omni_getwalletaddressbalances(const JSONRPCRequest& request)$/;"	f	line:1042	signature:(const JSONRPCRequest& request)
+omni_getwalletbalances	rpc.cpp	/^UniValue omni_getwalletbalances(const JSONRPCRequest& request)$/;"	f	line:934	signature:(const JSONRPCRequest& request)
+omni_listblocktransactions	rpc.cpp	/^UniValue omni_listblocktransactions(const JSONRPCRequest& request)$/;"	f	line:1873	signature:(const JSONRPCRequest& request)
+omni_listpendingtransactions	rpc.cpp	/^UniValue omni_listpendingtransactions(const JSONRPCRequest& request)$/;"	f	line:2040	signature:(const JSONRPCRequest& request)
+omni_listproperties	rpc.cpp	/^UniValue omni_listproperties(const JSONRPCRequest& request)$/;"	f	line:1189	signature:(const JSONRPCRequest& request)
+omni_listtransactions	rpc.cpp	/^UniValue omni_listtransactions(const JSONRPCRequest& request)$/;"	f	line:1965	signature:(const JSONRPCRequest& request)
 omni_send	rpctx.cpp	/^UniValue omni_send(const UniValue& params, bool fHelp)$/;"	f	line:172	signature:(const UniValue& params, bool fHelp)
 omni_sendactivation	rpctx.cpp	/^UniValue omni_sendactivation(const UniValue& params, bool fHelp)$/;"	f	line:1396	signature:(const UniValue& params, bool fHelp)
 omni_sendalert	rpctx.cpp	/^UniValue omni_sendalert(const UniValue& params, bool fHelp)$/;"	f	line:1482	signature:(const UniValue& params, bool fHelp)
@@ -2021,7 +2021,7 @@ omni_sendrevoke	rpctx.cpp	/^UniValue omni_sendrevoke(const UniValue& params, boo
 omni_sendsto	rpctx.cpp	/^UniValue omni_sendsto(const UniValue& params, bool fHelp)$/;"	f	line:652	signature:(const UniValue& params, bool fHelp)
 omni_sendtrade	rpctx.cpp	/^UniValue omni_sendtrade(const UniValue& params, bool fHelp)$/;"	f	line:927	signature:(const UniValue& params, bool fHelp)
 omni_sendunfreeze	rpctx.cpp	/^UniValue omni_sendunfreeze(const UniValue& params, bool fHelp)$/;"	f	line:1345	signature:(const UniValue& params, bool fHelp)
-omni_setautocommit	rpc.cpp	/^UniValue omni_setautocommit(const UniValue& params, bool fHelp)$/;"	f	line:558	signature:(const UniValue& params, bool fHelp)
+omni_setautocommit	rpc.cpp	/^UniValue omni_setautocommit(const JSONRPCRequest& request)$/;"	f	line:570	signature:(const JSONRPCRequest& request)
 operator !=	tally.cpp	/^bool CMPTally::operator!=(const CMPTally& rhs) const$/;"	f	line:211	class:CMPTally	signature:(const CMPTally& rhs) const
 operator ()	mdex.cpp	/^bool MetaDEx_compare::operator()(const CMPMetaDEx &lhs, const CMPMetaDEx &rhs) const$/;"	f	line:454	class:MetaDEx_compare	signature:(const CMPMetaDEx &lhs, const CMPMetaDEx &rhs) const
 operator ()	sto.cpp	/^bool SendToOwners_compare::operator()(const std::pair<int64_t, std::string>& p1, const std::pair<int64_t, std::string>& p2) const$/;"	f	line:24	class:mastercore::SendToOwners_compare	signature:(const std::pair<int64_t, std::string>& p1, const std::pair<int64_t, std::string>& p2) const
@@ -2033,7 +2033,7 @@ p_OmniTXDB	omnicore.cpp	/^COmniTransactionDB* mastercore::p_OmniTXDB;$/;"	m	line
 p_feecache	omnicore.cpp	/^COmniFeeCache* mastercore::p_feecache;$/;"	m	line:143	class:mastercore	file:
 p_feehistory	omnicore.cpp	/^COmniFeeHistory* mastercore::p_feehistory;$/;"	m	line:145	class:mastercore	file:
 p_txlistdb	omnicore.cpp	/^CMPTxList* mastercore::p_txlistdb;$/;"	m	line:135	class:mastercore	file:
-parseTransaction	omnicore.cpp	/^static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, unsigned int idx, CMPTransaction& mp_tx, unsigned int nTime)$/;"	f	line:853	file:	signature:(bool bRPConly, const CTransaction& wtx, int nBlock, unsigned int idx, CMPTransaction& mp_tx, unsigned int nTime)
+parseTransaction	omnicore.cpp	/^static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, unsigned int idx, CMPTransaction& mp_tx, unsigned int nTime)$/;"	f	line:855	file:	signature:(bool bRPConly, const CTransaction& wtx, int nBlock, unsigned int idx, CMPTransaction& mp_tx, unsigned int nTime)
 pdb	dbbase.h	/^    leveldb::DB* pdb;$/;"	m	line:33	class:CDBBase	access:protected
 peekNextSPID	dbspinfo.cpp	/^uint32_t CMPSPInfo::peekNextSPID(uint8_t ecosystem) const$/;"	f	line:98	class:CMPSPInfo	signature:(uint8_t ecosystem) const
 percentage	dbspinfo.h	/^        uint8_t percentage;$/;"	m	line:65	struct:CMPSPInfo::Entry	access:public
@@ -2116,7 +2116,7 @@ recordSendAllSubRecord	dbtxlist.cpp	/^void CMPTxList::recordSendAllSubRecord(con
 recordTX	dbtxlist.cpp	/^void CMPTxList::recordTX(const uint256 &txid, bool fValid, int nBlock, unsigned int type, uint64_t nValue)$/;"	f	line:58	class:CMPTxList	signature:(const uint256 &txid, bool fValid, int nBlock, unsigned int type, uint64_t nValue)
 reduceAcceptAmountRemaining_andIsZero	dex.h	/^    bool reduceAcceptAmountRemaining_andIsZero(const int64_t really_purchased)$/;"	f	line:187	class:CMPAccept	access:public	signature:(const int64_t really_purchased)
 regTestConsensusParams	rules.cpp	/^static CRegTestConsensusParams regTestConsensusParams;$/;"	m	line:290	namespace:mastercore	file:
-remainingTimeAsString	omnicore.cpp	/^    std::string remainingTimeAsString(int64_t remainingTime) const$/;"	f	line:1381	class:ProgressReporter	file:	access:private	signature:(int64_t remainingTime) const
+remainingTimeAsString	omnicore.cpp	/^    std::string remainingTimeAsString(int64_t remainingTime) const$/;"	f	line:1389	class:ProgressReporter	file:	access:private	signature:(int64_t remainingTime) const
 reorgRecoveryMaxHeight	omnicore.cpp	/^static int reorgRecoveryMaxHeight = 0;$/;"	v	line:130	file:
 reorgRecoveryMode	omnicore.cpp	/^static int reorgRecoveryMode = 0;$/;"	v	line:128	file:
 rounduint64	convert.cpp	/^uint64_t rounduint64(long double ld)$/;"	f	line:9	namespace:mastercore	signature:(long double ld)
@@ -2172,7 +2172,7 @@ unfreezeAddress	omnicore.cpp	/^void mastercore::unfreezeAddress(const std::strin
 unitPrice	mdex.cpp	/^rational_t CMPMetaDEx::unitPrice() const$/;"	f	line:391	class:CMPMetaDEx	signature:() const
 unlockLogic	tx.h	/^    void unlockLogic() { rpcOnly = false; };$/;"	f	line:300	class:CMPTransaction	access:public	signature:()
 unsign	rpcmbstring.cpp	/^inline unsigned char unsign(char c)$/;"	f	line:20	namespace:mastercore::mbstring	signature:(char c)
-update	omnicore.cpp	/^    void update(const CBlockIndex* pblockNow) const$/;"	f	line:1404	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockNow) const
+update	omnicore.cpp	/^    void update(const CBlockIndex* pblockNow) const$/;"	f	line:1412	class:ProgressReporter	access:public	signature:(const CBlockIndex* pblockNow) const
 updateMoney	tally.cpp	/^bool CMPTally::updateMoney(uint32_t propertyId, int64_t amount, TallyType ttype)$/;"	f	line:70	class:CMPTally	signature:(uint32_t propertyId, int64_t amount, TallyType ttype)
 updateSP	dbspinfo.cpp	/^bool CMPSPInfo::updateSP(uint32_t propertyId, const Entry& info)$/;"	f	line:116	class:CMPSPInfo	signature:(uint32_t propertyId, const Entry& info)
 update_block	dbspinfo.h	/^        uint256 update_block;$/;"	m	line:77	struct:CMPSPInfo::Entry	access:public

@@ -7,7 +7,6 @@
 #include "omnicore/mdex.h"
 
 #include "amount.h"
-#include "main.h"
 #include "sync.h"
 #include "txmempool.h"
 #include "uint256.h"
@@ -23,6 +22,7 @@ CCriticalSection cs_pending;
 //! Global map of pending transaction objects
 PendingMap my_pending;
 
+extern CTxMemPool mempool;
 /**
  * Adds a transaction to the pending map using supplied parameters.
  */

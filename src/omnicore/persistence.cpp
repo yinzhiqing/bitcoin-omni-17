@@ -16,7 +16,6 @@
 #include "omnicore/utilsbitcoin.h"
 
 #include "chain.h"
-#include "main.h"
 #include "tinyformat.h"
 #include "uint256.h"
 #include "util.h"
@@ -41,6 +40,7 @@ using namespace mastercore;
 //! Number of "Dev Omni" of the last processed block (needed to save global state)
 extern int64_t exodus_prev;
 
+extern CChain& chainActive;
 //! Path for file based persistence
 extern boost::filesystem::path MPPersistencePath;
 

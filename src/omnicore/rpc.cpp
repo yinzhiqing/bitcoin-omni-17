@@ -39,7 +39,6 @@
 #include "base58.h"
 #include "chainparams.h"
 #include "init.h"
-#include "main.h"
 #include "primitives/block.h"
 #include "primitives/transaction.h"
 #include "rpc/server.h"
@@ -47,6 +46,10 @@
 #include "txmempool.h"
 #include "uint256.h"
 #include "utilstrencodings.h"
+#include "univalue.h"
+#include "validation.h"
+#include "key_io.h"
+#include "parsing.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #endif
@@ -61,7 +64,12 @@
 
 using std::runtime_error;
 using namespace mastercore;
-
+extern CWallet* pwallet;
+extern  CChain& chainActive;  
+extern CCriticalSection cs_main;  
+extern CTxMemPool mempool;
+extern bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams);
+extern bool GetTransaction(const uint256& hash, CTransactionRef& txOut, const Consensus::Params& consensusParams, uint256& hashBlock, bool fAllowSlow, CBlockIndex* blockIndex);
 /**
  * Throws a JSONRPCError, depending on error code.
  */
@@ -152,9 +160,10 @@ bool BalanceToJSON(const std::string& address, uint32_t property, UniValue& bala
 }
 
 // Obtains details of a fee distribution
-UniValue omni_getfeedistribution(const UniValue& params, bool fHelp)
+UniValue omni_getfeedistribution(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getfeedistribution distributionid\n"
             "\nGet the details for a fee distribution.\n"
@@ -218,9 +227,10 @@ UniValue omni_getfeedistribution(const UniValue& params, bool fHelp)
 
 // Obtains all fee distributions for a property
 // TODO : Split off code to populate a fee distribution object into a seperate function
-UniValue omni_getfeedistributions(const UniValue& params, bool fHelp)
+UniValue omni_getfeedistributions(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getfeedistributions propertyid\n"
             "\nGet the details of all fee distributions for a property.\n"
@@ -293,9 +303,10 @@ UniValue omni_getfeedistributions(const UniValue& params, bool fHelp)
 }
 
 // Obtains the trigger value for fee distribution for a/all properties
-UniValue omni_getfeetrigger(const UniValue& params, bool fHelp)
+UniValue omni_getfeetrigger(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
             "omni_getfeetrigger ( propertyid )\n"
             "\nReturns the amount of fees required in the cache to trigger distribution.\n"
@@ -315,7 +326,7 @@ UniValue omni_getfeetrigger(const UniValue& params, bool fHelp)
         );
 
     uint32_t propertyId = 0;
-    if (0 < params.size()) {
+    if (0 < request.params.size()) {
         propertyId = ParsePropertyId(params[0]);
     }
 
@@ -343,9 +354,10 @@ UniValue omni_getfeetrigger(const UniValue& params, bool fHelp)
 }
 
 // Provides the fee share the wallet (or specific address) will receive from fee distributions
-UniValue omni_getfeeshare(const UniValue& params, bool fHelp)
+UniValue omni_getfeeshare(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 2)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 2)
         throw runtime_error(
             "omni_getfeeshare ( address ecosystem )\n"
             "\nReturns the percentage share of fees distribution applied to the wallet (default) or address (if supplied).\n"
@@ -367,14 +379,14 @@ UniValue omni_getfeeshare(const UniValue& params, bool fHelp)
 
     std::string address;
     uint8_t ecosystem = 1;
-    if (0 < params.size()) {
+    if (0 < request.params.size()) {
         if ("*" != params[0].get_str()) { //ParseAddressOrEmpty doesn't take wildcards
             address = ParseAddressOrEmpty(params[0]);
         } else {
             address = "*";
         }
     }
-    if (1 < params.size()) {
+    if (1 < request.params.size()) {
         ecosystem = ParseEcosystem(params[1]);
     }
 
@@ -414,9 +426,10 @@ UniValue omni_getfeeshare(const UniValue& params, bool fHelp)
 }
 
 // Provides the current values of the fee cache
-UniValue omni_getfeecache(const UniValue& params, bool fHelp)
+UniValue omni_getfeecache(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
             "omni_getfeecache ( propertyid )\n"
             "\nReturns the amount of fees cached for distribution.\n"
@@ -436,7 +449,7 @@ UniValue omni_getfeecache(const UniValue& params, bool fHelp)
         );
 
     uint32_t propertyId = 0;
-    if (0 < params.size()) {
+    if (0 < request.params.size()) {
         propertyId = ParsePropertyId(params[0]);
     }
 
@@ -468,9 +481,10 @@ UniValue omni_getfeecache(const UniValue& params, bool fHelp)
 }
 
 // generate a list of seed blocks based on the data in LevelDB
-UniValue omni_getseedblocks(const UniValue& params, bool fHelp)
+UniValue omni_getseedblocks(const JSONRPCRequest& request) 
 {
-    if (fHelp || params.size() != 2)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
             "omni_getseedblocks startblock endblock\n"
             "\nReturns a list of blocks containing Omni transactions for use in seed block filtering.\n"
@@ -508,9 +522,10 @@ UniValue omni_getseedblocks(const UniValue& params, bool fHelp)
 }
 
 // obtain the payload for a transaction
-UniValue omni_getpayload(const UniValue& params, bool fHelp)
+UniValue omni_getpayload(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getpayload \"txid\"\n"
             "\nGet the payload for an Omni transaction.\n"
@@ -528,9 +543,10 @@ UniValue omni_getpayload(const UniValue& params, bool fHelp)
 
     uint256 txid = ParseHashV(params[0], "txid");
 
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 blockHash;
-    if (!GetTransaction(txid, tx, Params().GetConsensus(), blockHash, true)) {
+	//jg
+    if (!GetTransaction(txid, tx, Params().GetConsensus(), blockHash, true, nullptr)) {
         PopulateFailure(MP_TX_NOT_FOUND);
     }
 
@@ -545,7 +561,7 @@ UniValue omni_getpayload(const UniValue& params, bool fHelp)
     }
 
     CMPTransaction mp_obj;
-    int parseRC = ParseTransaction(tx, blockHeight, 0, mp_obj, blockTime);
+    int parseRC = ParseTransaction(*tx, blockHeight, 0, mp_obj, blockTime);
     if (parseRC < 0) PopulateFailure(MP_TX_IS_NOT_MASTER_PROTOCOL);
 
     UniValue payloadObj(UniValue::VOBJ);
@@ -555,9 +571,10 @@ UniValue omni_getpayload(const UniValue& params, bool fHelp)
 }
 
 // determine whether to automatically commit transactions
-UniValue omni_setautocommit(const UniValue& params, bool fHelp)
+UniValue omni_setautocommit(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_setautocommit flag\n"
             "\nSets the global flag that determines whether transactions are automatically committed and broadcast.\n"
@@ -577,12 +594,13 @@ UniValue omni_setautocommit(const UniValue& params, bool fHelp)
 }
 
 // display the tally map & the offer/accept list(s)
-UniValue mscrpc(const UniValue& params, bool fHelp)
+UniValue mscrpc(const JSONRPCRequest& request)
 {
+    const UniValue &params = request.params;
     int extra = 0;
     int extra2 = 0, extra3 = 0;
 
-    if (fHelp || params.size() > 3)
+    if (request.fHelp || request.params.size() > 3)
         throw runtime_error(
             "mscrpc\n"
             "\nReturns the number of blocks in the longest block chain.\n"
@@ -593,9 +611,9 @@ UniValue mscrpc(const UniValue& params, bool fHelp)
             + HelpExampleRpc("mscrpc", "")
         );
 
-    if (0 < params.size()) extra = atoi(params[0].get_str());
-    if (1 < params.size()) extra2 = atoi(params[1].get_str());
-    if (2 < params.size()) extra3 = atoi(params[2].get_str());
+    if (0 < request.params.size()) extra = atoi(params[0].get_str());
+    if (1 < request.params.size()) extra2 = atoi(params[1].get_str());
+    if (2 < request.params.size()) extra3 = atoi(params[2].get_str());
 
     PrintToConsole("%s(extra=%d,extra2=%d,extra3=%d)\n", __FUNCTION__, extra, extra2, extra3);
 
@@ -702,7 +720,7 @@ UniValue mscrpc(const UniValue& params, bool fHelp)
         case 11:
         {
             PrintToConsole("Locking pwalletMain->cs_wallet for %d milliseconds..\n", extra2);
-            LOCK(pwalletMain->cs_wallet);
+            LOCK(pwallet->cs_wallet);
             MilliSleep(extra2);
             PrintToConsole("Unlocking pwalletMain->cs_wallet now\n");
             break;
@@ -744,9 +762,10 @@ UniValue mscrpc(const UniValue& params, bool fHelp)
 }
 
 // display an MP balance via RPC
-UniValue omni_getbalance(const UniValue& params, bool fHelp)
+UniValue omni_getbalance(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 2)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
             "omni_getbalance \"address\" propertyid\n"
             "\nReturns the token balance for a given address and property.\n"
@@ -775,9 +794,10 @@ UniValue omni_getbalance(const UniValue& params, bool fHelp)
     return balanceObj;
 }
 
-UniValue omni_getallbalancesforid(const UniValue& params, bool fHelp)
+UniValue omni_getallbalancesforid(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getallbalancesforid propertyid\n"
             "\nReturns a list of token balances for a given currency or property identifier.\n"
@@ -833,9 +853,10 @@ UniValue omni_getallbalancesforid(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getallbalancesforaddress(const UniValue& params, bool fHelp)
+UniValue omni_getallbalancesforaddress(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getallbalancesforaddress \"address\"\n"
             "\nReturns a list of all token balances for a given address.\n"
@@ -898,14 +919,14 @@ static std::set<std::string> getWalletAddresses(bool fIncludeWatchOnly)
     std::set<std::string> result;
 
 #ifdef ENABLE_WALLET
-    LOCK(pwalletMain->cs_wallet);
+    LOCK(pwallet->cs_wallet);
 
-    BOOST_FOREACH(const PAIRTYPE(CTxDestination, CAddressBookData)& item, pwalletMain->mapAddressBook) {
-        const CBitcoinAddress& address = item.first;
-        isminetype iIsMine = IsMine(*pwalletMain, address.Get());
+    for (const std::pair<CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+        //const CBitcoinAddress& address = item.first; //jg
+        isminetype iIsMine = IsMine(*pwallet, item.first);
 
         if (iIsMine == ISMINE_SPENDABLE || (fIncludeWatchOnly && iIsMine != ISMINE_NO)) {
-            result.insert(address.ToString());
+            result.insert(EncodeDestination(item.first));
         }
     }
 #endif
@@ -913,9 +934,10 @@ static std::set<std::string> getWalletAddresses(bool fIncludeWatchOnly)
     return result;
 }
 
-UniValue omni_getwalletbalances(const UniValue& params, bool fHelp)
+UniValue omni_getwalletbalances(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
             "omni_getwalletbalances ( includewatchonly )\n"
             "\nReturns a list of the total token balances of the whole wallet.\n"
@@ -938,14 +960,14 @@ UniValue omni_getwalletbalances(const UniValue& params, bool fHelp)
         );
 
     bool fIncludeWatchOnly = false;
-    if (params.size() > 0) {
+    if (request.params.size() > 0) {
         fIncludeWatchOnly = params[0].get_bool();
     }
 
     UniValue response(UniValue::VARR);
 
 #ifdef ENABLE_WALLET
-    if (!pwalletMain) {
+    if (!HasWallets()) {
         return response;
     }
 
@@ -953,7 +975,7 @@ UniValue omni_getwalletbalances(const UniValue& params, bool fHelp)
     std::map<uint32_t, std::tuple<int64_t, int64_t, int64_t>> balances;
 
     LOCK(cs_tally);
-    BOOST_FOREACH(const std::string& address, addresses) {
+    for (const std::string& address : addresses) {
         CMPTally* addressTally = getTally(address);
         if (NULL == addressTally) {
             continue; // address doesn't have tokens
@@ -1020,9 +1042,10 @@ UniValue omni_getwalletbalances(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getwalletaddressbalances(const UniValue& params, bool fHelp)
+UniValue omni_getwalletaddressbalances(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
             "omni_getwalletaddressbalances ( includewatchonly )\n"
             "\nReturns a list of all token balances for every wallet address.\n"
@@ -1052,21 +1075,21 @@ UniValue omni_getwalletaddressbalances(const UniValue& params, bool fHelp)
         );
 
     bool fIncludeWatchOnly = false;
-    if (params.size() > 0) {
+    if (request.params.size() > 0) {
         fIncludeWatchOnly = params[0].get_bool();
     }
 
     UniValue response(UniValue::VARR);
 
 #ifdef ENABLE_WALLET
-    if (!pwalletMain) {
+    if (!HasWallets()) {
         return response;
     }
 
     std::set<std::string> addresses = getWalletAddresses(fIncludeWatchOnly);
 
     LOCK(cs_tally);
-    BOOST_FOREACH(const std::string& address, addresses) {
+    for (const std::string& address : addresses) {
         CMPTally* addressTally = getTally(address);
         if (NULL == addressTally) {
             continue; // address doesn't have tokens
@@ -1105,9 +1128,10 @@ UniValue omni_getwalletaddressbalances(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getproperty(const UniValue& params, bool fHelp)
+UniValue omni_getproperty(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getproperty propertyid\n"
             "\nReturns details for about the tokens or smart property to lookup.\n"
@@ -1165,9 +1189,10 @@ UniValue omni_getproperty(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_listproperties(const UniValue& params, bool fHelp)
+UniValue omni_listproperties(const JSONRPCRequest& request)
 {
-    if (fHelp)
+    const UniValue &params = request.params;
+    if (request.fHelp)
         throw runtime_error(
             "omni_listproperties\n"
             "\nLists all tokens or smart properties.\n"
@@ -1220,9 +1245,10 @@ UniValue omni_listproperties(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getcrowdsale(const UniValue& params, bool fHelp)
+UniValue omni_getcrowdsale(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() < 1 || params.size() > 2)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
             "omni_getcrowdsale propertyid ( verbose )\n"
             "\nReturns information about a crowdsale.\n"
@@ -1265,7 +1291,7 @@ UniValue omni_getcrowdsale(const UniValue& params, bool fHelp)
         );
 
     uint32_t propertyId = ParsePropertyId(params[0]);
-    bool showVerbose = (params.size() > 1) ? params[1].get_bool() : false;
+    bool showVerbose = (request.params.size() > 1) ? request.params[1].get_bool() : false;
 
     RequireExistingProperty(propertyId);
     RequireCrowdsale(propertyId);
@@ -1280,7 +1306,7 @@ UniValue omni_getcrowdsale(const UniValue& params, bool fHelp)
 
     const uint256& creationHash = sp.txid;
 
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 hashBlock;
     if (!GetTransaction(creationHash, tx, Params().GetConsensus(), hashBlock, true)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available about transaction");
@@ -1368,9 +1394,10 @@ UniValue omni_getcrowdsale(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getactivecrowdsales(const UniValue& params, bool fHelp)
+UniValue omni_getactivecrowdsales(const JSONRPCRequest& request)
 {
-    if (fHelp)
+    const UniValue &params = request.params;
+    if (request.fHelp)
         throw runtime_error(
             "omni_getactivecrowdsales\n"
             "\nLists currently active crowdsales.\n"
@@ -1409,7 +1436,7 @@ UniValue omni_getactivecrowdsales(const UniValue& params, bool fHelp)
 
         const uint256& creationHash = sp.txid;
 
-        CTransaction tx;
+        CTransactionRef tx;
         uint256 hashBlock;
         if (!GetTransaction(creationHash, tx, Params().GetConsensus(), hashBlock, true)) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available about transaction");
@@ -1436,9 +1463,10 @@ UniValue omni_getactivecrowdsales(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getgrants(const UniValue& params, bool fHelp)
+UniValue omni_getgrants(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getgrants propertyid\n"
             "\nReturns information about granted and revoked units of managed tokens.\n"
@@ -1518,9 +1546,10 @@ UniValue omni_getgrants(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getorderbook(const UniValue& params, bool fHelp)
+UniValue omni_getorderbook(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() < 1 || params.size() > 2)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
             "omni_getorderbook propertyid ( propertyid )\n"
             "\nList active offers on the distributed token exchange.\n"
@@ -1552,7 +1581,7 @@ UniValue omni_getorderbook(const UniValue& params, bool fHelp)
             + HelpExampleRpc("omni_getorderbook", "2")
         );
 
-    bool filterDesired = (params.size() > 1);
+    bool filterDesired = (request.params.size() > 1);
     uint32_t propertyIdForSale = ParsePropertyId(params[0]);
     uint32_t propertyIdDesired = 0;
 
@@ -1587,9 +1616,10 @@ UniValue omni_getorderbook(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_gettradehistoryforaddress(const UniValue& params, bool fHelp)
+UniValue omni_gettradehistoryforaddress(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() < 1 || params.size() > 3)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
         throw runtime_error(
             "omni_gettradehistoryforaddress \"address\" ( count propertyid )\n"
             "\nRetrieves the history of orders on the distributed exchange for the supplied address.\n"
@@ -1640,10 +1670,10 @@ UniValue omni_gettradehistoryforaddress(const UniValue& params, bool fHelp)
         );
 
     std::string address = ParseAddress(params[0]);
-    uint64_t count = (params.size() > 1) ? params[1].get_int64() : 10;
+    uint64_t count = (request.params.size() > 1) ? request.params[1].get_int64() : 10;
     uint32_t propertyId = 0;
 
-    if (params.size() > 2) {
+    if (request.params.size() > 2) {
         propertyId = ParsePropertyId(params[2]);
         RequireExistingProperty(propertyId);
     }
@@ -1671,9 +1701,10 @@ UniValue omni_gettradehistoryforaddress(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_gettradehistoryforpair(const UniValue& params, bool fHelp)
+UniValue omni_gettradehistoryforpair(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() < 2 || params.size() > 3)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw runtime_error(
             "omni_gettradehistoryforpair propertyid propertyid ( count )\n"
             "\nRetrieves the history of trades on the distributed token exchange for the specified market.\n"
@@ -1704,7 +1735,7 @@ UniValue omni_gettradehistoryforpair(const UniValue& params, bool fHelp)
     // obtain property identifiers for pair & check valid parameters
     uint32_t propertyIdSideA = ParsePropertyId(params[0]);
     uint32_t propertyIdSideB = ParsePropertyId(params[1]);
-    uint64_t count = (params.size() > 2) ? params[2].get_int64() : 10;
+    uint64_t count = (request.params.size() > 2) ? params[2].get_int64() : 10;
 
     RequireExistingProperty(propertyIdSideA);
     RequireExistingProperty(propertyIdSideB);
@@ -1718,9 +1749,10 @@ UniValue omni_gettradehistoryforpair(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getactivedexsells(const UniValue& params, bool fHelp)
+UniValue omni_getactivedexsells(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
             "omni_getactivedexsells ( address )\n"
             "\nReturns currently active offers on the distributed exchange.\n"
@@ -1758,7 +1790,7 @@ UniValue omni_getactivedexsells(const UniValue& params, bool fHelp)
 
     std::string addressFilter;
 
-    if (params.size() > 0) {
+    if (request.params.size() > 0) {
         addressFilter = ParseAddressOrEmpty(params[0]);
     }
 
@@ -1841,9 +1873,10 @@ UniValue omni_getactivedexsells(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_listblocktransactions(const UniValue& params, bool fHelp)
+UniValue omni_listblocktransactions(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_listblocktransactions index\n"
             "\nLists all Omni transactions in a block.\n"
@@ -1882,20 +1915,21 @@ UniValue omni_listblocktransactions(const UniValue& params, bool fHelp)
 
     LOCK(cs_tally);
 
-    BOOST_FOREACH(const CTransaction&tx, block.vtx) {
-        if (p_txlistdb->exists(tx.GetHash())) {
+    for (CTransactionRef tx : block.vtx) {
+        if (p_txlistdb->exists(tx.get()->GetHash())) {
             // later we can add a verbose flag to decode here, but for now callers can send returned txids into gettransaction_MP
             // add the txid into the response as it's an MP transaction
-            response.push_back(tx.GetHash().GetHex());
+            response.push_back(tx.get()->GetHash().GetHex());
         }
     }
 
     return response;
 }
 
-UniValue omni_gettransaction(const UniValue& params, bool fHelp)
+UniValue omni_gettransaction(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_gettransaction \"txid\"\n"
             "\nGet detailed information about an Omni transaction.\n"
@@ -1931,9 +1965,10 @@ UniValue omni_gettransaction(const UniValue& params, bool fHelp)
     return txobj;
 }
 
-UniValue omni_listtransactions(const UniValue& params, bool fHelp)
+UniValue omni_listtransactions(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 5)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 5)
         throw runtime_error(
             "omni_listtransactions ( \"address\" count skip startblock endblock )\n"
             "\nList wallet transactions, optionally filtered by an address and block boundaries.\n"
@@ -1968,20 +2003,20 @@ UniValue omni_listtransactions(const UniValue& params, bool fHelp)
 
     // obtains parameters - default all wallet addresses & last 10 transactions
     std::string addressParam;
-    if (params.size() > 0) {
+    if (request.params.size() > 0) {
         if (("*" != params[0].get_str()) && ("" != params[0].get_str())) addressParam = params[0].get_str();
     }
     int64_t nCount = 10;
-    if (params.size() > 1) nCount = params[1].get_int64();
+    if (request.params.size() > 1) nCount = params[1].get_int64();
     if (nCount < 0) throw JSONRPCError(RPC_INVALID_PARAMETER, "Negative count");
     int64_t nFrom = 0;
-    if (params.size() > 2) nFrom = params[2].get_int64();
+    if (request.params.size() > 2) nFrom = params[2].get_int64();
     if (nFrom < 0) throw JSONRPCError(RPC_INVALID_PARAMETER, "Negative from");
     int64_t nStartBlock = 0;
-    if (params.size() > 3) nStartBlock = params[3].get_int64();
+    if (request.params.size() > 3) nStartBlock = params[3].get_int64();
     if (nStartBlock < 0) throw JSONRPCError(RPC_INVALID_PARAMETER, "Negative start block");
     int64_t nEndBlock = 999999999;
-    if (params.size() > 4) nEndBlock = params[4].get_int64();
+    if (request.params.size() > 4) nEndBlock = params[4].get_int64();
     if (nEndBlock < 0) throw JSONRPCError(RPC_INVALID_PARAMETER, "Negative end block");
 
     // obtain a sorted list of Omni layer wallet transactions (including STO receipts and pending)
@@ -2005,9 +2040,10 @@ UniValue omni_listtransactions(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_listpendingtransactions(const UniValue& params, bool fHelp)
+UniValue omni_listpendingtransactions(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
             "omni_listpendingtransactions ( \"address\" )\n"
             "\nReturns a list of unconfirmed Omni transactions, pending in the memory pool.\n"
@@ -2038,7 +2074,7 @@ UniValue omni_listpendingtransactions(const UniValue& params, bool fHelp)
         );
 
     std::string filterAddress;
-    if (params.size() > 0) {
+    if (request.params.size() > 0) {
         filterAddress = ParseAddressOrEmpty(params[0]);
     }
 
@@ -2046,7 +2082,7 @@ UniValue omni_listpendingtransactions(const UniValue& params, bool fHelp)
     mempool.queryHashes(vTxid);
 
     UniValue result(UniValue::VARR);
-    BOOST_FOREACH(const uint256& hash, vTxid) {
+    for (const uint256& hash : vTxid) {
         UniValue txObj(UniValue::VOBJ);
         if (populateRPCTransactionObject(hash, txObj, filterAddress) == 0) {
             result.push_back(txObj);
@@ -2056,9 +2092,10 @@ UniValue omni_listpendingtransactions(const UniValue& params, bool fHelp)
     return result;
 }
 
-UniValue omni_getinfo(const UniValue& params, bool fHelp)
+UniValue omni_getinfo(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 0)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 0)
         throw runtime_error(
             "omni_getinfo\n"
             "Returns various state information of the client and protocol.\n"
@@ -2140,9 +2177,10 @@ UniValue omni_getinfo(const UniValue& params, bool fHelp)
     return infoResponse;
 }
 
-UniValue omni_getactivations(const UniValue& params, bool fHelp)
+UniValue omni_getactivations(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 0)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 0)
         throw runtime_error(
             "omni_getactivations\n"
             "Returns pending and completed feature activations.\n"
@@ -2204,9 +2242,10 @@ UniValue omni_getactivations(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getsto(const UniValue& params, bool fHelp)
+UniValue omni_getsto(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() < 1 || params.size() > 2)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
             "omni_getsto \"txid\" \"recipientfilter\"\n"
             "\nGet information and recipients of a send-to-owners transaction.\n"
@@ -2244,7 +2283,7 @@ UniValue omni_getsto(const UniValue& params, bool fHelp)
 
     uint256 hash = ParseHashV(params[0], "txid");
     std::string filterAddress;
-    if (params.size() > 1) filterAddress = ParseAddressOrWildcard(params[1]);
+    if (request.params.size() > 1) filterAddress = ParseAddressOrWildcard(params[1]);
 
     UniValue txobj(UniValue::VOBJ);
     int populateResult = populateRPCTransactionObject(hash, txobj, "", true, filterAddress);
@@ -2253,9 +2292,10 @@ UniValue omni_getsto(const UniValue& params, bool fHelp)
     return txobj;
 }
 
-UniValue omni_gettrade(const UniValue& params, bool fHelp)
+UniValue omni_gettrade(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_gettrade \"txid\"\n"
             "\nGet detailed information and trade matches for orders on the distributed token exchange.\n"
@@ -2309,9 +2349,10 @@ UniValue omni_gettrade(const UniValue& params, bool fHelp)
     return txobj;
 }
 
-UniValue omni_getcurrentconsensushash(const UniValue& params, bool fHelp)
+UniValue omni_getcurrentconsensushash(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 0)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 0)
         throw runtime_error(
             "omni_getcurrentconsensushash\n"
             "\nReturns the consensus hash for all balances for the current block.\n"
@@ -2344,9 +2385,10 @@ UniValue omni_getcurrentconsensushash(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getmetadexhash(const UniValue& params, bool fHelp)
+UniValue omni_getmetadexhash(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() > 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
             "omni_getmetadexhash propertyId\n"
             "\nReturns a hash of the current state of the MetaDEx (default) or orderbook.\n"
@@ -2368,7 +2410,7 @@ UniValue omni_getmetadexhash(const UniValue& params, bool fHelp)
     LOCK(cs_main);
 
     uint32_t propertyId = 0;
-    if (params.size() > 0) {
+    if (request.params.size() > 0) {
         propertyId = ParsePropertyId(params[0]);
         RequireExistingProperty(propertyId);
     }
@@ -2388,9 +2430,10 @@ UniValue omni_getmetadexhash(const UniValue& params, bool fHelp)
     return response;
 }
 
-UniValue omni_getbalanceshash(const UniValue& params, bool fHelp)
+UniValue omni_getbalanceshash(const JSONRPCRequest& request)
 {
-    if (fHelp || params.size() != 1)
+    const UniValue &params = request.params;
+    if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "omni_getbalanceshash propertyid\n"
             "\nReturns a hash of the balances for the property.\n"
@@ -2430,63 +2473,63 @@ UniValue omni_getbalanceshash(const UniValue& params, bool fHelp)
 }
 
 static const CRPCCommand commands[] =
-{ //  category                             name                            actor (function)               okSafeMode
+{ //  category                             name                            actor (function)               params
   //  ------------------------------------ ------------------------------- ------------------------------ ----------
-    { "omni layer (data retrieval)", "omni_getinfo",                   &omni_getinfo,                    true  },
-    { "omni layer (data retrieval)", "omni_getactivations",            &omni_getactivations,             true  },
-    { "omni layer (data retrieval)", "omni_getallbalancesforid",       &omni_getallbalancesforid,        false },
-    { "omni layer (data retrieval)", "omni_getbalance",                &omni_getbalance,                 false },
-    { "omni layer (data retrieval)", "omni_gettransaction",            &omni_gettransaction,             false },
-    { "omni layer (data retrieval)", "omni_getproperty",               &omni_getproperty,                false },
-    { "omni layer (data retrieval)", "omni_listproperties",            &omni_listproperties,             false },
-    { "omni layer (data retrieval)", "omni_getcrowdsale",              &omni_getcrowdsale,               false },
-    { "omni layer (data retrieval)", "omni_getgrants",                 &omni_getgrants,                  false },
-    { "omni layer (data retrieval)", "omni_getactivedexsells",         &omni_getactivedexsells,          false },
-    { "omni layer (data retrieval)", "omni_getactivecrowdsales",       &omni_getactivecrowdsales,        false },
-    { "omni layer (data retrieval)", "omni_getorderbook",              &omni_getorderbook,               false },
-    { "omni layer (data retrieval)", "omni_gettrade",                  &omni_gettrade,                   false },
-    { "omni layer (data retrieval)", "omni_getsto",                    &omni_getsto,                     false },
-    { "omni layer (data retrieval)", "omni_listblocktransactions",     &omni_listblocktransactions,      false },
-    { "omni layer (data retrieval)", "omni_listpendingtransactions",   &omni_listpendingtransactions,    false },
-    { "omni layer (data retrieval)", "omni_getallbalancesforaddress",  &omni_getallbalancesforaddress,   false },
-    { "omni layer (data retrieval)", "omni_gettradehistoryforaddress", &omni_gettradehistoryforaddress,  false },
-    { "omni layer (data retrieval)", "omni_gettradehistoryforpair",    &omni_gettradehistoryforpair,     false },
-    { "omni layer (data retrieval)", "omni_getcurrentconsensushash",   &omni_getcurrentconsensushash,    false },
-    { "omni layer (data retrieval)", "omni_getpayload",                &omni_getpayload,                 false },
-    { "omni layer (data retrieval)", "omni_getseedblocks",             &omni_getseedblocks,              false },
-    { "omni layer (data retrieval)", "omni_getmetadexhash",            &omni_getmetadexhash,             false },
-    { "omni layer (data retrieval)", "omni_getfeecache",               &omni_getfeecache,                false },
-    { "omni layer (data retrieval)", "omni_getfeetrigger",             &omni_getfeetrigger,              false },
-    { "omni layer (data retrieval)", "omni_getfeedistribution",        &omni_getfeedistribution,         false },
-    { "omni layer (data retrieval)", "omni_getfeedistributions",       &omni_getfeedistributions,        false },
-    { "omni layer (data retrieval)", "omni_getbalanceshash",           &omni_getbalanceshash,            false },
+    { "omni layer (data retrieval)", "omni_getinfo",                   &omni_getinfo,                    {} },
+    { "omni layer (data retrieval)", "omni_getactivations",            &omni_getactivations,             {} },
+    { "omni layer (data retrieval)", "omni_getallbalancesforid",       &omni_getallbalancesforid,        {"propertyid"} },
+    { "omni layer (data retrieval)", "omni_getbalance",                &omni_getbalance,                 {"address","propertyid"} },
+    { "omni layer (data retrieval)", "omni_gettransaction",            &omni_gettransaction,             {"txid"} },
+    { "omni layer (data retrieval)", "omni_getproperty",               &omni_getproperty,                {"propertyid"} },
+    { "omni layer (data retrieval)", "omni_listproperties",            &omni_listproperties,             {} },
+    { "omni layer (data retrieval)", "omni_getcrowdsale",              &omni_getcrowdsale,               {"propertyid","verbose"} },
+    { "omni layer (data retrieval)", "omni_getgrants",                 &omni_getgrants,                  {"propertyid"} },
+    { "omni layer (data retrieval)", "omni_getactivedexsells",         &omni_getactivedexsells,          {"address"} },
+    { "omni layer (data retrieval)", "omni_getactivecrowdsales",       &omni_getactivecrowdsales,        {} },
+    { "omni layer (data retrieval)", "omni_getorderbook",              &omni_getorderbook,               {"propertyid","propertyid"} },
+    { "omni layer (data retrieval)", "omni_gettrade",                  &omni_gettrade,                   {"txid"} },
+    { "omni layer (data retrieval)", "omni_getsto",                    &omni_getsto,                     {"txid","recipientfilter"} },
+    { "omni layer (data retrieval)", "omni_listblocktransactions",     &omni_listblocktransactions,      {"index"} },
+    { "omni layer (data retrieval)", "omni_listpendingtransactions",   &omni_listpendingtransactions,    {"address"} },
+    { "omni layer (data retrieval)", "omni_getallbalancesforaddress",  &omni_getallbalancesforaddress,   {"address"} },
+    { "omni layer (data retrieval)", "omni_gettradehistoryforaddress", &omni_gettradehistoryforaddress,  {"address","count","propertyid"} },
+    { "omni layer (data retrieval)", "omni_gettradehistoryforpair",    &omni_gettradehistoryforpair,     {"propertyid","propertyid","count"} },
+    { "omni layer (data retrieval)", "omni_getcurrentconsensushash",   &omni_getcurrentconsensushash,    {} },
+    { "omni layer (data retrieval)", "omni_getpayload",                &omni_getpayload,                {"txid"} },
+    { "omni layer (data retrieval)", "omni_getseedblocks",             &omni_getseedblocks,             {"startblock","endblock"} },
+    { "omni layer (data retrieval)", "omni_getmetadexhash",            &omni_getmetadexhash,            {"propertyid"} },
+    { "omni layer (data retrieval)", "omni_getfeecache",               &omni_getfeecache,               {"propertyid"} },
+    { "omni layer (data retrieval)", "omni_getfeetrigger",             &omni_getfeetrigger,             {"propertyid"} },
+    { "omni layer (data retrieval)", "omni_getfeedistribution",        &omni_getfeedistribution,        {"distributionid"} },
+    { "omni layer (data retrieval)", "omni_getfeedistributions",       &omni_getfeedistributions,       {"propertyid"} },
+    { "omni layer (data retrieval)", "omni_getbalanceshash",           &omni_getbalanceshash,           {"propertyid"} },
 #ifdef ENABLE_WALLET
-    { "omni layer (data retrieval)", "omni_listtransactions",          &omni_listtransactions,           false },
-    { "omni layer (data retrieval)", "omni_getfeeshare",               &omni_getfeeshare,                false },
-    { "omni layer (configuration)",  "omni_setautocommit",             &omni_setautocommit,              true  },
-    { "omni layer (data retrieval)", "omni_getwalletbalances",         &omni_getwalletbalances,          false },
-    { "omni layer (data retrieval)", "omni_getwalletaddressbalances",  &omni_getwalletaddressbalances,   false },
+    { "omni layer (data retrieval)", "omni_listtransactions",          &omni_listtransactions,          {"address","count","skip","startblock","endblock"} },
+    { "omni layer (data retrieval)", "omni_getfeeshare",               &omni_getfeeshare,               {"address","ecosystem"} },
+    { "omni layer (configuration)",  "omni_setautocommit",             &omni_setautocommit,             {"flag"} },
+    { "omni layer (data retrieval)", "omni_getwalletbalances",         &omni_getwalletbalances,         {"includewatchonly"} },
+    { "omni layer (data retrieval)", "omni_getwalletaddressbalances",  &omni_getwalletaddressbalances,  {"includewatchonly"} },
 #endif
-    { "hidden",                      "mscrpc",                         &mscrpc,                          true  },
+    { "hidden",                      "mscrpc",                         &mscrpc,                          {}},
 
     /* depreciated: */
-    { "hidden",                      "getinfo_MP",                     &omni_getinfo,                    true  },
-    { "hidden",                      "getbalance_MP",                  &omni_getbalance,                 false },
-    { "hidden",                      "getallbalancesforaddress_MP",    &omni_getallbalancesforaddress,   false },
-    { "hidden",                      "getallbalancesforid_MP",         &omni_getallbalancesforid,        false },
-    { "hidden",                      "getproperty_MP",                 &omni_getproperty,                false },
-    { "hidden",                      "listproperties_MP",              &omni_listproperties,             false },
-    { "hidden",                      "getcrowdsale_MP",                &omni_getcrowdsale,               false },
-    { "hidden",                      "getgrants_MP",                   &omni_getgrants,                  false },
-    { "hidden",                      "getactivedexsells_MP",           &omni_getactivedexsells,          false },
-    { "hidden",                      "getactivecrowdsales_MP",         &omni_getactivecrowdsales,        false },
-    { "hidden",                      "getsto_MP",                      &omni_getsto,                     false },
-    { "hidden",                      "getorderbook_MP",                &omni_getorderbook,               false },
-    { "hidden",                      "gettrade_MP",                    &omni_gettrade,                   false },
-    { "hidden",                      "gettransaction_MP",              &omni_gettransaction,             false },
-    { "hidden",                      "listblocktransactions_MP",       &omni_listblocktransactions,      false },
+    { "hidden",                      "getinfo_MP",                     &omni_getinfo,                    {}},
+    { "hidden",                      "getbalance_MP",                  &omni_getbalance,                 {"address","propertyid"}},
+    { "hidden",                      "getallbalancesforaddress_MP",    &omni_getallbalancesforaddress,   {"address"}},
+    { "hidden",                      "getallbalancesforid_MP",         &omni_getallbalancesforid,        {"propertyid"}},
+    { "hidden",                      "getproperty_MP",                 &omni_getproperty,                {"propertyid"}},
+    { "hidden",                      "listproperties_MP",              &omni_listproperties,             {}},
+    { "hidden",                      "getcrowdsale_MP",                &omni_getcrowdsale,               {"propertyid","verbose"}},
+    { "hidden",                      "getgrants_MP",                   &omni_getgrants,                  {"propertyid"}},
+    { "hidden",                      "getactivedexsells_MP",           &omni_getactivedexsells,          {"address"}},
+    { "hidden",                      "getactivecrowdsales_MP",         &omni_getactivecrowdsales,        {}},
+    { "hidden",                      "getsto_MP",                      &omni_getsto,                     {"txid","recipientfilter"}},
+    { "hidden",                      "getorderbook_MP",                &omni_getorderbook,               {"propertyid","propertyid"}},
+    { "hidden",                      "gettrade_MP",                    &omni_gettrade,                   {"txid"}},
+    { "hidden",                      "gettransaction_MP",              &omni_gettransaction,             {"txid"}},
+    { "hidden",                      "listblocktransactions_MP",       &omni_listblocktransactions,      {"index"}},
 #ifdef ENABLE_WALLET
-    { "hidden",                      "listtransactions_MP",            &omni_listtransactions,           false },
+    { "hidden",                      "listtransactions_MP",            &omni_listtransactions,           {"address","count","skip","startblock","endblock"}},
 #endif
 };
 

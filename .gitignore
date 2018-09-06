@@ -1,0 +1,9 @@
+*.o
+*.lo
+*.Po
+tags
+src/omnicore/tags
+
+
+src/omnicore/.deps/
+

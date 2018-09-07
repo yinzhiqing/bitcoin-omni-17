@@ -29,6 +29,7 @@
 
 namespace mastercore
 {
+extern void AlertNotify(const std::string& strMessage);
 /**
  * Returns a mapping of transaction types, and the blocks at which they are enabled.
  */

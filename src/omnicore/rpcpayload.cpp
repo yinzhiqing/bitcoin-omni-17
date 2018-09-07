@@ -15,8 +15,10 @@
 using std::runtime_error;
 using namespace mastercore;
 
-UniValue omni_createpayload_simplesend(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_simplesend(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
    if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_createpayload_simplesend propertyid \"amount\"\n"
@@ -45,8 +47,11 @@ UniValue omni_createpayload_simplesend(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_sendall(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_sendall(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
+	
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "omni_createpayload_sendall ecosystem\n"
@@ -71,8 +76,10 @@ UniValue omni_createpayload_sendall(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_dexsell(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_dexsell(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 6)
         throw runtime_error(
             "omni_createpayload_dexsell propertyidforsale \"amountforsale\" \"amountdesired\" paymentwindow minacceptfee action\n"
@@ -116,8 +123,10 @@ UniValue omni_createpayload_dexsell(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_dexaccept(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_dexaccept(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_createpayload_dexaccept propertyid \"amount\"\n"
@@ -146,8 +155,10 @@ UniValue omni_createpayload_dexaccept(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_sto(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_sto(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 2 || params.size() > 3)
         throw runtime_error(
             "omni_createpayload_sto propertyid \"amount\" ( distributionproperty )\n"
@@ -177,8 +188,10 @@ UniValue omni_createpayload_sto(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_issuancefixed(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_issuancefixed(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 9)
         throw runtime_error(
             "omni_createpayload_issuancefixed ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\" \"amount\"\n"
@@ -221,8 +234,10 @@ UniValue omni_createpayload_issuancefixed(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_issuancecrowdsale(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_issuancecrowdsale(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 13)
         throw runtime_error(
             "omni_createpayload_issuancecrowdsale ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\" propertyiddesired tokensperunit deadline earlybonus issuerpercentage\n"
@@ -274,8 +289,10 @@ UniValue omni_createpayload_issuancecrowdsale(const UniValue& params, bool fHelp
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_issuancemanaged(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_issuancemanaged(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 8)
         throw runtime_error(
             "omni_createpayload_issuancemanaged ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\"\n"
@@ -307,7 +324,7 @@ UniValue omni_createpayload_issuancemanaged(const UniValue& params, bool fHelp)
     std::string subcategory = ParseText(params[4]);
     std::string name = ParseText(params[5]);
     std::string url = ParseText(params[6]);
-    std::string data = ParseText(params[7]);
+    std::string data = ParseText(request.params[7]);
 
     RequirePropertyName(name);
 
@@ -316,8 +333,10 @@ UniValue omni_createpayload_issuancemanaged(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_closecrowdsale(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_closecrowdsale(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "omni_createpayload_closecrowdsale propertyid\n"
@@ -342,8 +361,10 @@ UniValue omni_createpayload_closecrowdsale(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_grant(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_grant(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 2 || params.size() > 3)
         throw runtime_error(
             "omni_createpayload_grant propertyid \"amount\" ( \"memo\" )\n"
@@ -374,8 +395,10 @@ UniValue omni_createpayload_grant(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_revoke(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_revoke(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 2 || params.size() > 3)
         throw runtime_error(
             "omni_createpayload_revoke propertyid \"amount\" ( \"memo\" )\n"
@@ -406,8 +429,10 @@ UniValue omni_createpayload_revoke(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_changeissuer(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_changeissuer(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "omni_createpayload_changeissuer propertyid\n"
@@ -432,8 +457,10 @@ UniValue omni_createpayload_changeissuer(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_trade(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_trade(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw runtime_error(
             "omni_createpayload_trade propertyidforsale \"amountforsale\" propertiddesired \"amountdesired\"\n"
@@ -469,8 +496,10 @@ UniValue omni_createpayload_trade(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_canceltradesbyprice(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_canceltradesbyprice(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw runtime_error(
             "omni_createpayload_canceltradesbyprice propertyidforsale \"amountforsale\" propertiddesired \"amountdesired\"\n"
@@ -505,8 +534,10 @@ UniValue omni_createpayload_canceltradesbyprice(const UniValue& params, bool fHe
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_canceltradesbypair(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_canceltradesbypair(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_createpayload_canceltradesbypair propertyidforsale propertiddesired\n"
@@ -535,8 +566,10 @@ UniValue omni_createpayload_canceltradesbypair(const UniValue& params, bool fHel
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_cancelalltrades(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_cancelalltrades(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "omni_createpayload_cancelalltrades ecosystem\n"
@@ -561,8 +594,10 @@ UniValue omni_createpayload_cancelalltrades(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_enablefreezing(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_enablefreezing(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "omni_createpayload_enablefreezing propertyid\n"
@@ -587,8 +622,10 @@ UniValue omni_createpayload_enablefreezing(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_disablefreezing(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_disablefreezing(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "omni_createpayload_disablefreezing propertyid\n"
@@ -614,8 +651,10 @@ UniValue omni_createpayload_disablefreezing(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_freeze(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_freeze(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 3)
         throw runtime_error(
             "omni_createpayload_freeze \"toaddress\" propertyid amount \n"
@@ -646,8 +685,10 @@ UniValue omni_createpayload_freeze(const UniValue& params, bool fHelp)
     return HexStr(payload.begin(), payload.end());
 }
 
-UniValue omni_createpayload_unfreeze(const UniValue& params, bool fHelp)
+UniValue omni_createpayload_unfreeze(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params;
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 3)
         throw runtime_error(
             "omni_createpayload_unfreeze \"toaddress\" propertyid amount \n"
@@ -679,28 +720,28 @@ UniValue omni_createpayload_unfreeze(const UniValue& params, bool fHelp)
 }
 
 static const CRPCCommand commands[] =
-{ //  category                         name                                      actor (function)                         okSafeMode
+{ //  category                         name                                      actor (function)                         params
   //  -------------------------------- ----------------------------------------- ---------------------------------------- ----------
-    { "omni layer (payload creation)", "omni_createpayload_simplesend",          &omni_createpayload_simplesend,          true },
-    { "omni layer (payload creation)", "omni_createpayload_sendall",             &omni_createpayload_sendall,             true },
-    { "omni layer (payload creation)", "omni_createpayload_dexsell",             &omni_createpayload_dexsell,             true },
-    { "omni layer (payload creation)", "omni_createpayload_dexaccept",           &omni_createpayload_dexaccept,           true },
-    { "omni layer (payload creation)", "omni_createpayload_sto",                 &omni_createpayload_sto,                 true },
-    { "omni layer (payload creation)", "omni_createpayload_grant",               &omni_createpayload_grant,               true },
-    { "omni layer (payload creation)", "omni_createpayload_revoke",              &omni_createpayload_revoke,              true },
-    { "omni layer (payload creation)", "omni_createpayload_changeissuer",        &omni_createpayload_changeissuer,        true },
-    { "omni layer (payload creation)", "omni_createpayload_trade",               &omni_createpayload_trade,               true },
-    { "omni layer (payload creation)", "omni_createpayload_issuancefixed",       &omni_createpayload_issuancefixed,       true },
-    { "omni layer (payload creation)", "omni_createpayload_issuancecrowdsale",   &omni_createpayload_issuancecrowdsale,   true },
-    { "omni layer (payload creation)", "omni_createpayload_issuancemanaged",     &omni_createpayload_issuancemanaged,     true },
-    { "omni layer (payload creation)", "omni_createpayload_closecrowdsale",      &omni_createpayload_closecrowdsale,      true },
-    { "omni layer (payload creation)", "omni_createpayload_canceltradesbyprice", &omni_createpayload_canceltradesbyprice, true },
-    { "omni layer (payload creation)", "omni_createpayload_canceltradesbypair",  &omni_createpayload_canceltradesbypair,  true },
-    { "omni layer (payload creation)", "omni_createpayload_cancelalltrades",     &omni_createpayload_cancelalltrades,     true },
-    { "omni layer (payload creation)", "omni_createpayload_enablefreezing",      &omni_createpayload_enablefreezing,      true },
-    { "omni layer (payload creation)", "omni_createpayload_disablefreezing",     &omni_createpayload_disablefreezing,     true },
-    { "omni layer (payload creation)", "omni_createpayload_freeze",              &omni_createpayload_freeze,              true },
-    { "omni layer (payload creation)", "omni_createpayload_unfreeze",            &omni_createpayload_unfreeze,            true },
+    { "omni layer (payload creation)", "omni_createpayload_simplesend",          &omni_createpayload_simplesend,          {"propertyid", "amount"} },
+    { "omni layer (payload creation)", "omni_createpayload_sendall",             &omni_createpayload_sendall,             {"ecosystem"} },
+    { "omni layer (payload creation)", "omni_createpayload_dexsell",             &omni_createpayload_dexsell,             {"propertyidforsale", "amountforsale", "amountdesired", "paymentwindow", "minacceptfee", "action"} },
+    { "omni layer (payload creation)", "omni_createpayload_dexaccept",           &omni_createpayload_dexaccept,           {"propertyid", "amount"} },
+    { "omni layer (payload creation)", "omni_createpayload_sto",                 &omni_createpayload_sto,                 {"propertyid", "amount", "distributionproperty"} },
+    { "omni layer (payload creation)", "omni_createpayload_grant",               &omni_createpayload_grant,               {"propertyid", "amount","memo"} },
+    { "omni layer (payload creation)", "omni_createpayload_revoke",              &omni_createpayload_revoke,              {"propertyid", "amount", "memo"} },
+    { "omni layer (payload creation)", "omni_createpayload_changeissuer",        &omni_createpayload_changeissuer,        {"propertyid"} },
+    { "omni layer (payload creation)", "omni_createpayload_trade",               &omni_createpayload_trade,               {"propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
+    { "omni layer (payload creation)", "omni_createpayload_issuancefixed",       &omni_createpayload_issuancefixed,       {"ecosystem", "type","previousid", "category", "subcategory", "name", "url", "data", "amount"} },
+    { "omni layer (payload creation)", "omni_createpayload_issuancecrowdsale",   &omni_createpayload_issuancecrowdsale,   {"ecosystem", "type","previousid", "category", "subcategory", "name", "url", "data", "propertyiddesired", "tokensperunit", "deadline", "earlybonus", "issuerpercentage"} },
+    { "omni layer (payload creation)", "omni_createpayload_issuancemanaged",     &omni_createpayload_issuancemanaged,     {"ecosystem", "type","previousid", "category", "subcategory", "name", "url", "data"} },
+    { "omni layer (payload creation)", "omni_createpayload_closecrowdsale",      &omni_createpayload_closecrowdsale,      {"propertyid"} },
+    { "omni layer (payload creation)", "omni_createpayload_canceltradesbyprice", &omni_createpayload_canceltradesbyprice, {"propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
+    { "omni layer (payload creation)", "omni_createpayload_canceltradesbypair",  &omni_createpayload_canceltradesbypair,  {"propertyidforsale", "propertiddesired"} },
+    { "omni layer (payload creation)", "omni_createpayload_cancelalltrades",     &omni_createpayload_cancelalltrades,     {"ecosystem"} },
+    { "omni layer (payload creation)", "omni_createpayload_enablefreezing",      &omni_createpayload_enablefreezing,      {"propertyid"} },
+    { "omni layer (payload creation)", "omni_createpayload_disablefreezing",     &omni_createpayload_disablefreezing,     {"propertyid"} },
+    { "omni layer (payload creation)", "omni_createpayload_freeze",              &omni_createpayload_freeze,              {"toaddress", "propertyid", "amount"} },
+    { "omni layer (payload creation)", "omni_createpayload_unfreeze",            &omni_createpayload_unfreeze,            {"toaddress", "propertyid", "amount"} },
 };
 
 void RegisterOmniPayloadCreationRPCCommands(CRPCTable &tableRPC)

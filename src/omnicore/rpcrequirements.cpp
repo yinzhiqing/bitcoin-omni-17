@@ -7,7 +7,6 @@
 #include "omnicore/utilsbitcoin.h"
 
 #include "amount.h"
-#include "main.h"
 #include "rpc/protocol.h"
 #include "sync.h"
 #include "tinyformat.h"

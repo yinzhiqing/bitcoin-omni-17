@@ -27,8 +27,10 @@ using mastercore::cs_tx_cache;
 using mastercore::view;
 
 
-UniValue omni_decodetransaction(const UniValue& params, bool fHelp)
+UniValue omni_decodetransaction(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 1 || params.size() > 3)
         throw std::runtime_error(
             "omni_decodetransaction \"rawtx\" ( \"prevtxs\" height )\n"
@@ -93,11 +95,13 @@ UniValue omni_decodetransaction(const UniValue& params, bool fHelp)
     {
         LOCK2(cs_main, cs_tx_cache);
         // temporarily switch global coins view cache for transaction inputs
-        std::swap(view, viewTemp);
+		//jg 因为新的view 删除了拷贝构造函数，此处swap不能再用,暂时注释掉，想其他办法
+        //std::swap(view, viewTemp);
         // then get the results
         populateResult = populateRPCTransactionObject(tx, uint256(), txObj, "", false, "", blockHeight);
         // and restore the original, unpolluted coins view cache
-        std::swap(viewTemp, view);
+		//jg
+        //std::swap(viewTemp, view);
     }
 
     if (populateResult != 0) PopulateFailure(populateResult);
@@ -105,8 +109,10 @@ UniValue omni_decodetransaction(const UniValue& params, bool fHelp)
     return txObj;
 }
 
-UniValue omni_createrawtx_opreturn(const UniValue& params, bool fHelp)
+UniValue omni_createrawtx_opreturn(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw std::runtime_error(
             "omni_createrawtx_opreturn \"rawtx\" \"payload\"\n"
@@ -140,8 +146,10 @@ UniValue omni_createrawtx_opreturn(const UniValue& params, bool fHelp)
     return EncodeHexTx(tx);
 }
 
-UniValue omni_createrawtx_multisig(const UniValue& params, bool fHelp)
+UniValue omni_createrawtx_multisig(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw std::runtime_error(
             "omni_createrawtx_multisig \"rawtx\" \"payload\" \"seed\" \"redeemkey\"\n"
@@ -179,8 +187,10 @@ UniValue omni_createrawtx_multisig(const UniValue& params, bool fHelp)
     return EncodeHexTx(tx);
 }
 
-UniValue omni_createrawtx_input(const UniValue& params, bool fHelp)
+UniValue omni_createrawtx_input(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 3)
         throw std::runtime_error(
             "omni_createrawtx_input \"rawtx\" \"txid\" n\n"
@@ -214,8 +224,10 @@ UniValue omni_createrawtx_input(const UniValue& params, bool fHelp)
     return EncodeHexTx(tx);
 }
 
-UniValue omni_createrawtx_reference(const UniValue& params, bool fHelp)
+UniValue omni_createrawtx_reference(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 2 || params.size() > 3)
         throw std::runtime_error(
             "omni_createrawtx_reference \"rawtx\" \"destination\" ( amount )\n"
@@ -251,8 +263,10 @@ UniValue omni_createrawtx_reference(const UniValue& params, bool fHelp)
     return EncodeHexTx(tx);
 }
 
-UniValue omni_createrawtx_change(const UniValue& params, bool fHelp)
+UniValue omni_createrawtx_change(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 4 || params.size() > 5)
         throw std::runtime_error(
             "omni_createrawtx_change \"rawtx\" \"prevtxs\" \"destination\" fee ( position )\n"
@@ -315,14 +329,14 @@ UniValue omni_createrawtx_change(const UniValue& params, bool fHelp)
 }
 
 static const CRPCCommand commands[] =
-{ //  category                         name                          actor (function)             okSafeMode
+{ //  category                         name                          actor (function)             params
   //  -------------------------------- ----------------------------- ---------------------------- ----------
-    { "omni layer (raw transactions)", "omni_decodetransaction",     &omni_decodetransaction,     true },
-    { "omni layer (raw transactions)", "omni_createrawtx_opreturn",  &omni_createrawtx_opreturn,  true },
-    { "omni layer (raw transactions)", "omni_createrawtx_multisig",  &omni_createrawtx_multisig,  true },
-    { "omni layer (raw transactions)", "omni_createrawtx_input",     &omni_createrawtx_input,     true },
-    { "omni layer (raw transactions)", "omni_createrawtx_reference", &omni_createrawtx_reference, true },
-    { "omni layer (raw transactions)", "omni_createrawtx_change",    &omni_createrawtx_change,    true },
+    { "omni layer (raw transactions)", "omni_decodetransaction",     &omni_decodetransaction,     {"rawtx","prevtxs","height"} },
+    { "omni layer (raw transactions)", "omni_createrawtx_opreturn",  &omni_createrawtx_opreturn,  {"rawtx","payload"} },
+    { "omni layer (raw transactions)", "omni_createrawtx_multisig",  &omni_createrawtx_multisig,  {"rawtx","payload","seed","redeemkey"} },
+    { "omni layer (raw transactions)", "omni_createrawtx_input",     &omni_createrawtx_input,     {"rawtx","txid", "n"} },
+    { "omni layer (raw transactions)", "omni_createrawtx_reference", &omni_createrawtx_reference, {"rawtx","destination","amount"} },
+    { "omni layer (raw transactions)", "omni_createrawtx_change",    &omni_createrawtx_change,    {"rawtx","prevtxs","destination","fee","position"} },
 
 };
 

@@ -17,8 +17,8 @@
 #include "omnicore/tx.h"
 #include "omnicore/wallettxbuilder.h"
 
+#include "policy/fees.h"
 #include "init.h"
-#include "main.h"
 #include "rpc/server.h"
 #include "sync.h"
 #ifdef ENABLE_WALLET
@@ -34,9 +34,14 @@
 using std::runtime_error;
 using namespace mastercore;
 
+extern CWallet* pwallet; 
+extern CCriticalSection cs_main;
+extern CFeeRate payTxFee;
 
-UniValue omni_funded_send(const UniValue& params, bool fHelp)
+UniValue omni_funded_send(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 5)
         throw runtime_error(
             "omni_funded_send \"fromaddress\" \"toaddress\" propertyid \"amount\" \"feeaddress\"\n"
@@ -84,8 +89,10 @@ UniValue omni_funded_send(const UniValue& params, bool fHelp)
     return retTxid.ToString();
 }
 
-UniValue omni_funded_sendall(const UniValue& params, bool fHelp)
+UniValue omni_funded_sendall(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw runtime_error(
             "omni_funded_sendall \"fromaddress\" \"toaddress\" ecosystem \"feeaddress\"\n"
@@ -127,8 +134,10 @@ UniValue omni_funded_sendall(const UniValue& params, bool fHelp)
     return retTxid.ToString();
 }
 
-UniValue omni_sendrawtx(const UniValue& params, bool fHelp)
+UniValue omni_sendrawtx(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 2 || params.size() > 5)
         throw runtime_error(
             "omni_sendrawtx \"fromaddress\" \"rawtransaction\" ( \"referenceaddress\" \"redeemaddress\" \"referenceamount\" )\n"
@@ -169,8 +178,10 @@ UniValue omni_sendrawtx(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_send(const UniValue& params, bool fHelp)
+UniValue omni_send(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 4 || params.size() > 6)
         throw runtime_error(
             "omni_send \"fromaddress\" \"toaddress\" propertyid \"amount\" ( \"redeemaddress\" \"referenceamount\" )\n"
@@ -227,8 +238,10 @@ UniValue omni_send(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendall(const UniValue& params, bool fHelp)
+UniValue omni_sendall(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 3 || params.size() > 5)
         throw runtime_error(
             "omni_sendall \"fromaddress\" \"toaddress\" ecosystem ( \"redeemaddress\" \"referenceamount\" )\n"
@@ -281,8 +294,10 @@ UniValue omni_sendall(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_senddexsell(const UniValue& params, bool fHelp)
+UniValue omni_senddexsell(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 7)
         throw runtime_error(
             "omni_senddexsell \"fromaddress\" propertyidforsale \"amountforsale\" \"amountdesired\" paymentwindow minacceptfee action\n"
@@ -370,8 +385,10 @@ UniValue omni_senddexsell(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_senddexaccept(const UniValue& params, bool fHelp)
+UniValue omni_senddexaccept(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 4 || params.size() > 5)
         throw runtime_error(
             "omni_senddexaccept \"fromaddress\" \"toaddress\" propertyid \"amount\" ( override )\n"
@@ -419,7 +436,7 @@ UniValue omni_senddexaccept(const UniValue& params, bool fHelp)
         nMinimumAcceptFee = sellOffer->getMinFee();
     }
 
-    LOCK2(cs_main, pwalletMain->cs_wallet);
+    LOCK2(cs_main, pwallet->cs_wallet);
 
     // temporarily update the global transaction fee to pay enough for the accept fee
     CFeeRate payTxFeeOriginal = payTxFee;
@@ -452,8 +469,10 @@ UniValue omni_senddexaccept(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendissuancecrowdsale(const UniValue& params, bool fHelp)
+UniValue omni_sendissuancecrowdsale(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 14)
         throw runtime_error(
             "omni_sendissuancecrowdsale \"fromaddress\" ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\" propertyiddesired tokensperunit deadline ( earlybonus issuerpercentage )\n"
@@ -525,8 +544,10 @@ UniValue omni_sendissuancecrowdsale(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendissuancefixed(const UniValue& params, bool fHelp)
+UniValue omni_sendissuancefixed(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 10)
         throw runtime_error(
             "omni_sendissuancefixed \"fromaddress\" ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\" \"amount\"\n"
@@ -588,8 +609,10 @@ UniValue omni_sendissuancefixed(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendissuancemanaged(const UniValue& params, bool fHelp)
+UniValue omni_sendissuancemanaged(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 9)
         throw runtime_error(
             "omni_sendissuancemanaged \"fromaddress\" ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\"\n"
@@ -649,8 +672,10 @@ UniValue omni_sendissuancemanaged(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendsto(const UniValue& params, bool fHelp)
+UniValue omni_sendsto(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 3 || params.size() > 5)
         throw runtime_error(
             "omni_sendsto \"fromaddress\" propertyid \"amount\" ( \"redeemaddress\" distributionproperty )\n"
@@ -703,8 +728,10 @@ UniValue omni_sendsto(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendgrant(const UniValue& params, bool fHelp)
+UniValue omni_sendgrant(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 4 || params.size() > 5)
         throw runtime_error(
             "omni_sendgrant \"fromaddress\" \"toaddress\" propertyid \"amount\" ( \"memo\" )\n"
@@ -758,8 +785,10 @@ UniValue omni_sendgrant(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendrevoke(const UniValue& params, bool fHelp)
+UniValue omni_sendrevoke(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() < 3 || params.size() > 4)
         throw runtime_error(
             "omni_sendrevoke \"fromaddress\" propertyid \"amount\" ( \"memo\" )\n"
@@ -812,8 +841,10 @@ UniValue omni_sendrevoke(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendclosecrowdsale(const UniValue& params, bool fHelp)
+UniValue omni_sendclosecrowdsale(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_sendclosecrowdsale \"fromaddress\" propertyid\n"
@@ -862,8 +893,10 @@ UniValue omni_sendclosecrowdsale(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue trade_MP(const UniValue& params, bool fHelp)
+UniValue trade_MP(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 6)
         throw runtime_error(
             "trade_MP \"fromaddress\" propertyidforsale \"amountforsale\" propertiddesired \"amountdesired\" action\n"
@@ -924,8 +957,10 @@ UniValue trade_MP(const UniValue& params, bool fHelp)
     throw JSONRPCError(RPC_TYPE_ERROR, "Invalid action (1,2,3,4 only)");
 }
 
-UniValue omni_sendtrade(const UniValue& params, bool fHelp)
+UniValue omni_sendtrade(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 5)
         throw runtime_error(
             "omni_sendtrade \"fromaddress\" propertyidforsale \"amountforsale\" propertiddesired \"amountdesired\"\n"
@@ -982,8 +1017,10 @@ UniValue omni_sendtrade(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendcanceltradesbyprice(const UniValue& params, bool fHelp)
+UniValue omni_sendcanceltradesbyprice(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 5)
         throw runtime_error(
             "omni_sendcanceltradesbyprice \"fromaddress\" propertyidforsale \"amountforsale\" propertiddesired \"amountdesired\"\n"
@@ -1040,8 +1077,10 @@ UniValue omni_sendcanceltradesbyprice(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendcanceltradesbypair(const UniValue& params, bool fHelp)
+UniValue omni_sendcanceltradesbypair(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 3)
         throw runtime_error(
             "omni_sendcanceltradesbypair \"fromaddress\" propertyidforsale propertiddesired\n"
@@ -1094,8 +1133,10 @@ UniValue omni_sendcanceltradesbypair(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendcancelalltrades(const UniValue& params, bool fHelp)
+UniValue omni_sendcancelalltrades(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_sendcancelalltrades \"fromaddress\" ecosystem\n"
@@ -1142,8 +1183,10 @@ UniValue omni_sendcancelalltrades(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendchangeissuer(const UniValue& params, bool fHelp)
+UniValue omni_sendchangeissuer(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 3)
         throw runtime_error(
             "omni_sendchangeissuer \"fromaddress\" \"toaddress\" propertyid\n"
@@ -1192,8 +1235,10 @@ UniValue omni_sendchangeissuer(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendenablefreezing(const UniValue& params, bool fHelp)
+UniValue omni_sendenablefreezing(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_sendenablefreezing \"fromaddress\" propertyid\n"
@@ -1241,8 +1286,10 @@ UniValue omni_sendenablefreezing(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_senddisablefreezing(const UniValue& params, bool fHelp)
+UniValue omni_senddisablefreezing(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_senddisablefreezing \"fromaddress\" propertyid\n"
@@ -1291,8 +1338,10 @@ UniValue omni_senddisablefreezing(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendfreeze(const UniValue& params, bool fHelp)
+UniValue omni_sendfreeze(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw runtime_error(
             "omni_sendfreeze \"fromaddress\" \"toaddress\" propertyid amount \n"
@@ -1342,8 +1391,10 @@ UniValue omni_sendfreeze(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendunfreeze(const UniValue& params, bool fHelp)
+UniValue omni_sendunfreeze(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw runtime_error(
             "omni_sendunfreeze \"fromaddress\" \"toaddress\" propertyid amount \n"
@@ -1393,8 +1444,10 @@ UniValue omni_sendunfreeze(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendactivation(const UniValue& params, bool fHelp)
+UniValue omni_sendactivation(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw runtime_error(
             "omni_sendactivation \"fromaddress\" featureid block minclientversion\n"
@@ -1438,8 +1491,10 @@ UniValue omni_sendactivation(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_senddeactivation(const UniValue& params, bool fHelp)
+UniValue omni_senddeactivation(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "omni_senddeactivation \"fromaddress\" featureid\n"
@@ -1479,8 +1534,10 @@ UniValue omni_senddeactivation(const UniValue& params, bool fHelp)
     }
 }
 
-UniValue omni_sendalert(const UniValue& params, bool fHelp)
+UniValue omni_sendalert(const JSONRPCRequest& request)
 {
+	const UniValue &params = request.params; 
+	const bool& fHelp = request.fHelp;
     if (fHelp || params.size() != 4)
         throw runtime_error(
             "omni_sendalert \"fromaddress\" alerttype expiryvalue typecheck versioncheck \"message\"\n"
@@ -1536,38 +1593,38 @@ static const CRPCCommand commands[] =
 { //  category                             name                            actor (function)               okSafeMode
   //  ------------------------------------ ------------------------------- ------------------------------ ----------
 #ifdef ENABLE_WALLET
-    { "omni layer (transaction creation)", "omni_sendrawtx",               &omni_sendrawtx,               false },
-    { "omni layer (transaction creation)", "omni_send",                    &omni_send,                    false },
-    { "omni layer (transaction creation)", "omni_senddexsell",             &omni_senddexsell,             false },
-    { "omni layer (transaction creation)", "omni_senddexaccept",           &omni_senddexaccept,           false },
-    { "omni layer (transaction creation)", "omni_sendissuancecrowdsale",   &omni_sendissuancecrowdsale,   false },
-    { "omni layer (transaction creation)", "omni_sendissuancefixed",       &omni_sendissuancefixed,       false },
-    { "omni layer (transaction creation)", "omni_sendissuancemanaged",     &omni_sendissuancemanaged,     false },
-    { "omni layer (transaction creation)", "omni_sendtrade",               &omni_sendtrade,               false },
-    { "omni layer (transaction creation)", "omni_sendcanceltradesbyprice", &omni_sendcanceltradesbyprice, false },
-    { "omni layer (transaction creation)", "omni_sendcanceltradesbypair",  &omni_sendcanceltradesbypair,  false },
-    { "omni layer (transaction creation)", "omni_sendcancelalltrades",     &omni_sendcancelalltrades,     false },
-    { "omni layer (transaction creation)", "omni_sendsto",                 &omni_sendsto,                 false },
-    { "omni layer (transaction creation)", "omni_sendgrant",               &omni_sendgrant,               false },
-    { "omni layer (transaction creation)", "omni_sendrevoke",              &omni_sendrevoke,              false },
-    { "omni layer (transaction creation)", "omni_sendclosecrowdsale",      &omni_sendclosecrowdsale,      false },
-    { "omni layer (transaction creation)", "omni_sendchangeissuer",        &omni_sendchangeissuer,        false },
-    { "omni layer (transaction creation)", "omni_sendall",                 &omni_sendall,                 false },
-    { "omni layer (transaction creation)", "omni_sendenablefreezing",      &omni_sendenablefreezing,      false },
-    { "omni layer (transaction creation)", "omni_senddisablefreezing",     &omni_senddisablefreezing,     false },
-    { "omni layer (transaction creation)", "omni_sendfreeze",              &omni_sendfreeze,              false },
-    { "omni layer (transaction creation)", "omni_sendunfreeze",            &omni_sendunfreeze,            false },
-    { "hidden",                            "omni_senddeactivation",        &omni_senddeactivation,        true  },
-    { "hidden",                            "omni_sendactivation",          &omni_sendactivation,          false },
-    { "hidden",                            "omni_sendalert",               &omni_sendalert,               true  },
-    { "omni layer (transaction creation)", "omni_funded_send",             &omni_funded_send,             false },
-    { "omni layer (transaction creation)", "omni_funded_sendall",          &omni_funded_sendall,          false },
+    { "omni layer (transaction creation)", "omni_sendrawtx",               &omni_sendrawtx,               {"fromaddress","rawtransaction","referenceaddress","redeemaddress","referenceamount"} },
+    { "omni layer (transaction creation)", "omni_send",                    &omni_send,                    {"fromaddress","toaddress","propertyid","amount","redeemaddress","referenceamount"} },
+    { "omni layer (transaction creation)", "omni_senddexsell",             &omni_senddexsell,             {"fromaddress","propertyidforsale","amountforsale","amountdesired","paymentwindow","minacceptfee","action"} },
+    { "omni layer (transaction creation)", "omni_senddexaccept",           &omni_senddexaccept,           {"fromaddress","toaddress","propertyid","amount","override"} },
+    { "omni layer (transaction creation)", "omni_sendissuancecrowdsale",   &omni_sendissuancecrowdsale,   {"fromaddress","ecosystem","type","previousid","category","subcategory","name","url","data","propertyiddesired","tokensperunit","deadline","earlybonus","issuerpercentage"} },
+    { "omni layer (transaction creation)", "omni_sendissuancefixed",       &omni_sendissuancefixed,       {"fromaddress","ecosystem","type","previousid","category","subcategory","name","url","data","amount"} },
+    { "omni layer (transaction creation)", "omni_sendissuancemanaged",     &omni_sendissuancemanaged,     {"fromaddress","ecosystem","type","previousid","category","subcategory","name","url","data"} },
+    { "omni layer (transaction creation)", "omni_sendtrade",               &omni_sendtrade,               {"fromaddress","propertyidforsale","amountforsale","propertiddesired","amountdesired"} },
+    { "omni layer (transaction creation)", "omni_sendcanceltradesbyprice", &omni_sendcanceltradesbyprice, {"fromaddress","propertyidforsale","amountforsale","propertiddesired","amountdesired"} },
+    { "omni layer (transaction creation)", "omni_sendcanceltradesbypair",  &omni_sendcanceltradesbypair,  {"fromaddress","propertyidforsale","propertiddesired"} },
+    { "omni layer (transaction creation)", "omni_sendcancelalltrades",     &omni_sendcancelalltrades,     {"fromaddress","ecosystem"} },
+    { "omni layer (transaction creation)", "omni_sendsto",                 &omni_sendsto,                 {"fromaddress","propertyid","amount","redeemaddress","distributionproperty"} },
+    { "omni layer (transaction creation)", "omni_sendgrant",               &omni_sendgrant,               {"fromaddress","toaddress","propertyid","amount","memo"} },
+    { "omni layer (transaction creation)", "omni_sendrevoke",              &omni_sendrevoke,              {"fromaddress","propertyid","amount","memo"} },
+    { "omni layer (transaction creation)", "omni_sendclosecrowdsale",      &omni_sendclosecrowdsale,      {"fromaddress","propertyid"} },
+    { "omni layer (transaction creation)", "omni_sendchangeissuer",        &omni_sendchangeissuer,        {"fromaddress","toaddress","propertyid"} },
+    { "omni layer (transaction creation)", "omni_sendall",                 &omni_sendall,                 {"fromaddress","toaddress","ecosystem","redeemaddress","referenceamount"} },
+    { "omni layer (transaction creation)", "omni_sendenablefreezing",      &omni_sendenablefreezing,      {"fromaddress","propertyid"} },
+    { "omni layer (transaction creation)", "omni_senddisablefreezing",     &omni_senddisablefreezing,     {"fromaddress","propertyid"} },
+    { "omni layer (transaction creation)", "omni_sendfreeze",              &omni_sendfreeze,              {"fromaddress","toaddress","propertyid","amount"} },
+    { "omni layer (transaction creation)", "omni_sendunfreeze",            &omni_sendunfreeze,            {"fromaddress","toaddress","propertyid","amount"} },
+    { "hidden",                            "omni_senddeactivation",        &omni_senddeactivation,        {"fromaddress", "featureid"} },
+    { "hidden",                            "omni_sendactivation",          &omni_sendactivation,          {"fromaddress", "featureid", "block", "minclientversion"} },
+    { "hidden",                            "omni_sendalert",               &omni_sendalert,               {"fromaddress","alerttype","expiryvalue","message"} },
+    { "omni layer (transaction creation)", "omni_funded_send",             &omni_funded_send,             {"fromaddress", "toaddress", "propertyid", "amount", "feeaddress"} },
+    { "omni layer (transaction creation)", "omni_funded_sendall",          &omni_funded_sendall,          {"fromaddress", "toaddress", "ecosystem", "feeaddress"} },
 
     /* depreciated: */
-    { "hidden",                            "sendrawtx_MP",                 &omni_sendrawtx,               false },
-    { "hidden",                            "send_MP",                      &omni_send,                    false },
-    { "hidden",                            "sendtoowners_MP",              &omni_sendsto,                 false },
-    { "hidden",                            "trade_MP",                     &trade_MP,                     false },
+    { "hidden",                            "sendrawtx_MP",                 &omni_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },
+    { "hidden",                            "send_MP",                      &omni_send,                    {"fromaddress", "toaddress", "propertyid", "amount", "redeemaddress","referenceamount"} },
+    { "hidden",                            "sendtoowners_MP",              &omni_sendsto,                 {"fromaddress","propertyid", "amount", "redeemaddress", "distributionproperty"} },
+    { "hidden",                            "trade_MP",                     &trade_MP,                     {"fromaddress","propertyidforsale","amountforsale","propertiddesired","amountdesired", "action"} },
 #endif
 };
 

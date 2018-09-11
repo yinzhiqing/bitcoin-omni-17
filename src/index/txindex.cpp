@@ -65,6 +65,7 @@ public:
     /// Migrate txindex data from the block tree DB, where it may be for older nodes that have not
     /// been upgraded yet to the new database.
     bool MigrateData(CBlockTreeDB& block_tree_db, const CBlockLocator& best_locator);
+
 };
 
 TxIndex::DB::DB(size_t n_cache_size, bool f_memory, bool f_wipe) :
@@ -257,6 +258,13 @@ bool TxIndex::WriteBlock(const CBlock& block, const CBlockIndex* pindex)
 
 BaseIndex::DB& TxIndex::GetDB() const { return *m_db; }
 
+unsigned int TxIndex::GetDistTxOffset(const uint256& tx_hash) 
+{   CDiskTxPos postx;
+    if (!m_db->ReadTxPos(tx_hash, postx)) {
+		return 0;
+	}
+	return postx.nTxOffset;
+}
 bool TxIndex::FindTx(const uint256& tx_hash, uint256& block_hash, CTransactionRef& tx) const
 {
     CDiskTxPos postx;

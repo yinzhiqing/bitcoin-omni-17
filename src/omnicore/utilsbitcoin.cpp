@@ -6,14 +6,17 @@
 
 #include "chain.h"
 #include "chainparams.h"
-#include "main.h"
 #include "sync.h"
+#include "validation.h"
 
 #include <stdint.h>
 #include <string>
 
 namespace mastercore
 {
+	extern  CChain& chainActive;
+	extern CCriticalSection cs_main; 
+
 /**
  * @return The current chain length.
  */

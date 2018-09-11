@@ -15,10 +15,10 @@
 #include "omnicore/utilsbitcoin.h"
 
 #include "init.h"
-#include "main.h"
 #include "sync.h"
 #include "tinyformat.h"
 #include "txdb.h"
+#include "index/txindex.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #endif
@@ -35,19 +35,18 @@
 
 namespace mastercore
 {
+	extern CWallet* pwallet; 
+	extern CChain& chainActive;
+	extern CCriticalSection cs_main; 
+	extern std::unique_ptr<TxIndex> g_txindex;  
 /**
  * Gets the byte offset of a transaction from the transaction index.
  */
-static unsigned int GetTransactionByteOffset(const uint256& txid)
+static unsigned int GetTransactionByteOffset(const uint256& tx_hash)
 {
     LOCK(cs_main);
-
-    CDiskTxPos position;
-    if (pblocktree->ReadTxIndex(txid, position)) {
-        return position.nTxOffset;
-    }
-
-    return 0;
+     
+    return g_txindex->GetDistTxOffset(tx_hash);
 }
 
 /**
@@ -59,15 +58,15 @@ std::map<std::string, uint256> FetchWalletOmniTransactions(unsigned int count, i
 {
     std::map<std::string, uint256> mapResponse;
 #ifdef ENABLE_WALLET
-    if (pwalletMain == NULL) {
+    if (pwallet == NULL) {
         return mapResponse;
     }
     std::set<uint256> seenHashes;
     std::list<CAccountingEntry> acentries;
     CWallet::TxItems txOrdered;
     {
-        LOCK(pwalletMain->cs_wallet);
-        txOrdered = pwalletMain->wtxOrdered;
+        LOCK(pwallet->cs_wallet);
+        txOrdered = pwallet->wtxOrdered;
     }
     // Iterate backwards through wallet transactions until we have count items to return:
     for (CWallet::TxItems::reverse_iterator it = txOrdered.rbegin(); it != txOrdered.rend(); ++it) {
@@ -126,9 +125,9 @@ std::map<std::string, uint256> FetchWalletOmniTransactions(unsigned int count, i
         if (blockHeight < startBlock || blockHeight > endBlock) continue;
         int blockPosition = 0;
         {
-            LOCK(pwalletMain->cs_wallet);
-            std::map<uint256, CWalletTx>::const_iterator walletIt = pwalletMain->mapWallet.find(txHash);
-            if (walletIt != pwalletMain->mapWallet.end()) {
+            LOCK(pwallet->cs_wallet);
+            std::map<uint256, CWalletTx>::const_iterator walletIt = pwallet->mapWallet.find(txHash);
+            if (walletIt != pwallet->mapWallet.end()) {
                 const CWalletTx& wtx = walletIt->second;
                 blockPosition = wtx.nOrderPos;
             }

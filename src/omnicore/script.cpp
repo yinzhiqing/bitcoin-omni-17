@@ -2,6 +2,7 @@
 
 #include "amount.h"
 #include "script/script.h"
+#include <policy/feerate.h>   
 #include "script/standard.h"
 #include "serialize.h"
 #include "utilstrencodings.h"
@@ -14,6 +15,7 @@
 
 /** The minimum transaction relay fee. */
 extern CFeeRate minRelayTxFee;
+extern CAmount GetDustThreshold(const CTxOut& txout, const CFeeRate& dustRelayFeeIn);
 
 /**
  * Determines the minimum output amount to be spent by an output, based on the
@@ -25,8 +27,7 @@ extern CFeeRate minRelayTxFee;
 int64_t GetDustThreshold(const CScript& scriptPubKey)
 {
     CTxOut txOut(0, scriptPubKey);
-
-    return txOut.GetDustThreshold(minRelayTxFee);
+    return GetDustThreshold(txOut, minRelayTxFee);
 }
 
 /**
@@ -149,7 +150,7 @@ bool SafeSolver(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<st
 
     // Scan templates
     const CScript& script1 = scriptPubKey;
-    BOOST_FOREACH(const PAIRTYPE(txnouttype, CScript)& tplate, mTemplates)
+    for(const std::pair<txnouttype, CScript>& tplate : mTemplates)
     {
         const CScript& script2 = tplate.second;
         vSolutionsRet.clear();

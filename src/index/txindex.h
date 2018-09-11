@@ -46,6 +46,8 @@ public:
     /// @param[out]  tx  The transaction itself.
     /// @return  true if transaction is found, false otherwise
     bool FindTx(const uint256& tx_hash, uint256& block_hash, CTransactionRef& tx) const;
+
+	unsigned int GetDistTxOffset(const uint256& tx_hash);
 };
 
 /// The global transaction index, used in GetTransaction. May be null.

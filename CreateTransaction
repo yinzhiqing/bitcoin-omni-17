@@ -1,0 +1,758 @@
+mapAddressBook:2:src/omnicore/rpc.cpp:722:            LOCK(pwallet->cs_wallet);
+mapAddressBook:3:src/omnicore/rpc.cpp:921:    LOCK(pwallet->cs_wallet);
+mapAddressBook:4:src/omnicore/rpc.cpp:923:    for (std::map<CTxDestination, CAddressBookData> item : pwallet->mapAddressBook) {
+mapAddressBook:5:src/omnicore/wallettxbuilder.cpp:140:    // NOTE: require: LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:6:src/omnicore/wallettxbuilder.cpp:144:    pwallet->AvailableCoins(vCoins, false, nullptr, true);
+mapAddressBook:7:src/omnicore/wallettxbuilder.cpp:157:        pwallet->LockCoin(outpointLocked);
+mapAddressBook:8:src/omnicore/wallettxbuilder.cpp:171:    // NOTE: require: LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:9:src/omnicore/wallettxbuilder.cpp:174:        pwallet->UnlockCoin(output);
+mapAddressBook:10:src/wallet/init.cpp:244:        pwallet->postInitProcess();
+mapAddressBook:11:src/wallet/init.cpp:254:        pwallet->Flush(false);
+mapAddressBook:12:src/wallet/init.cpp:261:        pwallet->Flush(true);
+mapAddressBook:13:src/wallet/walletdb.cpp:251:             CWalletScanState &wss, std::string& strType, std::string& strErr) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+mapAddressBook:14:src/wallet/walletdb.cpp:262:            ssValue >> pwallet->mapAddressBook[DecodeDestination(strAddress)].name;
+mapAddressBook:15:src/wallet/walletdb.cpp:268:            ssValue >> pwallet->mapAddressBook[DecodeDestination(strAddress)].purpose;
+mapAddressBook:16:src/wallet/walletdb.cpp:303:            pwallet->LoadToWallet(wtx);
+mapAddressBook:17:src/wallet/walletdb.cpp:311:            if (nNumber > pwallet->nAccountingEntryNumber) {
+mapAddressBook:18:src/wallet/walletdb.cpp:312:                pwallet->nAccountingEntryNumber = nNumber;
+mapAddressBook:19:src/wallet/walletdb.cpp:331:                pwallet->LoadWatchOnly(script);
+mapAddressBook:20:src/wallet/walletdb.cpp:391:            if (!pwallet->LoadKey(key, vchPubKey))
+mapAddressBook:21:src/wallet/walletdb.cpp:403:            if(pwallet->mapMasterKeys.count(nID) != 0)
+mapAddressBook:22:src/wallet/walletdb.cpp:408:            pwallet->mapMasterKeys[nID] = kMasterKey;
+mapAddressBook:23:src/wallet/walletdb.cpp:409:            if (pwallet->nMasterKeyMaxID < nID)
+mapAddressBook:24:src/wallet/walletdb.cpp:410:                pwallet->nMasterKeyMaxID = nID;
+mapAddressBook:25:src/wallet/walletdb.cpp:425:            if (!pwallet->LoadCryptedKey(vchPubKey, vchPrivKey))
+mapAddressBook:26:src/wallet/walletdb.cpp:439:            pwallet->LoadKeyMetadata(vchPubKey.GetID(), keyMeta);
+mapAddressBook:27:src/wallet/walletdb.cpp:448:            pwallet->LoadScriptMetadata(CScriptID(script), keyMeta);
+mapAddressBook:28:src/wallet/walletdb.cpp:468:            pwallet->LoadKeyPool(nIndex, keypool);
+mapAddressBook:29:src/wallet/walletdb.cpp:482:            if (!pwallet->LoadCScript(script))
+mapAddressBook:30:src/wallet/walletdb.cpp:490:            ssValue >> pwallet->nOrderPosNext;
+mapAddressBook:31:src/wallet/walletdb.cpp:498:            pwallet->LoadDestData(DecodeDestination(strAddress), strKey, strValue);
+mapAddressBook:32:src/wallet/walletdb.cpp:504:            pwallet->SetHDChain(chain, true);
+mapAddressBook:33:src/wallet/walletdb.cpp:508:            if (!pwallet->SetWalletFlags(flags, true)) {
+mapAddressBook:34:src/wallet/walletdb.cpp:534:    LOCK(pwallet->cs_wallet);
+mapAddressBook:35:src/wallet/walletdb.cpp:541:            pwallet->LoadMinVersion(nMinVersion);
+mapAddressBook:36:src/wallet/walletdb.cpp:548:            pwallet->WalletLogPrintf("Error getting wallet database cursor\n");
+mapAddressBook:37:src/wallet/walletdb.cpp:562:                pwallet->WalletLogPrintf("Error reading next record from wallet database\n");
+mapAddressBook:38:src/wallet/walletdb.cpp:586:                pwallet->WalletLogPrintf("%s\n", strErr);
+mapAddressBook:39:src/wallet/walletdb.cpp:605:    pwallet->WalletLogPrintf("nFileVersion = %d\n", wss.nFileVersion);
+mapAddressBook:40:src/wallet/walletdb.cpp:607:    pwallet->WalletLogPrintf("Keys: %u plaintext, %u encrypted, %u w/ metadata, %u total. Unknown wallet records: %u\n",
+mapAddressBook:41:src/wallet/walletdb.cpp:612:        pwallet->UpdateTimeFirstKey(1);
+mapAddressBook:42:src/wallet/walletdb.cpp:615:        WriteTx(pwallet->mapWallet.at(hash));
+mapAddressBook:43:src/wallet/walletdb.cpp:625:        result = pwallet->ReorderTransactions();
+mapAddressBook:44:src/wallet/walletdb.cpp:627:    pwallet->laccentries.clear();
+mapAddressBook:45:src/wallet/walletdb.cpp:628:    ListAccountCreditDebit("*", pwallet->laccentries);
+mapAddressBook:46:src/wallet/walletdb.cpp:629:    for (CAccountingEntry& entry : pwallet->laccentries) {
+mapAddressBook:47:src/wallet/walletdb.cpp:630:        pwallet->wtxOrdered.insert(make_pair(entry.nOrderPos, CWallet::TxPair(nullptr, &entry)));
+mapAddressBook:48:src/wallet/walletdb.cpp:761:        WalletDatabase& dbh = pwallet->GetDBHandle();
+mapAddressBook:49:src/wallet/rpcdump.cpp:72:    pwallet->GetKey(keyid, key);
+mapAddressBook:50:src/wallet/rpcdump.cpp:74:        if (pwallet->mapAddressBook.count(dest)) {
+mapAddressBook:51:src/wallet/rpcdump.cpp:79:            strLabel = EncodeDumpString(pwallet->mapAddressBook[dest].name);
+mapAddressBook:52:src/wallet/rpcdump.cpp:84:        strAddr = EncodeDestination(GetDestinationForKey(key.GetPubKey(), pwallet->m_default_address_type));
+mapAddressBook:53:src/wallet/rpcdump.cpp:137:        LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:54:src/wallet/rpcdump.cpp:164:            pwallet->MarkDirty();
+mapAddressBook:55:src/wallet/rpcdump.cpp:167:                pwallet->SetAddressBook(dest, strLabel, "receive");
+mapAddressBook:56:src/wallet/rpcdump.cpp:171:            if (pwallet->HaveKey(vchAddress)) {
+mapAddressBook:57:src/wallet/rpcdump.cpp:176:            pwallet->UpdateTimeFirstKey(1);
+mapAddressBook:58:src/wallet/rpcdump.cpp:177:            pwallet->mapKeyMetadata[vchAddress].nCreateTime = 1;
+mapAddressBook:59:src/wallet/rpcdump.cpp:179:            if (!pwallet->AddKeyPubKey(key, pubkey)) {
+mapAddressBook:60:src/wallet/rpcdump.cpp:182:            pwallet->LearnAllRelatedScripts(pubkey);
+mapAddressBook:61:src/wallet/rpcdump.cpp:213:    if (!pwallet->IsScanning() || pwallet->IsAbortingRescan()) return false;
+mapAddressBook:62:src/wallet/rpcdump.cpp:214:    pwallet->AbortRescan();
+mapAddressBook:63:src/wallet/rpcdump.cpp:219:static void ImportScript(CWallet* const pwallet, const CScript& script, const std::string& strLabel, bool isRedeemScript) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+mapAddressBook:64:src/wallet/rpcdump.cpp:225:    pwallet->MarkDirty();
+mapAddressBook:65:src/wallet/rpcdump.cpp:227:    if (!pwallet->HaveWatchOnly(script) && !pwallet->AddWatchOnly(script, 0 /* nCreateTime */)) {
+mapAddressBook:66:src/wallet/rpcdump.cpp:233:        if (!pwallet->HaveCScript(id) && !pwallet->AddCScript(script)) {
+mapAddressBook:67:src/wallet/rpcdump.cpp:240:            pwallet->SetAddressBook(destination, strLabel, "receive");
+mapAddressBook:68:src/wallet/rpcdump.cpp:245:static void ImportAddress(CWallet* const pwallet, const CTxDestination& dest, const std::string& strLabel) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+mapAddressBook:69:src/wallet/rpcdump.cpp:251:        pwallet->SetAddressBook(dest, strLabel, "receive");
+mapAddressBook:70:src/wallet/rpcdump.cpp:309:        LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:71:src/wallet/rpcdump.cpp:327:        pwallet->ReacceptWalletTransactions();
+mapAddressBook:72:src/wallet/rpcdump.cpp:386:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:73:src/wallet/rpcdump.cpp:388:    if (pwallet->IsMine(*wtx.tx)) {
+mapAddressBook:74:src/wallet/rpcdump.cpp:389:        pwallet->AddToWallet(wtx, false);
+mapAddressBook:75:src/wallet/rpcdump.cpp:416:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:76:src/wallet/rpcdump.cpp:424:    if (pwallet->ZapSelectTx(vHash, vHashOut) != DBErrors::LOAD_OK) {
+mapAddressBook:77:src/wallet/rpcdump.cpp:488:        LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:78:src/wallet/rpcdump.cpp:494:        pwallet->LearnAllRelatedScripts(pubKey);
+mapAddressBook:79:src/wallet/rpcdump.cpp:499:        pwallet->ReacceptWalletTransactions();
+mapAddressBook:80:src/wallet/rpcdump.cpp:540:        LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:81:src/wallet/rpcdump.cpp:556:        uiInterface.ShowProgress(strprintf("%s " + _("Importing..."), pwallet->GetDisplayName()), 0, false); // show progress dialog in GUI
+mapAddressBook:82:src/wallet/rpcdump.cpp:573:                if (pwallet->HaveKey(keyid)) {
+mapAddressBook:83:src/wallet/rpcdump.cpp:574:                    pwallet->WalletLogPrintf("Skipping import of %s (key already present)\n", EncodeDestination(keyid));
+mapAddressBook:84:src/wallet/rpcdump.cpp:592:                pwallet->WalletLogPrintf("Importing %s...\n", EncodeDestination(keyid));
+mapAddressBook:85:src/wallet/rpcdump.cpp:593:                if (!pwallet->AddKeyPubKey(key, pubkey)) {
+mapAddressBook:86:src/wallet/rpcdump.cpp:597:                pwallet->mapKeyMetadata[keyid].nCreateTime = nTime;
+mapAddressBook:87:src/wallet/rpcdump.cpp:599:                    pwallet->SetAddressBook(keyid, strLabel, "receive");
+mapAddressBook:88:src/wallet/rpcdump.cpp:605:               if (pwallet->HaveCScript(id)) {
+mapAddressBook:89:src/wallet/rpcdump.cpp:606:                   pwallet->WalletLogPrintf("Skipping import of %s (script already present)\n", vstr[0]);
+mapAddressBook:90:src/wallet/rpcdump.cpp:609:               if(!pwallet->AddCScript(script)) {
+mapAddressBook:91:src/wallet/rpcdump.cpp:610:                   pwallet->WalletLogPrintf("Error importing script %s\n", vstr[0]);
+mapAddressBook:92:src/wallet/rpcdump.cpp:616:                   pwallet->m_script_metadata[id].nCreateTime = birth_time;
+mapAddressBook:93:src/wallet/rpcdump.cpp:623:        pwallet->UpdateTimeFirstKey(nTimeBegin);
+mapAddressBook:94:src/wallet/rpcdump.cpp:627:    pwallet->MarkDirty();
+mapAddressBook:95:src/wallet/rpcdump.cpp:658:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:96:src/wallet/rpcdump.cpp:672:    if (!pwallet->GetKey(keyid, vchSecret)) {
+mapAddressBook:97:src/wallet/rpcdump.cpp:705:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:98:src/wallet/rpcdump.cpp:727:    const std::map<CKeyID, int64_t>& mapKeyPool = pwallet->GetAllReserveKeys();
+mapAddressBook:99:src/wallet/rpcdump.cpp:728:    pwallet->GetKeyBirthTimes(mapKeyBirth);
+mapAddressBook:100:src/wallet/rpcdump.cpp:730:    std::set<CScriptID> scripts = pwallet->GetCScripts();
+mapAddressBook:101:src/wallet/rpcdump.cpp:751:    CKeyID seed_id = pwallet->GetHDChain().seed_id;
+mapAddressBook:102:src/wallet/rpcdump.cpp:755:        if (pwallet->GetKey(seed_id, seed)) {
+mapAddressBook:103:src/wallet/rpcdump.cpp:768:        if (pwallet->GetKey(keyid, key)) {
+mapAddressBook:104:src/wallet/rpcdump.cpp:776:            } else if (pwallet->mapKeyMetadata[keyid].hdKeypath == "s") {
+mapAddressBook:105:src/wallet/rpcdump.cpp:781:            file << strprintf(" # addr=%s%s\n", strAddr, (pwallet->mapKeyMetadata[keyid].hdKeypath.size() > 0 ? " hdkeypath="+pwallet->mapKeyMetadata[keyid].hdKeypath : ""));
+mapAddressBook:106:src/wallet/rpcdump.cpp:790:        auto it = pwallet->m_script_metadata.find(scriptid);
+mapAddressBook:107:src/wallet/rpcdump.cpp:791:        if (it != pwallet->m_script_metadata.end()) {
+mapAddressBook:108:src/wallet/rpcdump.cpp:794:        if(pwallet->GetCScript(scriptid, script)) {
+mapAddressBook:109:src/wallet/rpcdump.cpp:810:static UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int64_t timestamp) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+mapAddressBook:110:src/wallet/rpcdump.cpp:892:            pwallet->MarkDirty();
+mapAddressBook:111:src/wallet/rpcdump.cpp:894:            if (!pwallet->AddWatchOnly(redeemScript, timestamp)) {
+mapAddressBook:112:src/wallet/rpcdump.cpp:899:            if (!pwallet->HaveCScript(redeem_id) && !pwallet->AddCScript(redeemScript)) {
+mapAddressBook:113:src/wallet/rpcdump.cpp:909:            pwallet->MarkDirty();
+mapAddressBook:114:src/wallet/rpcdump.cpp:911:            if (!pwallet->AddWatchOnly(redeemDestination, timestamp)) {
+mapAddressBook:115:src/wallet/rpcdump.cpp:917:                pwallet->SetAddressBook(dest, label, "receive");
+mapAddressBook:116:src/wallet/rpcdump.cpp:935:                    pwallet->MarkDirty();
+mapAddressBook:117:src/wallet/rpcdump.cpp:936:                    pwallet->SetAddressBook(vchAddress, label, "receive");
+mapAddressBook:118:src/wallet/rpcdump.cpp:938:                    if (pwallet->HaveKey(vchAddress)) {
+mapAddressBook:119:src/wallet/rpcdump.cpp:942:                    pwallet->mapKeyMetadata[vchAddress].nCreateTime = timestamp;
+mapAddressBook:120:src/wallet/rpcdump.cpp:944:                    if (!pwallet->AddKeyPubKey(key, pubkey)) {
+mapAddressBook:121:src/wallet/rpcdump.cpp:948:                    pwallet->UpdateTimeFirstKey(timestamp);
+mapAddressBook:122:src/wallet/rpcdump.cpp:993:                pwallet->MarkDirty();
+mapAddressBook:123:src/wallet/rpcdump.cpp:995:                if (!pwallet->AddWatchOnly(pubKeyScript, timestamp)) {
+mapAddressBook:124:src/wallet/rpcdump.cpp:1001:                    pwallet->SetAddressBook(pubkey_dest, label, "receive");
+mapAddressBook:125:src/wallet/rpcdump.cpp:1011:                pwallet->MarkDirty();
+mapAddressBook:126:src/wallet/rpcdump.cpp:1013:                if (!pwallet->AddWatchOnly(scriptRawPubKey, timestamp)) {
+mapAddressBook:127:src/wallet/rpcdump.cpp:1053:                pwallet->MarkDirty();
+mapAddressBook:128:src/wallet/rpcdump.cpp:1054:                pwallet->SetAddressBook(vchAddress, label, "receive");
+mapAddressBook:129:src/wallet/rpcdump.cpp:1056:                if (pwallet->HaveKey(vchAddress)) {
+mapAddressBook:130:src/wallet/rpcdump.cpp:1060:                pwallet->mapKeyMetadata[vchAddress].nCreateTime = timestamp;
+mapAddressBook:131:src/wallet/rpcdump.cpp:1062:                if (!pwallet->AddKeyPubKey(key, pubKey)) {
+mapAddressBook:132:src/wallet/rpcdump.cpp:1066:                pwallet->UpdateTimeFirstKey(timestamp);
+mapAddressBook:133:src/wallet/rpcdump.cpp:1077:                pwallet->MarkDirty();
+mapAddressBook:134:src/wallet/rpcdump.cpp:1079:                if (!pwallet->AddWatchOnly(script, timestamp)) {
+mapAddressBook:135:src/wallet/rpcdump.cpp:1086:                        pwallet->SetAddressBook(dest, label, "receive");
+mapAddressBook:136:src/wallet/rpcdump.cpp:1198:        LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:137:src/wallet/rpcdump.cpp:1236:        int64_t scannedTime = pwallet->RescanFromTime(nLowestTimestamp, reserver, true /* update */);
+mapAddressBook:138:src/wallet/rpcdump.cpp:1237:        pwallet->ReacceptWalletTransactions();
+mapAddressBook:139:src/wallet/rpcdump.cpp:1239:        if (pwallet->IsAbortingRescan()) {
+mapAddressBook:140:src/wallet/wallet.cpp:1637:        isminetype fIsMine = pwallet->IsMine(txout);
+mapAddressBook:141:src/wallet/wallet.cpp:1644:            if (pwallet->IsChange(txout))
+mapAddressBook:142:src/wallet/wallet.cpp:1655:            pwallet->WalletLogPrintf("CWalletTx::GetAmounts: Unknown transaction type found, txid %s\n",
+mapAddressBook:143:src/wallet/wallet.cpp:1831:    assert(pwallet->GetBroadcastTransactions());
+mapAddressBook:144:src/wallet/wallet.cpp:1837:            pwallet->WalletLogPrintf("Relaying wtx %s\n", GetHash().ToString());
+mapAddressBook:145:src/wallet/wallet.cpp:1857:        result = pwallet->GetConflicts(myHash);
+mapAddressBook:146:src/wallet/wallet.cpp:1875:            nDebitCached = pwallet->GetDebit(*tx, ISMINE_SPENDABLE);
+mapAddressBook:147:src/wallet/wallet.cpp:1886:            nWatchDebitCached = pwallet->GetDebit(*tx, ISMINE_WATCH_ONLY);
+mapAddressBook:148:src/wallet/wallet.cpp:1908:            nCreditCached = pwallet->GetCredit(*tx, ISMINE_SPENDABLE);
+mapAddressBook:149:src/wallet/wallet.cpp:1919:            nWatchCreditCached = pwallet->GetCredit(*tx, ISMINE_WATCH_ONLY);
+mapAddressBook:150:src/wallet/wallet.cpp:1933:        nImmatureCreditCached = pwallet->GetCredit(*tx, ISMINE_SPENDABLE);
+mapAddressBook:151:src/wallet/wallet.cpp:1969:        if (!pwallet->IsSpent(hashTx, i))
+mapAddressBook:152:src/wallet/wallet.cpp:1972:            nCredit += pwallet->GetCredit(txout, filter);
+mapAddressBook:153:src/wallet/wallet.cpp:1992:        nImmatureWatchCreditCached = pwallet->GetCredit(*tx, ISMINE_WATCH_ONLY);
+mapAddressBook:154:src/wallet/wallet.cpp:2004:    nChangeCached = pwallet->GetChange(*tx);
+mapAddressBook:155:src/wallet/wallet.cpp:2024:    if (!pwallet->m_spend_zero_conf_change || !IsFromMe(ISMINE_ALL)) // using wtx's cached debit
+mapAddressBook:156:src/wallet/wallet.cpp:2035:        const CWalletTx* parent = pwallet->GetWalletTx(txin.prevout.hash);
+mapAddressBook:157:src/wallet/wallet.cpp:2039:        if (pwallet->IsMine(parentOut) != ISMINE_SPENDABLE)
+mapAddressBook:158:src/wallet/wallet.cpp:3676:        if (!pwallet->ReserveKeyFromKeyPool(nIndex, keypool, internal)) {
+mapAddressBook:159:src/wallet/wallet.cpp:3690:        pwallet->KeepKey(nIndex);
+mapAddressBook:160:src/wallet/wallet.cpp:3698:        pwallet->ReturnKey(nIndex, fInternal, vchPubKey);
+mapAddressBook:161:src/wallet/rpcwallet.cpp:68:    return pwallet && pwallet->IsCrypted()
+mapAddressBook:162:src/wallet/rpcwallet.cpp:87:    if (pwallet->IsLocked()) {
+mapAddressBook:163:src/wallet/rpcwallet.cpp:164:    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+mapAddressBook:164:src/wallet/rpcwallet.cpp:168:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:165:src/wallet/rpcwallet.cpp:175:    OutputType output_type = pwallet->m_default_address_type;
+mapAddressBook:166:src/wallet/rpcwallet.cpp:182:    if (!pwallet->IsLocked()) {
+mapAddressBook:167:src/wallet/rpcwallet.cpp:183:        pwallet->TopUpKeyPool();
+mapAddressBook:168:src/wallet/rpcwallet.cpp:188:    if (!pwallet->GetKeyFromPool(newKey)) {
+mapAddressBook:169:src/wallet/rpcwallet.cpp:191:    pwallet->LearnRelatedScripts(newKey, output_type);
+mapAddressBook:170:src/wallet/rpcwallet.cpp:194:    pwallet->SetAddressBook(dest, label, "receive");
+mapAddressBook:171:src/wallet/rpcwallet.cpp:202:    if (!pwallet->GetLabelDestination(dest, label, bForceNew)) {
+mapAddressBook:172:src/wallet/rpcwallet.cpp:240:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:173:src/wallet/rpcwallet.cpp:275:    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+mapAddressBook:174:src/wallet/rpcwallet.cpp:279:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:175:src/wallet/rpcwallet.cpp:281:    if (!pwallet->IsLocked()) {
+mapAddressBook:176:src/wallet/rpcwallet.cpp:282:        pwallet->TopUpKeyPool();
+mapAddressBook:177:src/wallet/rpcwallet.cpp:285:    OutputType output_type = pwallet->m_default_change_type != OutputType::CHANGE_AUTO ? pwallet->m_default_change_type : pwallet->m_default_address_type;
+mapAddressBook:178:src/wallet/rpcwallet.cpp:299:    pwallet->LearnRelatedScripts(vchPubKey, output_type);
+mapAddressBook:179:src/wallet/rpcwallet.cpp:334:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:180:src/wallet/rpcwallet.cpp:341:    std::string old_label = pwallet->mapAddressBook[dest].name;
+mapAddressBook:181:src/wallet/rpcwallet.cpp:345:        pwallet->SetAddressBook(dest, label, "receive");
+mapAddressBook:182:src/wallet/rpcwallet.cpp:351:        pwallet->SetAddressBook(dest, label, "send");
+mapAddressBook:183:src/wallet/rpcwallet.cpp:358:    for (const std::pair<const CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+mapAddressBook:184:src/wallet/rpcwallet.cpp:365:        pwallet->DeleteLabel(old_label);
+mapAddressBook:185:src/wallet/rpcwallet.cpp:401:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:186:src/wallet/rpcwallet.cpp:409:    std::map<CTxDestination, CAddressBookData>::iterator mi = pwallet->mapAddressBook.find(dest);
+mapAddressBook:187:src/wallet/rpcwallet.cpp:410:    if (mi != pwallet->mapAddressBook.end() && !(*mi).second.name.empty()) {
+mapAddressBook:188:src/wallet/rpcwallet.cpp:449:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:189:src/wallet/rpcwallet.cpp:455:    for (const std::pair<const CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+mapAddressBook:190:src/wallet/rpcwallet.cpp:467:    CAmount curBalance = pwallet->GetBalance();
+mapAddressBook:191:src/wallet/rpcwallet.cpp:476:    if (pwallet->GetBroadcastTransactions() && !g_connman) {
+mapAddressBook:192:src/wallet/rpcwallet.cpp:492:    if (!pwallet->CreateTransaction(vecSend, tx, reservekey, nFeeRequired, nChangePosRet, strError, coin_control)) {
+mapAddressBook:193:src/wallet/rpcwallet.cpp:498:    if (!pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */, std::move(fromAccount), reservekey, g_connman.get(), state)) {
+mapAddressBook:194:src/wallet/rpcwallet.cpp:546:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:195:src/wallet/rpcwallet.cpp:548:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:196:src/wallet/rpcwallet.cpp:628:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:197:src/wallet/rpcwallet.cpp:630:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:198:src/wallet/rpcwallet.cpp:633:    std::map<CTxDestination, CAmount> balances = pwallet->GetAddressBalances();
+mapAddressBook:199:src/wallet/rpcwallet.cpp:634:    for (const std::set<CTxDestination>& grouping : pwallet->GetAddressGroupings()) {
+mapAddressBook:200:src/wallet/rpcwallet.cpp:642:                if (pwallet->mapAddressBook.find(address) != pwallet->mapAddressBook.end()) {
+mapAddressBook:201:src/wallet/rpcwallet.cpp:643:                    addressInfo.push_back(pwallet->mapAddressBook.find(address)->second.name);
+mapAddressBook:202:src/wallet/rpcwallet.cpp:683:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:203:src/wallet/rpcwallet.cpp:701:    if (!pwallet->GetKey(*keyID, key)) {
+mapAddressBook:204:src/wallet/rpcwallet.cpp:747:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:205:src/wallet/rpcwallet.cpp:749:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:206:src/wallet/rpcwallet.cpp:768:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+mapAddressBook:207:src/wallet/rpcwallet.cpp:821:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:208:src/wallet/rpcwallet.cpp:823:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:209:src/wallet/rpcwallet.cpp:832:    std::set<CTxDestination> setAddress = pwallet->GetLabelAddresses(label);
+mapAddressBook:210:src/wallet/rpcwallet.cpp:836:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+mapAddressBook:211:src/wallet/rpcwallet.cpp:912:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:212:src/wallet/rpcwallet.cpp:914:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:213:src/wallet/rpcwallet.cpp:940:            return ValueFromAmount(pwallet->GetLegacyBalance(filter, min_depth, account));
+mapAddressBook:214:src/wallet/rpcwallet.cpp:944:    return ValueFromAmount(pwallet->GetBalance(filter, min_depth));
+mapAddressBook:215:src/wallet/rpcwallet.cpp:963:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:216:src/wallet/rpcwallet.cpp:965:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:217:src/wallet/rpcwallet.cpp:967:    return ValueFromAmount(pwallet->GetUnconfirmedBalance());
+mapAddressBook:218:src/wallet/rpcwallet.cpp:1008:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:219:src/wallet/rpcwallet.cpp:1022:    if (!pwallet->AccountMove(strFrom, strTo, nAmount, strComment)) {
+mapAddressBook:220:src/wallet/rpcwallet.cpp:1078:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:221:src/wallet/rpcwallet.cpp:1080:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:222:src/wallet/rpcwallet.cpp:1103:    CAmount nBalance = pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, &strAccount);
+mapAddressBook:223:src/wallet/rpcwallet.cpp:1209:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:224:src/wallet/rpcwallet.cpp:1211:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:225:src/wallet/rpcwallet.cpp:1213:    if (pwallet->GetBroadcastTransactions() && !g_connman) {
+mapAddressBook:226:src/wallet/rpcwallet.cpp:1285:    if (IsDeprecatedRPCEnabled("accounts") && totalAmount > pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, &strAccount)) {
+mapAddressBook:227:src/wallet/rpcwallet.cpp:1287:    } else if (!IsDeprecatedRPCEnabled("accounts") && totalAmount > pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, nullptr)) {
+mapAddressBook:228:src/wallet/rpcwallet.cpp:1300:    bool fCreated = pwallet->CreateTransaction(vecSend, tx, keyChange, nFeeRequired, nChangePosRet, strFailReason, coin_control);
+mapAddressBook:229:src/wallet/rpcwallet.cpp:1304:    if (!pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */, std::move(strAccount), keyChange, g_connman.get(), state)) {
+mapAddressBook:230:src/wallet/rpcwallet.cpp:1353:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:231:src/wallet/rpcwallet.cpp:1372:    OutputType output_type = pwallet->m_default_address_type;
+mapAddressBook:232:src/wallet/rpcwallet.cpp:1382:    pwallet->SetAddressBook(dest, label, "send");
+mapAddressBook:233:src/wallet/rpcwallet.cpp:1413:        if (pwallet && pwallet->GetCScript(scriptID, subscript)) {
+mapAddressBook:234:src/wallet/rpcwallet.cpp:1508:        pwallet->AddCScript(witprogram); // Implicit for single-key now, but necessary for multisig and for compatibility with older software
+mapAddressBook:235:src/wallet/rpcwallet.cpp:1509:        pwallet->SetAddressBook(w.result, "", "receive");
+mapAddressBook:236:src/wallet/rpcwallet.cpp:1558:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+mapAddressBook:237:src/wallet/rpcwallet.cpp:1597:    auto start = pwallet->mapAddressBook.begin();
+mapAddressBook:238:src/wallet/rpcwallet.cpp:1598:    auto end = pwallet->mapAddressBook.end();
+mapAddressBook:239:src/wallet/rpcwallet.cpp:1601:        start = pwallet->mapAddressBook.find(filtered_address);
+mapAddressBook:240:src/wallet/rpcwallet.cpp:1719:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:241:src/wallet/rpcwallet.cpp:1721:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:242:src/wallet/rpcwallet.cpp:1771:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:243:src/wallet/rpcwallet.cpp:1773:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:244:src/wallet/rpcwallet.cpp:1821:            if (pwallet->mapAddressBook.count(s.destination)) {
+mapAddressBook:245:src/wallet/rpcwallet.cpp:1822:                entry.pushKV("label", pwallet->mapAddressBook[s.destination].name);
+mapAddressBook:246:src/wallet/rpcwallet.cpp:1839:            if (pwallet->mapAddressBook.count(r.destination)) {
+mapAddressBook:247:src/wallet/rpcwallet.cpp:1840:                account = pwallet->mapAddressBook[r.destination].name;
+mapAddressBook:248:src/wallet/rpcwallet.cpp:1864:                if (pwallet->mapAddressBook.count(r.destination)) {
+mapAddressBook:249:src/wallet/rpcwallet.cpp:2010:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:250:src/wallet/rpcwallet.cpp:2038:        LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:251:src/wallet/rpcwallet.cpp:2040:        const CWallet::TxItems & txOrdered = pwallet->wtxOrdered;
+mapAddressBook:252:src/wallet/rpcwallet.cpp:2124:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:253:src/wallet/rpcwallet.cpp:2126:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:254:src/wallet/rpcwallet.cpp:2137:    for (const std::pair<const CTxDestination, CAddressBookData>& entry : pwallet->mapAddressBook) {
+mapAddressBook:255:src/wallet/rpcwallet.cpp:2143:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+mapAddressBook:256:src/wallet/rpcwallet.cpp:2159:                if (pwallet->mapAddressBook.count(r.destination)) {
+mapAddressBook:257:src/wallet/rpcwallet.cpp:2160:                    mapAccountBalances[pwallet->mapAddressBook[r.destination].name] += r.amount;
+mapAddressBook:258:src/wallet/rpcwallet.cpp:2167:    const std::list<CAccountingEntry>& acentries = pwallet->laccentries;
+mapAddressBook:259:src/wallet/rpcwallet.cpp:2238:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:260:src/wallet/rpcwallet.cpp:2240:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:261:src/wallet/rpcwallet.cpp:2281:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+mapAddressBook:262:src/wallet/rpcwallet.cpp:2298:            auto it = pwallet->mapWallet.find(tx->GetHash());
+mapAddressBook:263:src/wallet/rpcwallet.cpp:2299:            if (it != pwallet->mapWallet.end()) {
+mapAddressBook:264:src/wallet/rpcwallet.cpp:2375:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:265:src/wallet/rpcwallet.cpp:2377:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:266:src/wallet/rpcwallet.cpp:2388:    auto it = pwallet->mapWallet.find(hash);
+mapAddressBook:267:src/wallet/rpcwallet.cpp:2389:    if (it == pwallet->mapWallet.end()) {
+mapAddressBook:268:src/wallet/rpcwallet.cpp:2443:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:269:src/wallet/rpcwallet.cpp:2445:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:270:src/wallet/rpcwallet.cpp:2450:    if (!pwallet->mapWallet.count(hash)) {
+mapAddressBook:271:src/wallet/rpcwallet.cpp:2453:    if (!pwallet->AbandonTransaction(hash)) {
+mapAddressBook:272:src/wallet/rpcwallet.cpp:2483:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:273:src/wallet/rpcwallet.cpp:2485:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:274:src/wallet/rpcwallet.cpp:2488:    if (!pwallet->BackupWallet(strDest)) {
+mapAddressBook:275:src/wallet/rpcwallet.cpp:2517:    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+mapAddressBook:276:src/wallet/rpcwallet.cpp:2521:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:277:src/wallet/rpcwallet.cpp:2532:    pwallet->TopUpKeyPool(kpSize);
+mapAddressBook:278:src/wallet/rpcwallet.cpp:2534:    if (pwallet->GetKeyPoolSize() < kpSize) {
+mapAddressBook:279:src/wallet/rpcwallet.cpp:2579:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:280:src/wallet/rpcwallet.cpp:2581:    if (!pwallet->IsCrypted()) {
+mapAddressBook:281:src/wallet/rpcwallet.cpp:2606:        if (!pwallet->Unlock(strWalletPass)) {
+mapAddressBook:282:src/wallet/rpcwallet.cpp:2615:    pwallet->TopUpKeyPool();
+mapAddressBook:283:src/wallet/rpcwallet.cpp:2617:    pwallet->nRelockTime = GetTime() + nSleepTime;
+mapAddressBook:284:src/wallet/rpcwallet.cpp:2618:    RPCRunLater(strprintf("lockwallet(%s)", pwallet->GetName()), std::bind(LockWallet, pwallet), nSleepTime);
+mapAddressBook:285:src/wallet/rpcwallet.cpp:2646:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:286:src/wallet/rpcwallet.cpp:2648:    if (!pwallet->IsCrypted()) {
+mapAddressBook:287:src/wallet/rpcwallet.cpp:2667:    if (!pwallet->ChangeWalletPassphrase(strOldWalletPass, strNewWalletPass)) {
+mapAddressBook:288:src/wallet/rpcwallet.cpp:2702:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:289:src/wallet/rpcwallet.cpp:2704:    if (!pwallet->IsCrypted()) {
+mapAddressBook:290:src/wallet/rpcwallet.cpp:2708:    pwallet->Lock();
+mapAddressBook:291:src/wallet/rpcwallet.cpp:2709:    pwallet->nRelockTime = 0;
+mapAddressBook:292:src/wallet/rpcwallet.cpp:2749:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:293:src/wallet/rpcwallet.cpp:2751:    if (pwallet->IsCrypted()) {
+mapAddressBook:294:src/wallet/rpcwallet.cpp:2766:    if (!pwallet->EncryptWallet(strWalletPass)) {
+mapAddressBook:295:src/wallet/rpcwallet.cpp:2825:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:296:src/wallet/rpcwallet.cpp:2827:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:297:src/wallet/rpcwallet.cpp:2835:            pwallet->UnlockAllCoins();
+mapAddressBook:298:src/wallet/rpcwallet.cpp:2869:        const auto it = pwallet->mapWallet.find(outpt.hash);
+mapAddressBook:299:src/wallet/rpcwallet.cpp:2870:        if (it == pwallet->mapWallet.end()) {
+mapAddressBook:300:src/wallet/rpcwallet.cpp:2880:        if (pwallet->IsSpent(outpt.hash, outpt.n)) {
+mapAddressBook:301:src/wallet/rpcwallet.cpp:2884:        const bool is_locked = pwallet->IsLockedCoin(outpt.hash, outpt.n);
+mapAddressBook:302:src/wallet/rpcwallet.cpp:2899:        if (fUnlock) pwallet->UnlockCoin(outpt);
+mapAddressBook:303:src/wallet/rpcwallet.cpp:2900:        else pwallet->LockCoin(outpt);
+mapAddressBook:304:src/wallet/rpcwallet.cpp:2941:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:305:src/wallet/rpcwallet.cpp:2944:    pwallet->ListLockedCoins(vOutpts);
+mapAddressBook:306:src/wallet/rpcwallet.cpp:2982:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:307:src/wallet/rpcwallet.cpp:2986:    pwallet->m_pay_tx_fee = CFeeRate(nAmount, 1000);
+mapAddressBook:308:src/wallet/rpcwallet.cpp:3027:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:309:src/wallet/rpcwallet.cpp:3029:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:310:src/wallet/rpcwallet.cpp:3033:    size_t kpExternalSize = pwallet->KeypoolCountExternalKeys();
+mapAddressBook:311:src/wallet/rpcwallet.cpp:3034:    obj.pushKV("walletname", pwallet->GetName());
+mapAddressBook:312:src/wallet/rpcwallet.cpp:3035:    obj.pushKV("walletversion", pwallet->GetVersion());
+mapAddressBook:313:src/wallet/rpcwallet.cpp:3036:    obj.pushKV("balance",       ValueFromAmount(pwallet->GetBalance()));
+mapAddressBook:314:src/wallet/rpcwallet.cpp:3037:    obj.pushKV("unconfirmed_balance", ValueFromAmount(pwallet->GetUnconfirmedBalance()));
+mapAddressBook:315:src/wallet/rpcwallet.cpp:3038:    obj.pushKV("immature_balance",    ValueFromAmount(pwallet->GetImmatureBalance()));
+mapAddressBook:316:src/wallet/rpcwallet.cpp:3039:    obj.pushKV("txcount",       (int)pwallet->mapWallet.size());
+mapAddressBook:317:src/wallet/rpcwallet.cpp:3040:    obj.pushKV("keypoololdest", pwallet->GetOldestKeyPoolTime());
+mapAddressBook:318:src/wallet/rpcwallet.cpp:3042:    CKeyID seed_id = pwallet->GetHDChain().seed_id;
+mapAddressBook:319:src/wallet/rpcwallet.cpp:3043:    if (!seed_id.IsNull() && pwallet->CanSupportFeature(FEATURE_HD_SPLIT)) {
+mapAddressBook:320:src/wallet/rpcwallet.cpp:3044:        obj.pushKV("keypoolsize_hd_internal",   (int64_t)(pwallet->GetKeyPoolSize() - kpExternalSize));
+mapAddressBook:321:src/wallet/rpcwallet.cpp:3046:    if (pwallet->IsCrypted()) {
+mapAddressBook:322:src/wallet/rpcwallet.cpp:3047:        obj.pushKV("unlocked_until", pwallet->nRelockTime);
+mapAddressBook:323:src/wallet/rpcwallet.cpp:3049:    obj.pushKV("paytxfee", ValueFromAmount(pwallet->m_pay_tx_fee.GetFeePerK()));
+mapAddressBook:324:src/wallet/rpcwallet.cpp:3054:    obj.pushKV("private_keys_enabled", !pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS));
+mapAddressBook:325:src/wallet/rpcwallet.cpp:3267:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:326:src/wallet/rpcwallet.cpp:3269:    if (!pwallet->GetBroadcastTransactions()) {
+mapAddressBook:327:src/wallet/rpcwallet.cpp:3273:    std::vector<uint256> txids = pwallet->ResendWalletTransactionsBefore(GetTime(), g_connman.get());
+mapAddressBook:328:src/wallet/rpcwallet.cpp:3400:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:329:src/wallet/rpcwallet.cpp:3405:        LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:330:src/wallet/rpcwallet.cpp:3406:        pwallet->AvailableCoins(vecOutputs, !include_unsafe, nullptr, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth);
+mapAddressBook:331:src/wallet/rpcwallet.cpp:3409:    LOCK(pwallet->cs_wallet);
+mapAddressBook:332:src/wallet/rpcwallet.cpp:3426:            auto i = pwallet->mapAddressBook.find(address);
+mapAddressBook:333:src/wallet/rpcwallet.cpp:3427:            if (i != pwallet->mapAddressBook.end()) {
+mapAddressBook:334:src/wallet/rpcwallet.cpp:3437:                if (pwallet->GetCScript(hash, redeemScript)) {
+mapAddressBook:335:src/wallet/rpcwallet.cpp:3459:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:336:src/wallet/rpcwallet.cpp:3506:            coinControl.m_change_type = pwallet->m_default_change_type;
+mapAddressBook:337:src/wallet/rpcwallet.cpp:3566:    if (!pwallet->FundTransaction(tx, fee_out, change_position, strFailReason, lockUnspents, setSubtractFeeFromOutputs, coinControl)) {
+mapAddressBook:338:src/wallet/rpcwallet.cpp:3727:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:339:src/wallet/rpcwallet.cpp:3829:    pwallet->BlockUntilSyncedToCurrentChain();
+mapAddressBook:340:src/wallet/rpcwallet.cpp:3831:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:341:src/wallet/rpcwallet.cpp:3914:    pwallet->GetScriptForMining(coinbase_script);
+mapAddressBook:342:src/wallet/rpcwallet.cpp:3999:    CBlockIndex *stopBlock = pwallet->ScanForWalletTransactions(pindexStart, pindexStop, reserver, true);
+mapAddressBook:343:src/wallet/rpcwallet.cpp:4001:        if (pwallet->IsAbortingRescan()) {
+mapAddressBook:344:src/wallet/rpcwallet.cpp:4073:        if (pwallet && pwallet->GetPubKey(keyID, vchPubKey)) {
+mapAddressBook:345:src/wallet/rpcwallet.cpp:4084:        if (pwallet && pwallet->GetCScript(scriptID, subscript)) {
+mapAddressBook:346:src/wallet/rpcwallet.cpp:4094:        if (pwallet && pwallet->GetPubKey(CKeyID(id), pubkey)) {
+mapAddressBook:347:src/wallet/rpcwallet.cpp:4107:        if (pwallet && pwallet->GetCScript(CScriptID(hash), subscript)) {
+mapAddressBook:348:src/wallet/rpcwallet.cpp:4193:    LOCK(pwallet->cs_wallet);
+mapAddressBook:349:src/wallet/rpcwallet.cpp:4214:    if (pwallet->mapAddressBook.count(dest)) {
+mapAddressBook:350:src/wallet/rpcwallet.cpp:4215:        ret.pushKV("label", pwallet->mapAddressBook[dest].name);
+mapAddressBook:351:src/wallet/rpcwallet.cpp:4217:            ret.pushKV("account", pwallet->mapAddressBook[dest].name);
+mapAddressBook:352:src/wallet/rpcwallet.cpp:4223:        auto it = pwallet->mapKeyMetadata.find(key_id);
+mapAddressBook:353:src/wallet/rpcwallet.cpp:4224:        if (it != pwallet->mapKeyMetadata.end()) {
+mapAddressBook:354:src/wallet/rpcwallet.cpp:4229:        auto it = pwallet->m_script_metadata.find(CScriptID(scriptPubKey));
+mapAddressBook:355:src/wallet/rpcwallet.cpp:4230:        if (it != pwallet->m_script_metadata.end()) {
+mapAddressBook:356:src/wallet/rpcwallet.cpp:4247:    std::map<CTxDestination, CAddressBookData>::iterator mi = pwallet->mapAddressBook.find(dest);
+mapAddressBook:357:src/wallet/rpcwallet.cpp:4248:    if (mi != pwallet->mapAddressBook.end()) {
+mapAddressBook:358:src/wallet/rpcwallet.cpp:4282:    LOCK(pwallet->cs_wallet);
+mapAddressBook:359:src/wallet/rpcwallet.cpp:4288:    for (const std::pair<const CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+mapAddressBook:360:src/wallet/rpcwallet.cpp:4332:    LOCK(pwallet->cs_wallet);
+mapAddressBook:361:src/wallet/rpcwallet.cpp:4341:    for (const std::pair<const CTxDestination, CAddressBookData>& entry : pwallet->mapAddressBook) {
+mapAddressBook:362:src/wallet/rpcwallet.cpp:4390:    LOCK2(cs_main, pwallet->cs_wallet);
+mapAddressBook:363:src/wallet/rpcwallet.cpp:4393:    if (!pwallet->IsHDEnabled()) {
+mapAddressBook:364:src/wallet/rpcwallet.cpp:4406:        master_pub_key = pwallet->GenerateNewSeed();
+mapAddressBook:365:src/wallet/rpcwallet.cpp:4417:        master_pub_key = pwallet->DeriveNewSeed(key);
+mapAddressBook:366:src/wallet/rpcwallet.cpp:4420:    pwallet->SetHDSeed(master_pub_key);
+mapAddressBook:367:src/wallet/rpcwallet.cpp:4421:    if (flush_key_pool) pwallet->NewKeyPool();
+mapAddressBook:368:src/wallet/rpcwallet.cpp:4470:    if (!pwallet->GetPubKey(keyID, vchPubKey)) {
+mapAddressBook:369:src/wallet/rpcwallet.cpp:4474:    auto it = pwallet->mapKeyMetadata.find(keyID);
+mapAddressBook:370:src/wallet/rpcwallet.cpp:4475:    if (it != pwallet->mapKeyMetadata.end()) {
+mapAddressBook:371:src/wallet/rpcwallet.cpp:4485:        pwallet->GetKey(meta.hd_seed_id, key);
+mapAddressBook:372:src/wallet/rpcwallet.cpp:4498:    LOCK(pwallet->cs_wallet);
+mapAddressBook:373:src/wallet/rpcwallet.cpp:4507:        const auto it = pwallet->mapWallet.find(txhash);
+mapAddressBook:374:src/wallet/rpcwallet.cpp:4508:        if (it != pwallet->mapWallet.end()) {
+mapAddressBook:375:src/wallet/rpcwallet.cpp:4528:        if (it != pwallet->mapWallet.end()) {
+src/omnicore/rpc.cpp:723:            LOCK(pwallet->cs_wallet);
+src/omnicore/rpc.cpp:922:    LOCK(pwallet->cs_wallet);
+src/omnicore/rpc.cpp:924:    for (const std::pair<CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+Binary file src/omnicore/libbitcoin_server_a-rpc.o matches
+src/omnicore/walletfetchtxs.cpp:68:        LOCK(pwallet->cs_wallet);
+src/omnicore/walletfetchtxs.cpp:69:        txOrdered = pwallet->wtxOrdered;
+src/omnicore/walletfetchtxs.cpp:128:            LOCK(pwallet->cs_wallet);
+src/omnicore/walletfetchtxs.cpp:129:            std::map<uint256, CWalletTx>::const_iterator walletIt = pwallet->mapWallet.find(txHash);
+src/omnicore/walletfetchtxs.cpp:130:            if (walletIt != pwallet->mapWallet.end()) {
+src/omnicore/wallettxbuilder.cpp:111:    if (!pwallet->CreateTransaction(vecRecipients, wtxNew, reserveKey, nFeeRet, nChangePosInOut, strFailReason, &coinControl)) {
+src/omnicore/wallettxbuilder.cpp:144:    // NOTE: require: LOCK2(cs_main, pwallet->cs_wallet);
+src/omnicore/wallettxbuilder.cpp:148:    pwallet->AvailableCoins(vCoins, false, nullptr, true);
+src/omnicore/wallettxbuilder.cpp:161:        pwallet->LockCoin(outpointLocked);
+src/omnicore/wallettxbuilder.cpp:175:    // NOTE: require: LOCK2(cs_main, pwallet->cs_wallet);
+src/omnicore/wallettxbuilder.cpp:178:        pwallet->UnlockCoin(output);
+src/omnicore/rpctx.cpp:439:    LOCK2(cs_main, pwallet->cs_wallet);
+Binary file src/omnicore/libbitcoin_server_a-rpctx.o matches
+Binary file src/omnicore/libbitcoin_server_a-walletfetchtxs.o matches
+src/wallet/init.cpp:244:        pwallet->postInitProcess();
+src/wallet/init.cpp:254:        pwallet->Flush(false);
+src/wallet/init.cpp:261:        pwallet->Flush(true);
+src/wallet/walletdb.cpp:251:             CWalletScanState &wss, std::string& strType, std::string& strErr) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+src/wallet/walletdb.cpp:262:            ssValue >> pwallet->mapAddressBook[DecodeDestination(strAddress)].name;
+src/wallet/walletdb.cpp:268:            ssValue >> pwallet->mapAddressBook[DecodeDestination(strAddress)].purpose;
+src/wallet/walletdb.cpp:303:            pwallet->LoadToWallet(wtx);
+src/wallet/walletdb.cpp:311:            if (nNumber > pwallet->nAccountingEntryNumber) {
+src/wallet/walletdb.cpp:312:                pwallet->nAccountingEntryNumber = nNumber;
+src/wallet/walletdb.cpp:331:                pwallet->LoadWatchOnly(script);
+src/wallet/walletdb.cpp:391:            if (!pwallet->LoadKey(key, vchPubKey))
+src/wallet/walletdb.cpp:403:            if(pwallet->mapMasterKeys.count(nID) != 0)
+src/wallet/walletdb.cpp:408:            pwallet->mapMasterKeys[nID] = kMasterKey;
+src/wallet/walletdb.cpp:409:            if (pwallet->nMasterKeyMaxID < nID)
+src/wallet/walletdb.cpp:410:                pwallet->nMasterKeyMaxID = nID;
+src/wallet/walletdb.cpp:425:            if (!pwallet->LoadCryptedKey(vchPubKey, vchPrivKey))
+src/wallet/walletdb.cpp:439:            pwallet->LoadKeyMetadata(vchPubKey.GetID(), keyMeta);
+src/wallet/walletdb.cpp:448:            pwallet->LoadScriptMetadata(CScriptID(script), keyMeta);
+src/wallet/walletdb.cpp:468:            pwallet->LoadKeyPool(nIndex, keypool);
+src/wallet/walletdb.cpp:482:            if (!pwallet->LoadCScript(script))
+src/wallet/walletdb.cpp:490:            ssValue >> pwallet->nOrderPosNext;
+src/wallet/walletdb.cpp:498:            pwallet->LoadDestData(DecodeDestination(strAddress), strKey, strValue);
+src/wallet/walletdb.cpp:504:            pwallet->SetHDChain(chain, true);
+src/wallet/walletdb.cpp:508:            if (!pwallet->SetWalletFlags(flags, true)) {
+src/wallet/walletdb.cpp:534:    LOCK(pwallet->cs_wallet);
+src/wallet/walletdb.cpp:541:            pwallet->LoadMinVersion(nMinVersion);
+src/wallet/walletdb.cpp:548:            pwallet->WalletLogPrintf("Error getting wallet database cursor\n");
+src/wallet/walletdb.cpp:562:                pwallet->WalletLogPrintf("Error reading next record from wallet database\n");
+src/wallet/walletdb.cpp:586:                pwallet->WalletLogPrintf("%s\n", strErr);
+src/wallet/walletdb.cpp:605:    pwallet->WalletLogPrintf("nFileVersion = %d\n", wss.nFileVersion);
+src/wallet/walletdb.cpp:607:    pwallet->WalletLogPrintf("Keys: %u plaintext, %u encrypted, %u w/ metadata, %u total. Unknown wallet records: %u\n",
+src/wallet/walletdb.cpp:612:        pwallet->UpdateTimeFirstKey(1);
+src/wallet/walletdb.cpp:615:        WriteTx(pwallet->mapWallet.at(hash));
+src/wallet/walletdb.cpp:625:        result = pwallet->ReorderTransactions();
+src/wallet/walletdb.cpp:627:    pwallet->laccentries.clear();
+src/wallet/walletdb.cpp:628:    ListAccountCreditDebit("*", pwallet->laccentries);
+src/wallet/walletdb.cpp:629:    for (CAccountingEntry& entry : pwallet->laccentries) {
+src/wallet/walletdb.cpp:630:        pwallet->wtxOrdered.insert(make_pair(entry.nOrderPos, CWallet::TxPair(nullptr, &entry)));
+src/wallet/walletdb.cpp:761:        WalletDatabase& dbh = pwallet->GetDBHandle();
+src/wallet/rpcdump.cpp:72:    pwallet->GetKey(keyid, key);
+src/wallet/rpcdump.cpp:74:        if (pwallet->mapAddressBook.count(dest)) {
+src/wallet/rpcdump.cpp:79:            strLabel = EncodeDumpString(pwallet->mapAddressBook[dest].name);
+src/wallet/rpcdump.cpp:84:        strAddr = EncodeDestination(GetDestinationForKey(key.GetPubKey(), pwallet->m_default_address_type));
+src/wallet/rpcdump.cpp:137:        LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:164:            pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:167:                pwallet->SetAddressBook(dest, strLabel, "receive");
+src/wallet/rpcdump.cpp:171:            if (pwallet->HaveKey(vchAddress)) {
+src/wallet/rpcdump.cpp:176:            pwallet->UpdateTimeFirstKey(1);
+src/wallet/rpcdump.cpp:177:            pwallet->mapKeyMetadata[vchAddress].nCreateTime = 1;
+src/wallet/rpcdump.cpp:179:            if (!pwallet->AddKeyPubKey(key, pubkey)) {
+src/wallet/rpcdump.cpp:182:            pwallet->LearnAllRelatedScripts(pubkey);
+src/wallet/rpcdump.cpp:213:    if (!pwallet->IsScanning() || pwallet->IsAbortingRescan()) return false;
+src/wallet/rpcdump.cpp:214:    pwallet->AbortRescan();
+src/wallet/rpcdump.cpp:219:static void ImportScript(CWallet* const pwallet, const CScript& script, const std::string& strLabel, bool isRedeemScript) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+src/wallet/rpcdump.cpp:225:    pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:227:    if (!pwallet->HaveWatchOnly(script) && !pwallet->AddWatchOnly(script, 0 /* nCreateTime */)) {
+src/wallet/rpcdump.cpp:233:        if (!pwallet->HaveCScript(id) && !pwallet->AddCScript(script)) {
+src/wallet/rpcdump.cpp:240:            pwallet->SetAddressBook(destination, strLabel, "receive");
+src/wallet/rpcdump.cpp:245:static void ImportAddress(CWallet* const pwallet, const CTxDestination& dest, const std::string& strLabel) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+src/wallet/rpcdump.cpp:251:        pwallet->SetAddressBook(dest, strLabel, "receive");
+src/wallet/rpcdump.cpp:309:        LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:327:        pwallet->ReacceptWalletTransactions();
+src/wallet/rpcdump.cpp:386:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:388:    if (pwallet->IsMine(*wtx.tx)) {
+src/wallet/rpcdump.cpp:389:        pwallet->AddToWallet(wtx, false);
+src/wallet/rpcdump.cpp:416:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:424:    if (pwallet->ZapSelectTx(vHash, vHashOut) != DBErrors::LOAD_OK) {
+src/wallet/rpcdump.cpp:488:        LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:494:        pwallet->LearnAllRelatedScripts(pubKey);
+src/wallet/rpcdump.cpp:499:        pwallet->ReacceptWalletTransactions();
+src/wallet/rpcdump.cpp:540:        LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:556:        uiInterface.ShowProgress(strprintf("%s " + _("Importing..."), pwallet->GetDisplayName()), 0, false); // show progress dialog in GUI
+src/wallet/rpcdump.cpp:573:                if (pwallet->HaveKey(keyid)) {
+src/wallet/rpcdump.cpp:574:                    pwallet->WalletLogPrintf("Skipping import of %s (key already present)\n", EncodeDestination(keyid));
+src/wallet/rpcdump.cpp:592:                pwallet->WalletLogPrintf("Importing %s...\n", EncodeDestination(keyid));
+src/wallet/rpcdump.cpp:593:                if (!pwallet->AddKeyPubKey(key, pubkey)) {
+src/wallet/rpcdump.cpp:597:                pwallet->mapKeyMetadata[keyid].nCreateTime = nTime;
+src/wallet/rpcdump.cpp:599:                    pwallet->SetAddressBook(keyid, strLabel, "receive");
+src/wallet/rpcdump.cpp:605:               if (pwallet->HaveCScript(id)) {
+src/wallet/rpcdump.cpp:606:                   pwallet->WalletLogPrintf("Skipping import of %s (script already present)\n", vstr[0]);
+src/wallet/rpcdump.cpp:609:               if(!pwallet->AddCScript(script)) {
+src/wallet/rpcdump.cpp:610:                   pwallet->WalletLogPrintf("Error importing script %s\n", vstr[0]);
+src/wallet/rpcdump.cpp:616:                   pwallet->m_script_metadata[id].nCreateTime = birth_time;
+src/wallet/rpcdump.cpp:623:        pwallet->UpdateTimeFirstKey(nTimeBegin);
+src/wallet/rpcdump.cpp:627:    pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:658:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:672:    if (!pwallet->GetKey(keyid, vchSecret)) {
+src/wallet/rpcdump.cpp:705:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:727:    const std::map<CKeyID, int64_t>& mapKeyPool = pwallet->GetAllReserveKeys();
+src/wallet/rpcdump.cpp:728:    pwallet->GetKeyBirthTimes(mapKeyBirth);
+src/wallet/rpcdump.cpp:730:    std::set<CScriptID> scripts = pwallet->GetCScripts();
+src/wallet/rpcdump.cpp:751:    CKeyID seed_id = pwallet->GetHDChain().seed_id;
+src/wallet/rpcdump.cpp:755:        if (pwallet->GetKey(seed_id, seed)) {
+src/wallet/rpcdump.cpp:768:        if (pwallet->GetKey(keyid, key)) {
+src/wallet/rpcdump.cpp:776:            } else if (pwallet->mapKeyMetadata[keyid].hdKeypath == "s") {
+src/wallet/rpcdump.cpp:781:            file << strprintf(" # addr=%s%s\n", strAddr, (pwallet->mapKeyMetadata[keyid].hdKeypath.size() > 0 ? " hdkeypath="+pwallet->mapKeyMetadata[keyid].hdKeypath : ""));
+src/wallet/rpcdump.cpp:790:        auto it = pwallet->m_script_metadata.find(scriptid);
+src/wallet/rpcdump.cpp:791:        if (it != pwallet->m_script_metadata.end()) {
+src/wallet/rpcdump.cpp:794:        if(pwallet->GetCScript(scriptid, script)) {
+src/wallet/rpcdump.cpp:810:static UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int64_t timestamp) EXCLUSIVE_LOCKS_REQUIRED(pwallet->cs_wallet)
+src/wallet/rpcdump.cpp:892:            pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:894:            if (!pwallet->AddWatchOnly(redeemScript, timestamp)) {
+src/wallet/rpcdump.cpp:899:            if (!pwallet->HaveCScript(redeem_id) && !pwallet->AddCScript(redeemScript)) {
+src/wallet/rpcdump.cpp:909:            pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:911:            if (!pwallet->AddWatchOnly(redeemDestination, timestamp)) {
+src/wallet/rpcdump.cpp:917:                pwallet->SetAddressBook(dest, label, "receive");
+src/wallet/rpcdump.cpp:935:                    pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:936:                    pwallet->SetAddressBook(vchAddress, label, "receive");
+src/wallet/rpcdump.cpp:938:                    if (pwallet->HaveKey(vchAddress)) {
+src/wallet/rpcdump.cpp:942:                    pwallet->mapKeyMetadata[vchAddress].nCreateTime = timestamp;
+src/wallet/rpcdump.cpp:944:                    if (!pwallet->AddKeyPubKey(key, pubkey)) {
+src/wallet/rpcdump.cpp:948:                    pwallet->UpdateTimeFirstKey(timestamp);
+src/wallet/rpcdump.cpp:993:                pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:995:                if (!pwallet->AddWatchOnly(pubKeyScript, timestamp)) {
+src/wallet/rpcdump.cpp:1001:                    pwallet->SetAddressBook(pubkey_dest, label, "receive");
+src/wallet/rpcdump.cpp:1011:                pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:1013:                if (!pwallet->AddWatchOnly(scriptRawPubKey, timestamp)) {
+src/wallet/rpcdump.cpp:1053:                pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:1054:                pwallet->SetAddressBook(vchAddress, label, "receive");
+src/wallet/rpcdump.cpp:1056:                if (pwallet->HaveKey(vchAddress)) {
+src/wallet/rpcdump.cpp:1060:                pwallet->mapKeyMetadata[vchAddress].nCreateTime = timestamp;
+src/wallet/rpcdump.cpp:1062:                if (!pwallet->AddKeyPubKey(key, pubKey)) {
+src/wallet/rpcdump.cpp:1066:                pwallet->UpdateTimeFirstKey(timestamp);
+src/wallet/rpcdump.cpp:1077:                pwallet->MarkDirty();
+src/wallet/rpcdump.cpp:1079:                if (!pwallet->AddWatchOnly(script, timestamp)) {
+src/wallet/rpcdump.cpp:1086:                        pwallet->SetAddressBook(dest, label, "receive");
+src/wallet/rpcdump.cpp:1198:        LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcdump.cpp:1236:        int64_t scannedTime = pwallet->RescanFromTime(nLowestTimestamp, reserver, true /* update */);
+src/wallet/rpcdump.cpp:1237:        pwallet->ReacceptWalletTransactions();
+src/wallet/rpcdump.cpp:1239:        if (pwallet->IsAbortingRescan()) {
+src/wallet/wallet.cpp:1637:        isminetype fIsMine = pwallet->IsMine(txout);
+src/wallet/wallet.cpp:1644:            if (pwallet->IsChange(txout))
+src/wallet/wallet.cpp:1655:            pwallet->WalletLogPrintf("CWalletTx::GetAmounts: Unknown transaction type found, txid %s\n",
+src/wallet/wallet.cpp:1831:    assert(pwallet->GetBroadcastTransactions());
+src/wallet/wallet.cpp:1837:            pwallet->WalletLogPrintf("Relaying wtx %s\n", GetHash().ToString());
+src/wallet/wallet.cpp:1857:        result = pwallet->GetConflicts(myHash);
+src/wallet/wallet.cpp:1875:            nDebitCached = pwallet->GetDebit(*tx, ISMINE_SPENDABLE);
+src/wallet/wallet.cpp:1886:            nWatchDebitCached = pwallet->GetDebit(*tx, ISMINE_WATCH_ONLY);
+src/wallet/wallet.cpp:1908:            nCreditCached = pwallet->GetCredit(*tx, ISMINE_SPENDABLE);
+src/wallet/wallet.cpp:1919:            nWatchCreditCached = pwallet->GetCredit(*tx, ISMINE_WATCH_ONLY);
+src/wallet/wallet.cpp:1933:        nImmatureCreditCached = pwallet->GetCredit(*tx, ISMINE_SPENDABLE);
+src/wallet/wallet.cpp:1969:        if (!pwallet->IsSpent(hashTx, i))
+src/wallet/wallet.cpp:1972:            nCredit += pwallet->GetCredit(txout, filter);
+src/wallet/wallet.cpp:1992:        nImmatureWatchCreditCached = pwallet->GetCredit(*tx, ISMINE_WATCH_ONLY);
+src/wallet/wallet.cpp:2004:    nChangeCached = pwallet->GetChange(*tx);
+src/wallet/wallet.cpp:2024:    if (!pwallet->m_spend_zero_conf_change || !IsFromMe(ISMINE_ALL)) // using wtx's cached debit
+src/wallet/wallet.cpp:2035:        const CWalletTx* parent = pwallet->GetWalletTx(txin.prevout.hash);
+src/wallet/wallet.cpp:2039:        if (pwallet->IsMine(parentOut) != ISMINE_SPENDABLE)
+src/wallet/wallet.cpp:3676:        if (!pwallet->ReserveKeyFromKeyPool(nIndex, keypool, internal)) {
+src/wallet/wallet.cpp:3690:        pwallet->KeepKey(nIndex);
+src/wallet/wallet.cpp:3698:        pwallet->ReturnKey(nIndex, fInternal, vchPubKey);
+src/wallet/rpcwallet.cpp:68:    return pwallet && pwallet->IsCrypted()
+src/wallet/rpcwallet.cpp:87:    if (pwallet->IsLocked()) {
+src/wallet/rpcwallet.cpp:164:    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+src/wallet/rpcwallet.cpp:168:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:175:    OutputType output_type = pwallet->m_default_address_type;
+src/wallet/rpcwallet.cpp:182:    if (!pwallet->IsLocked()) {
+src/wallet/rpcwallet.cpp:183:        pwallet->TopUpKeyPool();
+src/wallet/rpcwallet.cpp:188:    if (!pwallet->GetKeyFromPool(newKey)) {
+src/wallet/rpcwallet.cpp:191:    pwallet->LearnRelatedScripts(newKey, output_type);
+src/wallet/rpcwallet.cpp:194:    pwallet->SetAddressBook(dest, label, "receive");
+src/wallet/rpcwallet.cpp:202:    if (!pwallet->GetLabelDestination(dest, label, bForceNew)) {
+src/wallet/rpcwallet.cpp:240:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:275:    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+src/wallet/rpcwallet.cpp:279:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:281:    if (!pwallet->IsLocked()) {
+src/wallet/rpcwallet.cpp:282:        pwallet->TopUpKeyPool();
+src/wallet/rpcwallet.cpp:285:    OutputType output_type = pwallet->m_default_change_type != OutputType::CHANGE_AUTO ? pwallet->m_default_change_type : pwallet->m_default_address_type;
+src/wallet/rpcwallet.cpp:299:    pwallet->LearnRelatedScripts(vchPubKey, output_type);
+src/wallet/rpcwallet.cpp:334:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:341:    std::string old_label = pwallet->mapAddressBook[dest].name;
+src/wallet/rpcwallet.cpp:345:        pwallet->SetAddressBook(dest, label, "receive");
+src/wallet/rpcwallet.cpp:351:        pwallet->SetAddressBook(dest, label, "send");
+src/wallet/rpcwallet.cpp:358:    for (const std::pair<const CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+src/wallet/rpcwallet.cpp:365:        pwallet->DeleteLabel(old_label);
+src/wallet/rpcwallet.cpp:401:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:409:    std::map<CTxDestination, CAddressBookData>::iterator mi = pwallet->mapAddressBook.find(dest);
+src/wallet/rpcwallet.cpp:410:    if (mi != pwallet->mapAddressBook.end() && !(*mi).second.name.empty()) {
+src/wallet/rpcwallet.cpp:449:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:455:    for (const std::pair<const CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+src/wallet/rpcwallet.cpp:467:    CAmount curBalance = pwallet->GetBalance();
+src/wallet/rpcwallet.cpp:476:    if (pwallet->GetBroadcastTransactions() && !g_connman) {
+src/wallet/rpcwallet.cpp:492:    if (!pwallet->CreateTransaction(vecSend, tx, reservekey, nFeeRequired, nChangePosRet, strError, coin_control)) {
+src/wallet/rpcwallet.cpp:498:    if (!pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */, std::move(fromAccount), reservekey, g_connman.get(), state)) {
+src/wallet/rpcwallet.cpp:546:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:548:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:628:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:630:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:633:    std::map<CTxDestination, CAmount> balances = pwallet->GetAddressBalances();
+src/wallet/rpcwallet.cpp:634:    for (const std::set<CTxDestination>& grouping : pwallet->GetAddressGroupings()) {
+src/wallet/rpcwallet.cpp:642:                if (pwallet->mapAddressBook.find(address) != pwallet->mapAddressBook.end()) {
+src/wallet/rpcwallet.cpp:643:                    addressInfo.push_back(pwallet->mapAddressBook.find(address)->second.name);
+src/wallet/rpcwallet.cpp:683:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:701:    if (!pwallet->GetKey(*keyID, key)) {
+src/wallet/rpcwallet.cpp:747:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:749:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:768:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+src/wallet/rpcwallet.cpp:821:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:823:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:832:    std::set<CTxDestination> setAddress = pwallet->GetLabelAddresses(label);
+src/wallet/rpcwallet.cpp:836:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+src/wallet/rpcwallet.cpp:912:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:914:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:940:            return ValueFromAmount(pwallet->GetLegacyBalance(filter, min_depth, account));
+src/wallet/rpcwallet.cpp:944:    return ValueFromAmount(pwallet->GetBalance(filter, min_depth));
+src/wallet/rpcwallet.cpp:963:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:965:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:967:    return ValueFromAmount(pwallet->GetUnconfirmedBalance());
+src/wallet/rpcwallet.cpp:1008:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:1022:    if (!pwallet->AccountMove(strFrom, strTo, nAmount, strComment)) {
+src/wallet/rpcwallet.cpp:1078:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:1080:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:1103:    CAmount nBalance = pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, &strAccount);
+src/wallet/rpcwallet.cpp:1209:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:1211:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:1213:    if (pwallet->GetBroadcastTransactions() && !g_connman) {
+src/wallet/rpcwallet.cpp:1285:    if (IsDeprecatedRPCEnabled("accounts") && totalAmount > pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, &strAccount)) {
+src/wallet/rpcwallet.cpp:1287:    } else if (!IsDeprecatedRPCEnabled("accounts") && totalAmount > pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, nullptr)) {
+src/wallet/rpcwallet.cpp:1300:    bool fCreated = pwallet->CreateTransaction(vecSend, tx, keyChange, nFeeRequired, nChangePosRet, strFailReason, coin_control);
+src/wallet/rpcwallet.cpp:1304:    if (!pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */, std::move(strAccount), keyChange, g_connman.get(), state)) {
+src/wallet/rpcwallet.cpp:1353:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:1372:    OutputType output_type = pwallet->m_default_address_type;
+src/wallet/rpcwallet.cpp:1382:    pwallet->SetAddressBook(dest, label, "send");
+src/wallet/rpcwallet.cpp:1413:        if (pwallet && pwallet->GetCScript(scriptID, subscript)) {
+src/wallet/rpcwallet.cpp:1508:        pwallet->AddCScript(witprogram); // Implicit for single-key now, but necessary for multisig and for compatibility with older software
+src/wallet/rpcwallet.cpp:1509:        pwallet->SetAddressBook(w.result, "", "receive");
+src/wallet/rpcwallet.cpp:1558:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+src/wallet/rpcwallet.cpp:1597:    auto start = pwallet->mapAddressBook.begin();
+src/wallet/rpcwallet.cpp:1598:    auto end = pwallet->mapAddressBook.end();
+src/wallet/rpcwallet.cpp:1601:        start = pwallet->mapAddressBook.find(filtered_address);
+src/wallet/rpcwallet.cpp:1719:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:1721:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:1771:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:1773:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:1821:            if (pwallet->mapAddressBook.count(s.destination)) {
+src/wallet/rpcwallet.cpp:1822:                entry.pushKV("label", pwallet->mapAddressBook[s.destination].name);
+src/wallet/rpcwallet.cpp:1839:            if (pwallet->mapAddressBook.count(r.destination)) {
+src/wallet/rpcwallet.cpp:1840:                account = pwallet->mapAddressBook[r.destination].name;
+src/wallet/rpcwallet.cpp:1864:                if (pwallet->mapAddressBook.count(r.destination)) {
+src/wallet/rpcwallet.cpp:2010:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:2038:        LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2040:        const CWallet::TxItems & txOrdered = pwallet->wtxOrdered;
+src/wallet/rpcwallet.cpp:2124:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:2126:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2137:    for (const std::pair<const CTxDestination, CAddressBookData>& entry : pwallet->mapAddressBook) {
+src/wallet/rpcwallet.cpp:2143:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+src/wallet/rpcwallet.cpp:2159:                if (pwallet->mapAddressBook.count(r.destination)) {
+src/wallet/rpcwallet.cpp:2160:                    mapAccountBalances[pwallet->mapAddressBook[r.destination].name] += r.amount;
+src/wallet/rpcwallet.cpp:2167:    const std::list<CAccountingEntry>& acentries = pwallet->laccentries;
+src/wallet/rpcwallet.cpp:2238:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:2240:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2281:    for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+src/wallet/rpcwallet.cpp:2298:            auto it = pwallet->mapWallet.find(tx->GetHash());
+src/wallet/rpcwallet.cpp:2299:            if (it != pwallet->mapWallet.end()) {
+src/wallet/rpcwallet.cpp:2375:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:2377:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2388:    auto it = pwallet->mapWallet.find(hash);
+src/wallet/rpcwallet.cpp:2389:    if (it == pwallet->mapWallet.end()) {
+src/wallet/rpcwallet.cpp:2443:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:2445:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2450:    if (!pwallet->mapWallet.count(hash)) {
+src/wallet/rpcwallet.cpp:2453:    if (!pwallet->AbandonTransaction(hash)) {
+src/wallet/rpcwallet.cpp:2483:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:2485:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2488:    if (!pwallet->BackupWallet(strDest)) {
+src/wallet/rpcwallet.cpp:2517:    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+src/wallet/rpcwallet.cpp:2521:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2532:    pwallet->TopUpKeyPool(kpSize);
+src/wallet/rpcwallet.cpp:2534:    if (pwallet->GetKeyPoolSize() < kpSize) {
+src/wallet/rpcwallet.cpp:2579:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2581:    if (!pwallet->IsCrypted()) {
+src/wallet/rpcwallet.cpp:2606:        if (!pwallet->Unlock(strWalletPass)) {
+src/wallet/rpcwallet.cpp:2615:    pwallet->TopUpKeyPool();
+src/wallet/rpcwallet.cpp:2617:    pwallet->nRelockTime = GetTime() + nSleepTime;
+src/wallet/rpcwallet.cpp:2618:    RPCRunLater(strprintf("lockwallet(%s)", pwallet->GetName()), std::bind(LockWallet, pwallet), nSleepTime);
+src/wallet/rpcwallet.cpp:2646:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2648:    if (!pwallet->IsCrypted()) {
+src/wallet/rpcwallet.cpp:2667:    if (!pwallet->ChangeWalletPassphrase(strOldWalletPass, strNewWalletPass)) {
+src/wallet/rpcwallet.cpp:2702:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2704:    if (!pwallet->IsCrypted()) {
+src/wallet/rpcwallet.cpp:2708:    pwallet->Lock();
+src/wallet/rpcwallet.cpp:2709:    pwallet->nRelockTime = 0;
+src/wallet/rpcwallet.cpp:2749:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2751:    if (pwallet->IsCrypted()) {
+src/wallet/rpcwallet.cpp:2766:    if (!pwallet->EncryptWallet(strWalletPass)) {
+src/wallet/rpcwallet.cpp:2825:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:2827:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2835:            pwallet->UnlockAllCoins();
+src/wallet/rpcwallet.cpp:2869:        const auto it = pwallet->mapWallet.find(outpt.hash);
+src/wallet/rpcwallet.cpp:2870:        if (it == pwallet->mapWallet.end()) {
+src/wallet/rpcwallet.cpp:2880:        if (pwallet->IsSpent(outpt.hash, outpt.n)) {
+src/wallet/rpcwallet.cpp:2884:        const bool is_locked = pwallet->IsLockedCoin(outpt.hash, outpt.n);
+src/wallet/rpcwallet.cpp:2899:        if (fUnlock) pwallet->UnlockCoin(outpt);
+src/wallet/rpcwallet.cpp:2900:        else pwallet->LockCoin(outpt);
+src/wallet/rpcwallet.cpp:2941:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2944:    pwallet->ListLockedCoins(vOutpts);
+src/wallet/rpcwallet.cpp:2982:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:2986:    pwallet->m_pay_tx_fee = CFeeRate(nAmount, 1000);
+src/wallet/rpcwallet.cpp:3027:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:3029:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:3033:    size_t kpExternalSize = pwallet->KeypoolCountExternalKeys();
+src/wallet/rpcwallet.cpp:3034:    obj.pushKV("walletname", pwallet->GetName());
+src/wallet/rpcwallet.cpp:3035:    obj.pushKV("walletversion", pwallet->GetVersion());
+src/wallet/rpcwallet.cpp:3036:    obj.pushKV("balance",       ValueFromAmount(pwallet->GetBalance()));
+src/wallet/rpcwallet.cpp:3037:    obj.pushKV("unconfirmed_balance", ValueFromAmount(pwallet->GetUnconfirmedBalance()));
+src/wallet/rpcwallet.cpp:3038:    obj.pushKV("immature_balance",    ValueFromAmount(pwallet->GetImmatureBalance()));
+src/wallet/rpcwallet.cpp:3039:    obj.pushKV("txcount",       (int)pwallet->mapWallet.size());
+src/wallet/rpcwallet.cpp:3040:    obj.pushKV("keypoololdest", pwallet->GetOldestKeyPoolTime());
+src/wallet/rpcwallet.cpp:3042:    CKeyID seed_id = pwallet->GetHDChain().seed_id;
+src/wallet/rpcwallet.cpp:3043:    if (!seed_id.IsNull() && pwallet->CanSupportFeature(FEATURE_HD_SPLIT)) {
+src/wallet/rpcwallet.cpp:3044:        obj.pushKV("keypoolsize_hd_internal",   (int64_t)(pwallet->GetKeyPoolSize() - kpExternalSize));
+src/wallet/rpcwallet.cpp:3046:    if (pwallet->IsCrypted()) {
+src/wallet/rpcwallet.cpp:3047:        obj.pushKV("unlocked_until", pwallet->nRelockTime);
+src/wallet/rpcwallet.cpp:3049:    obj.pushKV("paytxfee", ValueFromAmount(pwallet->m_pay_tx_fee.GetFeePerK()));
+src/wallet/rpcwallet.cpp:3054:    obj.pushKV("private_keys_enabled", !pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS));
+src/wallet/rpcwallet.cpp:3267:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:3269:    if (!pwallet->GetBroadcastTransactions()) {
+src/wallet/rpcwallet.cpp:3273:    std::vector<uint256> txids = pwallet->ResendWalletTransactionsBefore(GetTime(), g_connman.get());
+src/wallet/rpcwallet.cpp:3400:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:3405:        LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:3406:        pwallet->AvailableCoins(vecOutputs, !include_unsafe, nullptr, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth);
+src/wallet/rpcwallet.cpp:3409:    LOCK(pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:3426:            auto i = pwallet->mapAddressBook.find(address);
+src/wallet/rpcwallet.cpp:3427:            if (i != pwallet->mapAddressBook.end()) {
+src/wallet/rpcwallet.cpp:3437:                if (pwallet->GetCScript(hash, redeemScript)) {
+src/wallet/rpcwallet.cpp:3459:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:3506:            coinControl.m_change_type = pwallet->m_default_change_type;
+src/wallet/rpcwallet.cpp:3566:    if (!pwallet->FundTransaction(tx, fee_out, change_position, strFailReason, lockUnspents, setSubtractFeeFromOutputs, coinControl)) {
+src/wallet/rpcwallet.cpp:3727:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:3829:    pwallet->BlockUntilSyncedToCurrentChain();
+src/wallet/rpcwallet.cpp:3831:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:3914:    pwallet->GetScriptForMining(coinbase_script);
+src/wallet/rpcwallet.cpp:3999:    CBlockIndex *stopBlock = pwallet->ScanForWalletTransactions(pindexStart, pindexStop, reserver, true);
+src/wallet/rpcwallet.cpp:4001:        if (pwallet->IsAbortingRescan()) {
+src/wallet/rpcwallet.cpp:4073:        if (pwallet && pwallet->GetPubKey(keyID, vchPubKey)) {
+src/wallet/rpcwallet.cpp:4084:        if (pwallet && pwallet->GetCScript(scriptID, subscript)) {
+src/wallet/rpcwallet.cpp:4094:        if (pwallet && pwallet->GetPubKey(CKeyID(id), pubkey)) {
+src/wallet/rpcwallet.cpp:4107:        if (pwallet && pwallet->GetCScript(CScriptID(hash), subscript)) {
+src/wallet/rpcwallet.cpp:4193:    LOCK(pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:4214:    if (pwallet->mapAddressBook.count(dest)) {
+src/wallet/rpcwallet.cpp:4215:        ret.pushKV("label", pwallet->mapAddressBook[dest].name);
+src/wallet/rpcwallet.cpp:4217:            ret.pushKV("account", pwallet->mapAddressBook[dest].name);
+src/wallet/rpcwallet.cpp:4223:        auto it = pwallet->mapKeyMetadata.find(key_id);
+src/wallet/rpcwallet.cpp:4224:        if (it != pwallet->mapKeyMetadata.end()) {
+src/wallet/rpcwallet.cpp:4229:        auto it = pwallet->m_script_metadata.find(CScriptID(scriptPubKey));
+src/wallet/rpcwallet.cpp:4230:        if (it != pwallet->m_script_metadata.end()) {
+src/wallet/rpcwallet.cpp:4247:    std::map<CTxDestination, CAddressBookData>::iterator mi = pwallet->mapAddressBook.find(dest);
+src/wallet/rpcwallet.cpp:4248:    if (mi != pwallet->mapAddressBook.end()) {
+src/wallet/rpcwallet.cpp:4282:    LOCK(pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:4288:    for (const std::pair<const CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+src/wallet/rpcwallet.cpp:4332:    LOCK(pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:4341:    for (const std::pair<const CTxDestination, CAddressBookData>& entry : pwallet->mapAddressBook) {
+src/wallet/rpcwallet.cpp:4390:    LOCK2(cs_main, pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:4393:    if (!pwallet->IsHDEnabled()) {
+src/wallet/rpcwallet.cpp:4406:        master_pub_key = pwallet->GenerateNewSeed();
+src/wallet/rpcwallet.cpp:4417:        master_pub_key = pwallet->DeriveNewSeed(key);
+src/wallet/rpcwallet.cpp:4420:    pwallet->SetHDSeed(master_pub_key);
+src/wallet/rpcwallet.cpp:4421:    if (flush_key_pool) pwallet->NewKeyPool();
+src/wallet/rpcwallet.cpp:4470:    if (!pwallet->GetPubKey(keyID, vchPubKey)) {
+src/wallet/rpcwallet.cpp:4474:    auto it = pwallet->mapKeyMetadata.find(keyID);
+src/wallet/rpcwallet.cpp:4475:    if (it != pwallet->mapKeyMetadata.end()) {
+src/wallet/rpcwallet.cpp:4485:        pwallet->GetKey(meta.hd_seed_id, key);
+src/wallet/rpcwallet.cpp:4498:    LOCK(pwallet->cs_wallet);
+src/wallet/rpcwallet.cpp:4507:        const auto it = pwallet->mapWallet.find(txhash);
+src/wallet/rpcwallet.cpp:4508:        if (it != pwallet->mapWallet.end()) {
+src/wallet/rpcwallet.cpp:4528:        if (it != pwallet->mapWallet.end()) {

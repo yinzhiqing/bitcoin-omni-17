@@ -10,12 +10,12 @@
 
 #include "amount.h"
 #include "base58.h"
-#include "coincontrol.h"
 #include "coins.h"
+#include "wallet/coincontrol.h"
+#include "wallet/wallet.h"
 #include "consensus/validation.h"
 #include "core_io.h"
 #include "keystore.h"
-#include "main.h"
 #include "primitives/transaction.h"
 #include "script/script.h"
 #include "script/sign.h"
@@ -23,6 +23,8 @@
 #include "sync.h"
 #include "txmempool.h"
 #include "uint256.h"
+#include "net_processing.h" 
+#include "key_io.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #endif
@@ -37,6 +39,9 @@ using mastercore::SelectAllCoins;
 using mastercore::SelectCoins;
 using mastercore::UseEncodingClassC;
 
+extern CWallet* pwallet; 
+extern CCriticalSection cs_main; 
+
 /** Creates and sends a transaction. */
 int WalletTxBuilder(
         const std::string& senderAddress,
@@ -49,7 +54,7 @@ int WalletTxBuilder(
         bool commit)
 {
 #ifdef ENABLE_WALLET
-    if (pwalletMain == NULL) return MP_ERR_WALLET_ACCESS;
+    if (pwallet == NULL) return MP_ERR_WALLET_ACCESS;
 
     // Determine the class to send the transaction via - default is Class C
     int omniTxClass = OMNI_CLASS_C;
@@ -57,16 +62,15 @@ int WalletTxBuilder(
 
     // Prepare the transaction - first setup some vars
     CCoinControl coinControl;
-    CWalletTx wtxNew;
-    int64_t nFeeRet = 0;
+    CTransactionRef txNew;
+    CAmount nFeeRet = 0;
     int nChangePosInOut = -1;
     std::string strFailReason;
     std::vector<std::pair<CScript, int64_t> > vecSend;
-    CReserveKey reserveKey(pwalletMain);
+    CReserveKey reserveKey(pwallet);
 
     // Next, we set the change address to the sender
-    CBitcoinAddress addr = CBitcoinAddress(senderAddress);
-    coinControl.destChange = addr.Get();
+    coinControl.destChange = DecodeDestination(senderAddress);
 
     // Select the inputs
     if (0 > SelectCoins(senderAddress, coinControl, referenceAmount)) { return MP_INPUTS_INVALID; }
@@ -88,7 +92,7 @@ int WalletTxBuilder(
 
     // Then add a paytopubkeyhash output for the recipient (if needed) - note we do this last as we want this to be the highest vout
     if (!receiverAddress.empty()) {
-        CScript scriptPubKey = GetScriptForDestination(CBitcoinAddress(receiverAddress).Get());
+        CScript scriptPubKey = GetScriptForDestination(DecodeDestination(receiverAddress));
         vecSend.push_back(std::make_pair(scriptPubKey, 0 < referenceAmount ? referenceAmount : GetDustThreshold(scriptPubKey)));
     }
 
@@ -104,20 +108,20 @@ int WalletTxBuilder(
     }
 
     // Ask the wallet to create the transaction (note mining fee determined by Bitcoin Core params)
-    if (!pwalletMain->CreateTransaction(vecRecipients, wtxNew, reserveKey, nFeeRet, nChangePosInOut, strFailReason, &coinControl)) {
+    if (!pwallet->CreateTransaction(vecRecipients, txNew, reserveKey, nFeeRet, nChangePosInOut, strFailReason, &coinControl)) {
         PrintToLog("%s: ERROR: wallet transaction creation failed: %s\n", __func__, strFailReason);
         return MP_ERR_CREATE_TX;
     }
 
     // If this request is only to create, but not commit the transaction then display it and exit
     if (!commit) {
-        retRawTx = EncodeHexTx(wtxNew);
+        retRawTx = EncodeHexTx(*txNew);
         return 0;
     } else {
         // Commit the transaction to the wallet and broadcast)
-        PrintToLog("%s: %s; nFeeRet = %d\n", __func__, wtxNew.ToString(), nFeeRet);
-        if (!pwalletMain->CommitTransaction(wtxNew, reserveKey)) return MP_ERR_COMMIT_TX;
-        retTxid = wtxNew.GetHash();
+        PrintToLog("%s: %s; nFeeRet = %d\n", __func__, txNew->ToString(), nFeeRet);
+        if (!pwallet->CommitTransaction(txNew, reserveKey)) return MP_ERR_COMMIT_TX;
+        retTxid = txNew->GetHash();
         return 0;
     }
 #else
@@ -217,7 +221,7 @@ int CreateFundedTransaction(
     }
 
     bool fSuccess = false;
-    CWalletTx wtxNew;
+	CTransactionRef txNew;
     CReserveKey reserveKey(pwalletMain);
     int64_t nFeeRequired = 0;
     std::string strFailReason;
@@ -225,7 +229,7 @@ int CreateFundedTransaction(
 
     // set change
     CCoinControl coinControl;
-    coinControl.destChange = CBitcoinAddress(feeAddress).Get();
+    coinControl.destChange = DecodeDestination(feeAddress);
     coinControl.fAllowOtherInputs = true;
 
     if (!SelectAllCoins(senderAddress, coinControl)) {
@@ -235,14 +239,14 @@ int CreateFundedTransaction(
     
     // prepare sources for fees
     std::set<CTxDestination> feeSources;
-    feeSources.insert(CBitcoinAddress(feeAddress).Get());
+    feeSources.insert(DecodeDestination(feeAddress).Get());
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     std::vector<COutPoint> vLockedCoins;
     LockUnrelatedCoins(pwalletMain, feeSources, vLockedCoins);
 
-    fSuccess = pwalletMain->CreateTransaction(vecRecipients, wtxNew, reserveKey, nFeeRequired, nChangePosRet, strFailReason, &coinControl, false);
+    fSuccess = pwalletMain->CreateTransaction(vecRecipients, txNew, reserveKey, nFeeRequired, nChangePosRet, strFailReason, &coinControl, false);
 
     // to restore the original order of inputs, create a new transaction and add
     // inputs and outputs step by step

@@ -711,7 +711,7 @@ ConsolePrint	log.cpp	/^int ConsolePrint(const std::string& str)$/;"	f	line:167	s
 ConvertTo256	uint256_extensions.h	/^inline arith_uint256 ConvertTo256(const NumberT& number)$/;"	f	line:36	namespace:mastercore	signature:(const NumberT& number)
 ConvertTo64	uint256_extensions.h	/^inline int64_t ConvertTo64(const arith_uint256& number)$/;"	f	line:45	namespace:mastercore	signature:(const arith_uint256& number)
 CountRecords	dbfees.cpp	/^int COmniFeeHistory::CountRecords()$/;"	f	line:371	class:COmniFeeHistory	signature:()
-CreateFundedTransaction	wallettxbuilder.cpp	/^int CreateFundedTransaction($/;"	f	line:187	signature:( const std::string& senderAddress, const std::string& receiverAddress, const std::string& feeAddress, const std::vector<unsigned char>& payload, uint256& retTxid)
+CreateFundedTransaction	wallettxbuilder.cpp	/^int CreateFundedTransaction($/;"	f	line:202	signature:( const std::string& senderAddress, const std::string& receiverAddress, const std::string& feeAddress, const std::vector<unsigned char>& payload, uint256& retTxid)
 CreatePayload_ActivateFeature	createpayload.cpp	/^std::vector<unsigned char> CreatePayload_ActivateFeature(uint16_t featureId, uint32_t activationBlock, uint32_t minClientVersion)$/;"	f	line:513	signature:(uint16_t featureId, uint32_t activationBlock, uint32_t minClientVersion)
 CreatePayload_ChangeIssuer	createpayload.cpp	/^std::vector<unsigned char> CreatePayload_ChangeIssuer(uint32_t propertyId)$/;"	f	line:322	signature:(uint32_t propertyId)
 CreatePayload_CloseCrowdsale	createpayload.cpp	/^std::vector<unsigned char> CreatePayload_CloseCrowdsale(uint32_t propertyId)$/;"	f	line:263	signature:(uint32_t propertyId)
@@ -865,7 +865,7 @@ LoadActivations	dbtxlist.cpp	/^void CMPTxList::LoadActivations(int blockHeight)$
 LoadAlerts	dbtxlist.cpp	/^void CMPTxList::LoadAlerts(int blockHeight)$/;"	f	line:471	class:CMPTxList	signature:(int blockHeight)
 LoadFreezeState	dbtxlist.cpp	/^bool CMPTxList::LoadFreezeState(int blockHeight)$/;"	f	line:619	class:CMPTxList	signature:(int blockHeight)
 LoadMostRelevantInMemoryState	persistence.cpp	/^int LoadMostRelevantInMemoryState()$/;"	f	line:660	signature:()
-LockUnrelatedCoins	wallettxbuilder.cpp	/^static void LockUnrelatedCoins($/;"	f	line:135	file:	signature:( CWallet* pwallet, const std::set<CTxDestination>& destinations, std::vector<COutPoint>& retLockedCoins)
+LockUnrelatedCoins	wallettxbuilder.cpp	/^static void LockUnrelatedCoins($/;"	f	line:150	file:	signature:( CWallet* pwallet, const std::set<CTxDestination>& destinations, std::vector<COutPoint>& retLockedCoins)
 LogFilePrint	log.cpp	/^int LogFilePrint(const std::string& str)$/;"	f	line:151	signature:(const std::string& str)
 MAKE_OMNI_CORE_ERROR_AND_LOG_FUNC	log.h	59;"	d	line:59
 MAKE_OMNI_CORE_ERROR_AND_LOG_FUNC	log.h	83;"	d	line:83
@@ -1234,12 +1234,12 @@ TxClassC	test/parsing_c_tests.cpp	/^static CTransaction TxClassC(const std::vect
 TxClassC	test/sender_firstin_tests.cpp	/^static CTransaction TxClassC(const std::vector<CTxOut>& txInputs)$/;"	f	line:28	file:	signature:(const std::vector<CTxOut>& txInputs)
 UPDATE	tx.h	/^        UPDATE = 2,$/;"	e	line:171	enum:CMPTransaction::ActionTypes
 UnitTest	utilsbitcoin.cpp	/^bool UnitTest()$/;"	f	line:71	namespace:mastercore	signature:()
-UnlockCoins	wallettxbuilder.cpp	/^static void UnlockCoins($/;"	f	line:167	file:	signature:( CWallet* pwallet, const std::vector<COutPoint>& vToUnlock)
+UnlockCoins	wallettxbuilder.cpp	/^static void UnlockCoins($/;"	f	line:182	file:	signature:( CWallet* pwallet, const std::vector<COutPoint>& vToUnlock)
 UpdateDistributionThresholds	dbfees.cpp	/^void COmniFeeCache::UpdateDistributionThresholds(uint32_t propertyId)$/;"	f	line:55	class:COmniFeeCache	signature:(uint32_t propertyId)
 UseEncodingClassC	omnicore.cpp	/^bool mastercore::UseEncodingClassC(size_t nDataSize)$/;"	f	line:1867	class:mastercore	signature:(size_t nDataSize)
 VerifyCheckpoint	rules.cpp	/^bool VerifyCheckpoint(int block, const uint256& blockHash)$/;"	f	line:643	namespace:mastercore	signature:(int block, const uint256& blockHash)
 WalletCacheUpdate	walletcache.cpp	/^int WalletCacheUpdate()$/;"	f	line:41	namespace:mastercore	signature:()
-WalletTxBuilder	wallettxbuilder.cpp	/^int WalletTxBuilder($/;"	f	line:46	signature:( const std::string& senderAddress, const std::string& receiverAddress, const std::string& redemptionAddress, int64_t referenceAmount, const std::vector<unsigned char>& payload, uint256& retTxid, std::string& retRawTx, bool commit)
+WalletTxBuilder	wallettxbuilder.cpp	/^int WalletTxBuilder($/;"	f	line:48	signature:( const std::string& senderAddress, const std::string& receiverAddress, const std::string& redemptionAddress, int64_t referenceAmount, const std::vector<unsigned char>& payload, uint256& retTxid, std::string& retRawTx, bool commit)
 _my_sps	omnicore.cpp	/^CMPSPInfo* mastercore::_my_sps;$/;"	m	line:133	class:mastercore	file:
 accept_amount_original	dex.h	/^    int64_t accept_amount_original;    \/\/ amount of MSC\/TMSC desired to purchased$/;"	m	line:120	class:CMPAccept	access:private
 accept_amount_remaining	dex.h	/^    int64_t accept_amount_remaining;   \/\/ amount of MSC\/TMSC remaining to purchased$/;"	m	line:121	class:CMPAccept	access:private

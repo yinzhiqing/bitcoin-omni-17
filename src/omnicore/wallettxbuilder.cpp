@@ -25,6 +25,8 @@
 #include "uint256.h"
 #include "net_processing.h" 
 #include "key_io.h"
+#include "coins.h"
+#include "validation.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #endif
@@ -41,7 +43,10 @@ using mastercore::UseEncodingClassC;
 
 extern CWallet* pwallet; 
 extern CCriticalSection cs_main; 
-
+extern CBlockPolicyEstimator feeEstimator;
+extern CTxMemPool mempool(&feeEstimator);
+extern std::unique_ptr<CCoinsViewCache> pcoinsTip;
+extern void RelayTransaction(const CTransaction& tx, CConnman* connman);
 /** Creates and sends a transaction. */
 int WalletTxBuilder(
         const std::string& senderAddress,
@@ -108,7 +113,7 @@ int WalletTxBuilder(
     }
 
     // Ask the wallet to create the transaction (note mining fee determined by Bitcoin Core params)
-    if (!pwallet->CreateTransaction(vecRecipients, txNew, reserveKey, nFeeRet, nChangePosInOut, strFailReason, &coinControl)) {
+    if (!pwallet->CreateTransaction(vecRecipients, txNew, reserveKey, nFeeRet, nChangePosInOut, strFailReason, coinControl)) {
         PrintToLog("%s: ERROR: wallet transaction creation failed: %s\n", __func__, strFailReason);
         return MP_ERR_CREATE_TX;
     }
@@ -118,9 +123,22 @@ int WalletTxBuilder(
         retRawTx = EncodeHexTx(*txNew);
         return 0;
     } else {
+//jg 
+		auto it = pwallet->mapWallet.find(txNew->GetHash());
+		if (it == pwallet->mapWallet.end()) {
+			LogPrintf("not found wallet from mapWallet."); 
+//			return MP_ERR_WALLET_ACCESS;
+		}
+/*	    CWalletTx& oldWtx = it->second;
+        mapValue_t mapValue = oldWtx.mapValue; 
+		mapValue["replaces_txid"] = oldWtx.GetHash().ToString();
+*/
+		std::vector<std::pair<std::string, std::string> > vOrderForm;
+		CValidationState state; 
+		mapValue_t mapValue;
         // Commit the transaction to the wallet and broadcast)
         PrintToLog("%s: %s; nFeeRet = %d\n", __func__, txNew->ToString(), nFeeRet);
-        if (!pwallet->CommitTransaction(txNew, reserveKey)) return MP_ERR_COMMIT_TX;
+        if (!pwallet->CommitTransaction(txNew, mapValue, std::move(vOrderForm), senderAddress,  reserveKey, g_connman.get(), state)) return MP_ERR_COMMIT_TX;
         retTxid = txNew->GetHash();
         return 0;
     }
@@ -149,7 +167,7 @@ static void LockUnrelatedCoins(
 
     for (COutput& output : vCoins) {
         CTxDestination address;
-        const CScript& scriptPubKey = output.tx->vout[output.i].scriptPubKey;
+        const CScript& scriptPubKey = output.tx->tx->vout[output.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKey, address);
 
         // don't lock specified coins, but any other
@@ -192,7 +210,7 @@ int CreateFundedTransaction(
         uint256& retTxid)
 {
 #ifdef ENABLE_WALLET
-    if (pwalletMain == NULL) {
+    if (pwallet== NULL) {
         return MP_ERR_WALLET_ACCESS;
     }
 
@@ -208,7 +226,7 @@ int CreateFundedTransaction(
 
     // add reference output, if there is one
     if (!receiverAddress.empty()) {
-        CScript scriptPubKey = GetScriptForDestination(CBitcoinAddress(receiverAddress).Get());
+        CScript scriptPubKey = GetScriptForDestination(DecodeDestination(receiverAddress));
         vecSend.push_back(std::make_pair(scriptPubKey, GetDustThreshold(scriptPubKey)));
     }
 
@@ -222,8 +240,8 @@ int CreateFundedTransaction(
 
     bool fSuccess = false;
 	CTransactionRef txNew;
-    CReserveKey reserveKey(pwalletMain);
-    int64_t nFeeRequired = 0;
+    CReserveKey reserveKey(pwallet);
+    CAmount nFeeRequired = 0;
     std::string strFailReason;
     int nChangePosRet = 0; // add change first
 
@@ -239,14 +257,15 @@ int CreateFundedTransaction(
     
     // prepare sources for fees
     std::set<CTxDestination> feeSources;
-    feeSources.insert(DecodeDestination(feeAddress).Get());
+    feeSources.insert(DecodeDestination(feeAddress));
 
-    LOCK2(cs_main, pwalletMain->cs_wallet);
+    LOCK2(cs_main, pwallet->cs_wallet);
 
     std::vector<COutPoint> vLockedCoins;
-    LockUnrelatedCoins(pwalletMain, feeSources, vLockedCoins);
+    LockUnrelatedCoins(pwallet, feeSources, vLockedCoins);
 
-    fSuccess = pwalletMain->CreateTransaction(vecRecipients, txNew, reserveKey, nFeeRequired, nChangePosRet, strFailReason, &coinControl, false);
+    fSuccess = pwallet->CreateTransaction(vecRecipients, txNew, reserveKey, nFeeRequired, nChangePosRet, strFailReason, coinControl, false);
+//    if (!pwallet->CreateTransaction(vecRecipients,       txNew, reserveKey, nFeeRet, nChangePosInOut, strFailReason, coinControl)) {
 
     // to restore the original order of inputs, create a new transaction and add
     // inputs and outputs step by step
@@ -256,29 +275,29 @@ int CreateFundedTransaction(
     coinControl.ListSelected(vSelectedInputs);
 
     // add previously selected coins
-    BOOST_FOREACH(const COutPoint& txIn, vSelectedInputs) {
+    for(const COutPoint& txIn : vSelectedInputs) {
         tx.vin.push_back(CTxIn(txIn));
     }
 
     // add other selected coins
-    BOOST_FOREACH(const CTxIn& txin, wtxNew.vin) {
+    for(const CTxIn& txin : txNew->vin) {
         if (!coinControl.IsSelected(txin.prevout)) {
             tx.vin.push_back(txin);
         }
     }
 
     // add outputs
-    BOOST_FOREACH(const CTxOut& txOut, wtxNew.vout) {
+    for(const CTxOut& txOut : txNew->vout) {
         tx.vout.push_back(txOut);
     }
 
     // restore original locking state
-    UnlockCoins(pwalletMain, vLockedCoins);
+    UnlockCoins(pwallet, vLockedCoins);
 
     // lock selected outputs for this transaction // TODO: could be removed?
     if (fSuccess) {
-        BOOST_FOREACH(const CTxIn& txIn, tx.vin) {
-            pwalletMain->LockCoin(txIn.prevout);
+        for(const CTxIn& txIn : tx.vin) {
+            pwallet->LockCoin(txIn.prevout);
         }
     }
 
@@ -298,46 +317,45 @@ int CreateFundedTransaction(
         CCoinsViewMemPool viewMempool(&viewChain, mempool);
         view.SetBackend(viewMempool); // temporarily switch cache backend to db+mempool view
 
-        BOOST_FOREACH(const CTxIn& txin, tx.vin) {
-            const uint256& prevHash = txin.prevout.hash;
-            CCoins coins;
-            view.AccessCoins(prevHash); // this is certainly allowed to fail
+        for(const CTxIn& txin : tx.vin) {
+            view.AccessCoin(txin.prevout); // this is certainly allowed to fail
         }
 
         view.SetBackend(viewDummy); // switch back to avoid locking mempool for too long
     }
 
     int nHashType = SIGHASH_ALL;
-    const CKeyStore& keystore = *pwalletMain;
+    const CKeyStore& keystore = *pwallet;
 
     for (unsigned int i = 0; i < tx.vin.size(); i++) {
         CTxIn& txin = tx.vin[i];
-        const CCoins* coins = view.AccessCoins(txin.prevout.hash);
-        if (coins == NULL || !coins->IsAvailable(txin.prevout.n)) {
+        const Coin coins = view.AccessCoin(txin.prevout);
+        if (coins.IsSpent()) {
             PrintToLog("%s: ERROR: wallet transaction signing failed: input not found or already spent\n", __func__);
             continue;
         }
-        const CScript& prevPubKey = coins->vout[txin.prevout.n].scriptPubKey;
-        const CAmount& amount = coins->vout[txin.prevout.n].nValue;
+        const CScript& prevPubKey = coins.out.scriptPubKey;
+        const CAmount& amount = coins.out.nValue;
 
         SignatureData sigdata;
-        if (!ProduceSignature(MutableTransactionSignatureCreator(&keystore, &tx, i, amount, nHashType), prevPubKey, sigdata)) {
+        if (!ProduceSignature(keystore, MutableTransactionSignatureCreator(&tx, i, amount, nHashType), prevPubKey, sigdata)) {
             PrintToLog("%s: ERROR: wallet transaction signing failed\n", __func__);
             return MP_ERR_CREATE_TX;
         }
 
-        UpdateTransaction(tx, i, sigdata);
+        UpdateInput(tx.vin[i], sigdata);
     }
 
     // send the transaction
 
     CValidationState state;
 
-    if (!AcceptToMemoryPool(mempool, state, tx, false, NULL, false, DEFAULT_TRANSACTION_MAXFEE)) {
+	CTransactionRef txrf = std::make_shared<CTransaction>(tx);
+    if (!AcceptToMemoryPool(mempool, state, txrf, false, NULL, false, DEFAULT_TRANSACTION_MAXFEE)) {
         PrintToLog("%s: ERROR: failed to broadcast transaction: %s\n", __func__, state.GetRejectReason());
         return MP_ERR_COMMIT_TX;
     }
-    RelayTransaction(tx);
+    RelayTransaction(tx, g_connman.get());
 
     retTxid = tx.GetHash();
 
